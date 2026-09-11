@@ -39,7 +39,7 @@ def _save_view_transaction(
     subject_ids: dict[str, str] = {}
 
     # Store the candidate subjects.
-    for subject in view.candidate_subjects:
+    for position, subject in enumerate(view.candidate_subjects):
         subject_id = str(uuid4())
         subject_ids[subject.name] = subject_id
 
@@ -48,6 +48,7 @@ def _save_view_transaction(
             MATCH (view:StakeholderView {view_id: $view_id})
             CREATE (subject:CandidateSubject {
                 id: $subject_id,
+                position: $position,
                 name: $name,
                 evidence: $evidence,
                 status: $status
@@ -56,13 +57,14 @@ def _save_view_transaction(
             """,
             view_id=view_id,
             subject_id=subject_id,
+            position=position,
             name=subject.name,
             evidence=subject.evidence,
             status=_enum_value(subject.status),
         )
 
     # Store the candidate messages.
-    for message in view.candidate_messages:
+    for position, message in enumerate(view.candidate_messages):
         message_id=str(uuid4())
 
         transaction.run(
@@ -70,6 +72,7 @@ def _save_view_transaction(
             MATCH (view:StakeholderView {view_id: $view_id})
             CREATE (message:CandidateMessage {
                 id: $message_id,
+                position: $position,
                 name: $name,
                 sender_name: $sender_name,
                 receiver_name: $receiver_name,
@@ -80,6 +83,7 @@ def _save_view_transaction(
             """,
             view_id=view_id,
             message_id=message_id,
+            position=position,
             name=message.name,
             sender_name=message.sender,
             receiver_name=message.receiver,
@@ -126,7 +130,7 @@ def _save_view_transaction(
             )
 
     # Store the candidate activities.
-    for activity in view.candidate_activities:
+    for position, activity in enumerate(view.candidate_activities):
         activity_id = str(uuid4())
 
         transaction.run(
@@ -134,6 +138,7 @@ def _save_view_transaction(
             MATCH (view:StakeholderView {view_id: $view_id})
             CREATE (activity:CandidateActivity {
                 id: $activity_id,
+                position: $position,
                 name: $name,
                 performed_by_name: $performed_by_name,
                 evidence: $evidence,
@@ -143,6 +148,7 @@ def _save_view_transaction(
             """,
             view_id=view_id,
             activity_id=activity_id,
+            position=position,
             name=activity.name,
             performed_by_name=activity.performed_by,
             evidence=activity.evidence,
@@ -168,14 +174,15 @@ def _save_view_transaction(
             )
 
     # 5. Store clarification questions.
-    for question in view.open_questions:
+    for position, question in enumerate(view.open_questions):
         question_id = str(uuid4())
 
         transaction.run(
             """
-            MATCH (view:StakeholderView {id: $view_id})
+            MATCH (view:StakeholderView {view_id: $view_id})
             CREATE (question:OpenQuestion {
                 id: $question_id,
+                position: $position,
                 related_element_type: $related_element_type,
                 related_field: $related_field,
                 reason: $reason,
@@ -185,6 +192,7 @@ def _save_view_transaction(
             """,
             view_id=view_id,
             question_id=question_id,
+            position=position,
             related_element_type=_enum_value(
                 question.related_element_type
             ),
