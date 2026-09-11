@@ -7,6 +7,14 @@ from neo4j import ManagedTransaction
 
 from models import StakeholderView
 
+from models import (
+    CandidateActivity,
+    CandidateMessage,
+    CandidateSubject,
+    OpenQuestion,
+    StakeholderView,
+)
+
 
 load_dotenv()
 
@@ -230,3 +238,154 @@ def save_stakeholder_view(view: StakeholderView) -> str:
         driver.close()
 
     return view_id
+
+def _get_view_transaction(
+        transaction: ManagedTransaction,
+        view_id: str,
+) -> StakeholderView | None:
+    view_record = transaction.run(
+        """
+        MATCH (view:StakeholderView {view_id: $view_id})
+        RETURN
+            view.stakeholder AS stakeholder,
+            view.source_text AS source_text
+        """,
+        view_id=view_id,
+    ).single()
+
+    if view_record is None:
+        return None
+
+    subject_records = transaction.run(
+        """
+        MATCH (view:StakeholderView {view_id: $view_id})
+            -[:CONTAINS]->(subject:CandidateSubject)
+        RETURN 
+            subject.name AS name,
+            subject.evidence AS evidence,
+            subject.status AS status
+        ORDER BY subject.position
+        """,
+        view_id=view_id,
+    )
+
+    subjects = [
+        CandidateSubject(
+            name=record["name"],
+            evidence=record["evidence"],
+            status=record["status"],
+        )
+        for record in subject_records
+    ]
+
+    message_records = transaction.run(
+        """
+        MATCH (view:StakeholderView {view_id: $view_id})
+            -[:CONTAINS]->(message:CandidateMessage)
+        RETURN
+            message.name AS name,
+            message.sender_name AS sender,
+            message.receiver_name AS receiver,
+            message.evidence AS evidence,
+            message.status AS status
+        ORDER BY message.position
+        """,
+        view_id=view_id,
+    )
+
+    messages = [
+        CandidateMessage(
+            name=record["name"],
+            sender=record["sender"],
+            receiver=record["receiver"],
+            evidence=record["evidence"],
+            status=record["status"],
+        )
+        for record in message_records
+    ]
+
+    activity_records = transaction.run(
+        """
+        MATCH (view:StakeholderView {view_id: $view_id})
+            -[:CONTAINS]->(activity:CandidateActivity)
+        RETURN
+            activity.name AS name,
+            activity.performed_by_name AS performed_by,
+            activity.evidence AS evidence,
+            activity.status AS status
+        ORDER BY activity.position
+        """,
+        view_id=view_id,
+    )
+
+    activities = [
+        CandidateActivity(
+            name=record["name"],
+            performed_by=record["performed_by"],
+            evidence=record["evidence"],
+            status=record["status"],
+        )
+        for record in activity_records
+    ]
+
+    question_records = transaction.run(
+"""
+       MATCH (view:StakeholderView {view_id: $view_id})
+           -[:HAS_QUESTION]->(open_question:OpenQuestion)
+       RETURN
+           open_question.related_element_type AS related_element_type,
+           open_question.related_field AS related_field,
+           open_question.reason AS reason,
+           open_question.question AS question
+       ORDER BY open_question.position
+       """,
+       view_id=view_id,
+    )
+
+    questions = [
+        OpenQuestion(
+            related_element_type=record["related_element_type"],
+            related_field=record["related_field"],
+            reason=record["reason"],
+            question=record["question"],
+        )
+        for record in question_records
+    ]
+
+    return StakeholderView(
+        stakeholder=view_record["stakeholder"],
+        source_text=view_record["source_text"],
+        candidate_subjects=subjects,
+        candidate_messages=messages,
+        candidate_activities=activities,
+        open_questions=questions,
+    )
+
+def get_stakeholder_view(view_id: str) -> StakeholderView:
+    """
+    Load a StakeholderView from Neo4j.
+
+    Raises ValueError if the requested view does not exist.
+    """
+    driver = GraphDatabase.driver(
+        os.environ["NEO4J_URI"],
+        auth=(
+            os.environ["NEO4J_USERNAME"],
+            os.environ["NEO4J_PASSWORD"],
+        ),
+    )
+
+    try:
+        with driver.session(
+            database=os.getenv("NEO4J_DATABASE", "neo4j")
+        ) as session:
+            view = session.execute_read(
+                _get_view_transaction,
+                view_id,
+            )
+    finally:
+        driver.close()
+
+    if view is None:
+        raise ValueError(f"No StakeholderView found with view_id '{view_id}'.")
+    return view
