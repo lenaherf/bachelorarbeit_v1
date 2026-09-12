@@ -5,9 +5,7 @@ from dotenv import load_dotenv
 from neo4j import GraphDatabase
 from neo4j import ManagedTransaction
 
-from models import StakeholderView
-
-from models import (
+from stakeholder_extraction.models import (
     CandidateActivity,
     CandidateMessage,
     CandidateSubject,
@@ -34,13 +32,17 @@ def _save_view_transaction(
         CREATE (view:StakeholderView {
             view_id: $view_id,
             stakeholder: $stakeholder_name,
-            source_text: $source_text
+            source_text: $source_text,
+            corrected_text: $corrected_text,
+            prepared_text: $prepared_text
             })
         CREATE (stakeholder)-[:SUBMITTED]->(view)
         """,
         stakeholder_name=view.stakeholder,
         view_id=view_id,
         source_text=view.source_text,
+        corrected_text=view.corrected_text,
+        prepared_text=view.prepared_text,
     )
 
     # Connect subject names from the LLM output to the Neo4j candidate IDs.
@@ -248,7 +250,9 @@ def _get_view_transaction(
         MATCH (view:StakeholderView {view_id: $view_id})
         RETURN
             view.stakeholder AS stakeholder,
-            view.source_text AS source_text
+            view.source_text AS source_text,
+            view.corrected_text AS corrected_text,
+            view.prepared_text AS prepared_text
         """,
         view_id=view_id,
     ).single()
@@ -355,6 +359,8 @@ def _get_view_transaction(
     return StakeholderView(
         stakeholder=view_record["stakeholder"],
         source_text=view_record["source_text"],
+        corrected_text=view_record["corrected_text"],
+        prepared_text=view_record["prepared_text"],
         candidate_subjects=subjects,
         candidate_messages=messages,
         candidate_activities=activities,
