@@ -56,6 +56,9 @@ class StakeholderView(BaseModel):
 
     stakeholder: str
     source_text: str
+    corrected_text: str
+    prepared_text: str
+
     candidate_subjects: list[CandidateSubject]
     candidate_messages: list[CandidateMessage]
     candidate_activities: list[CandidateActivity]

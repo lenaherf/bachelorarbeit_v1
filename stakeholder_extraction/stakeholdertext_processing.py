@@ -1,7 +1,11 @@
+from pathlib import Path
+
 from langchain_core.prompts import prompt
+from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-from stakeholder_extraction.prompts import LANGUAGE_CORRECTION_PROMPT, ACTIVE_SENTENCE_PROMPT
+env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(env_path)
 
 llm = ChatOpenAI(
     model="gpt-5.2",
@@ -60,6 +64,12 @@ Rules:
 - Do not turn processed business objects into messages unless an
   exchange between two subjects is described.
 - Return only the rewritten process description.
+- Express each distinct process action or message exchange as a separate sentence.
+- Replace pronouns such as "it", "this", "they", and "them" with the process
+  element to which they clearly refer.
+- Repeat the process element instead of using a pronoun when the reference is
+  unambiguous.
+- Do not replace a pronoun if its referent is ambiguous.
 
 Stakeholder:
 {stakeholder}
