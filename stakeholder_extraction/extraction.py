@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from langchain_openai import ChatOpenAI
 
-from models import StakeholderView
-from prompts import STAKEHOLDER_EXTRACTION_PROMPT
+from stakeholder_extraction.models import StakeholderView
+from stakeholder_extraction.prompts import STAKEHOLDER_EXTRACTION_PROMPT
 
 load_dotenv()
 
