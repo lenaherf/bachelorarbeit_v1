@@ -3,8 +3,6 @@ from stakeholder_extraction.models import StakeholderView
 from stakeholder_extraction.stakeholdertext_processing import (
     prepare_stakeholder_text,
 )
-from stakeholder_extraction.test.test_text_preprocessing import corrected_text, prepared_text
-
 
 def process_stakeholder_input(
         stakeholder: str,

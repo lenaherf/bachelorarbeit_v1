@@ -53,6 +53,8 @@ Rules:
   decisions, or ordering.
 - Interpret "I", "me", "we", and "us" as the submitting stakeholder:
   "{stakeholder}".
+- Replace pronouns such as "it", "this", "they", and "them" with the process
+  element to which they clearly refer.
 - Replace first-person references with the stakeholder's role name
   where this is unambiguous.
 - Prefer one process-relevant action or interaction per sentence.
@@ -60,13 +62,11 @@ Rules:
 - Preserve the stakeholder's terminology.
 - Convert passive sentences into active sentences only when the actor
   is known.
+- Express each distinct process action or message exchange as a separate sentence.
 - If the actor is not known, preserve the passive construction.
 - Do not turn processed business objects into messages unless an
   exchange between two subjects is described.
 - Return only the rewritten process description.
-- Express each distinct process action or message exchange as a separate sentence.
-- Replace pronouns such as "it", "this", "they", and "them" with the process
-  element to which they clearly refer.
 - Repeat the process element instead of using a pronoun when the reference is
   unambiguous.
 - Do not replace a pronoun if its referent is ambiguous.

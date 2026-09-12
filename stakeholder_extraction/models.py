@@ -1,7 +1,6 @@
 # Defining the schema for the StakeholderView
 
 from enum import Enum
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -58,7 +57,6 @@ class StakeholderView(BaseModel):
     source_text: str
     corrected_text: str
     prepared_text: str
-
     candidate_subjects: list[CandidateSubject]
     candidate_messages: list[CandidateMessage]
     candidate_activities: list[CandidateActivity]
