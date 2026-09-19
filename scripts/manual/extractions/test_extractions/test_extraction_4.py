@@ -1,4 +1,4 @@
-from extraction import extract_stakeholder_view
+from stakeholder_extraction.extraction import extract_stakeholder_view
 
 stakeholder = "Customer"
 

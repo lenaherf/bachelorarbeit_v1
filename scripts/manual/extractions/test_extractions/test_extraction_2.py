@@ -1,9 +1,9 @@
-from extraction import extract_stakeholder_view
+from stakeholder_extraction.extraction import extract_stakeholder_view
 
 stakeholder = "Customer Service"
 
 source_text = """
-I receive a complaint from the customer. I then review the complaint and send the customer a response.
+After reviewing the complaint, I will notify the responsible authority.
 """.strip()
 
 view = extract_stakeholder_view(
