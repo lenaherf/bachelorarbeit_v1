@@ -1,4 +1,4 @@
-from stakeholder_extraction.extraction import extract_stakeholder_view
+from stakeholder_extraction.stakeholder_pipeline import process_stakeholder_input
 
 stakeholder = "Customer Service"
 
@@ -6,7 +6,7 @@ source_text = """
 I receive a complaint from the customer. I then review the complaint and send the customer a response.
 """.strip()
 
-view = extract_stakeholder_view(
+view = process_stakeholder_input(
     stakeholder=stakeholder,
     source_text=source_text,
 )

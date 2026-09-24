@@ -3,7 +3,7 @@ from stakeholder_extraction import stakeholder_pipeline
 from stakeholder_extraction.models import (
     CandidateActivity,
     CandidateSubject,
-    CandidateMessage,
+    CandidateMessage, CandidateState, CandidateStateType, CandidateTransition,
 )
 
 def test_process_stakeholder_input(monkeypatch):
@@ -48,6 +48,34 @@ def test_process_stakeholder_input(monkeypatch):
             ),
         ],
         open_questions=[],
+        candidate_states=[
+            CandidateState(
+                local_id="state-1",
+                name="Receive complaint",
+                state_type=CandidateStateType.RECEIVE,
+                performed_by="Customer Service",
+                message_name="Complaint",
+                is_initial=True,
+                evidence="receives a complaint",
+            ),
+            CandidateState(
+                local_id="state-2",
+                name="Check complaint",
+                state_type=CandidateStateType.DO,
+                performed_by="Customer Service",
+                evidence="checks the complaint",
+            ),
+        ],
+        candidate_transitions=[
+            CandidateTransition(
+                source_state_id="state-1",
+                target_state_id="state-2",
+                sequence_evidence=(
+                    "receives a complaint and checks "
+                    "the complaint"
+                ),
+            ),
+        ],
     )
 
     def mock_extract_stakeholder_view(
@@ -82,3 +110,10 @@ def test_process_stakeholder_input(monkeypatch):
     assert result.candidate_messages[0].name == "Complaint"
     assert result.candidate_messages[0].sender == "Customer"
     assert result.candidate_messages[0].receiver == "Customer Service"
+
+    assert len(result.candidate_states) == 2
+    assert len(result.candidate_transitions) == 1
+
+    assert result.candidate_states[0].local_id == "state-1"
+    assert result.candidate_transitions[0].source_state_id == "state-1"
+    assert result.candidate_transitions[0].target_state_id == "state-2"

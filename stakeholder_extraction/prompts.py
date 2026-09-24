@@ -37,7 +37,7 @@ based on general domain knowledge.
 13. Generate an open question only when:
 - a field represented in the output schema cannot be filled, or
 - an extracted value is ambiguous in a way that affects the identification of
-  a subject, message, or activity.
+  a subject, message, activity, state, or transition.
 14. Include a short verbatim passage from the source text as evidence for every extracted candidate.
 It must be one short, contiguous passage copied exactly from the source text. Do not combine separate passages
 , or add surrounding quotation marks.
@@ -49,10 +49,56 @@ for the information needed to resolve the uncertainty.
 19. A field marked as missing_information must be null in the corresponding
 candidate. Never provide both a generated value and a missing-information
 question for the same field.
-12. Do not derive a message name only from a communication verb.
+20. Do not derive a message name only from a communication verb.
 For example, "I notify the authority" indicates that a message is sent,
 but it does not specify the message content. In this case, use null as the
 message name and create a missing-information question.
+Behavior extraction rules:
+21. Represent the stakeholder's described behavior as candidate states.
+22. Use state_type "receive" when the stakeholder receives a message,
+"send" when the stakeholder sends a message, and "do" for internal work.
+23. Assign every candidate state a unique local_id within this
+StakeholderView. Use sequential identifiers such as "state-1",
+"state-2", and "state-3". These are local references only and are
+not ontology URIs.
+24. For receive and send states, message_name must match the name of
+the corresponding candidate message. If the message name is missing,
+use null and create a missing-information question.
+25. For do states, message_name must be null. An object that is
+reviewed, processed, or stored is not automatically a message
+reference.
+26. performed_by must identify the candidate subject performing the
+state whenever this can be directly determined. Otherwise use null
+and create a missing-information question.
+27. Set is_initial to true for the first state of the extracted behavior
+fragment when the text presents an ordered sequence that begins with that
+state. In particular, if transitions form a sequence and no extracted
+transition enters the first state, mark that state as initial. This means
+initial within the described stakeholder fragment; it does not claim that
+the complete real-world process has no earlier steps. If the beginning of
+the described fragment itself is ambiguous, use is_initial false and create
+an open question about the initial state.
+28. Set is_end to true only when the text explicitly or directly
+establishes that the behavior ends in that state. A send state must
+never be marked as an end state.
+29. Create a candidate transition only when the text states or directly
+implies that one state follows another. Words such as "then", "after",
+"before", and "subsequently" may provide sequence evidence.
+30. Every transition must reference existing candidate states using
+source_state_id and target_state_id.
+31. sequence_evidence must be one short contiguous passage copied
+exactly from the source text that supports the ordering of the two
+states.
+32. Do not create a transition when the order is unknown. Create an
+open question with related_element_type "transition" when the missing
+order affects the behavior structure.
+33. Do not invent a final state merely to complete a PASS behavior.
+If the final described state is a send state and no following state is
+known, preserve the send state and create an open question about what
+happens afterward.
+34. Continue to create candidate activities for internal work. The
+corresponding candidate state represents that activity's position in
+the behavior sequence.
 
 Allowed direct inference:
 If the stakeholder says "I receive a complaint from the customer", the customer is the sender
@@ -75,4 +121,27 @@ Correct interpretation:
 - "Response" is a candidate message from the Customer service to the Customer.
 - "Review complaint" is a candidate activity performed by the Customer Service.
 - Reviewing the complaint is not an additional message.
+Behavior interpretation:
+- state-1 is a receive state named "Receive complaint".
+- state-1 is performed by Customer Service.
+- state-1 references the Complaint message.
+- state-1 is marked is_initial=true because it is the first state of
+  the extracted ordered fragment and no extracted transition enters it.
+- state-2 is a do state named "Review complaint".
+- state-2 is performed by Customer Service.
+- state-2 has no message_name.
+- state-3 is a send state named "Send response".
+- state-3 is performed by Customer Service.
+- state-3 references the Response message.
+- There is a transition from state-1 to state-2.
+- There is a transition from state-2 to state-3.
+- state-3 is not marked as an end state.
+- No artificial "Finished" state is extracted.
+- Because state-3 is a send state and no following state is stated,
+  one open question is mandatory:
+  related_element_type must be "transition",
+  related_field must be "target_state_id",
+  reason must be "missing_information",
+  and the question must ask what happens after Customer Service
+  sends the response.
 """
