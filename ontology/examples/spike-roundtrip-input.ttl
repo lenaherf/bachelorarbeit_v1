@@ -1,0 +1,17 @@
+@prefix pass: <http://www.i2pm.net/standard-pass-ont#> .
+@prefix spike: <https://example.org/pass/spike/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+spike:ontology
+    a owl:Ontology .
+
+spike:model
+    a pass:PASSProcessModel ;
+    pass:hasModelComponentID "spike-model" ;
+    pass:hasModelComponentLabel "PASS ontology spike model" ;
+    pass:contains spike:customer .
+
+spike:customer
+    a pass:InterfaceSubject ;
+    pass:hasModelComponentID "spike-customer" ;
+    pass:hasModelComponentLabel "Customer" .

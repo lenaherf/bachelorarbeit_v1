@@ -23,3 +23,12 @@ pytest.ini
 
 # Requirements
 requirements-dev.txt
+
+# Local neo4j spike data
+infra/neo4j-pass-spike/.env
+infra/neo4j-pass-spike/data/
+infra/neo4j-pass-spike/logs/
+infra/neo4j-pass-spike/plugins/*.jar
+
+# Neo4j spike runtime files
+infra/neo4j-pass-spike/import/

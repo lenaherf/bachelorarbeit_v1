@@ -1,0 +1,12 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pass: <http://www.i2pm.net/standard-pass-ont#> .
+@prefix n4sch: <neo4j://graph.schema#> .
+
+<https://example.org/pass/spike/model> a pass:PASSProcessModel;
+  pass:contains <https://example.org/pass/spike/customer>;
+  pass:hasModelComponentID "spike-model";
+  pass:hasModelComponentLabel "PASS ontology spike model" .
+
+<https://example.org/pass/spike/customer> a pass:InterfaceSubject;
+  pass:hasModelComponentLabel "Customer";
+  pass:hasModelComponentID "spike-customer" .
