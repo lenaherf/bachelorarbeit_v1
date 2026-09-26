@@ -7,7 +7,8 @@ from stakeholder_extraction.models import CandidateMessage
 from stakeholder_extraction.pass_fragment_repository import save_pass_model_fragment
 from stakeholder_extraction.pass_mapper import map_view_to_pass_fragment
 from stakeholder_extraction.reconciliation import compare_pass_fragments
-from stakeholder_extraction.reconciliation_repository import save_reconciliation_proposals
+from stakeholder_extraction.reconciliation_repository import save_reconciliation_proposals, \
+    review_reconciliation_proposal
 from stakeholder_extraction.test.test_pass_mapper import make_complaint_view
 from stakeholder_extraction.test.test_reconciliation import make_customer_complaint_view
 
@@ -89,6 +90,30 @@ def test_saves_reconciliation_proposals():
             assert record["proposal_count"] == 5
             assert record["element_relationship_count"] == 9
             assert record["statuses"] == ["proposed"]
+
+            confirmed_status = review_reconciliation_proposal(
+                proposal_id=proposals[0].proposal_id,
+                decision="confirmed",
+                reviewed_by="admin-test"
+            )
+
+            assert confirmed_status.value == "confirmed"
+
+            record = session.run(
+                """
+                    MATCH (proposal:ReconciliationProposal {
+                        proposal_id: $proposal_id
+                    })
+                    RETURN
+                        proposal.status AS status,
+                        proposal.reviewed_by AS reviewed_by,
+                        proposal.reviewed_at IS NOT NULL
+                            AS has_review_timestamp
+                    """,
+                proposal_id=proposals[0].proposal_id,
+            ).single()
+
+            assert record["status"] == "confirmed"
 
     finally:
         driver.close()

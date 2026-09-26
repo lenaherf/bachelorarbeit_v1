@@ -8,8 +8,8 @@ ReconciliationProposalType = Literal[
     "one_sided_message",
 ]
 
-"""A reviewable correspondence or discrepancy between two fragments."""
 class ReconciliationProposal(BaseModel):
+    """A reviewable correspondence or discrepancy between two fragments."""
     model_config = ConfigDict(extra="forbid")
 
     proposal_id: str
@@ -21,9 +21,9 @@ class ReconciliationProposal(BaseModel):
     explanation: str
     status: ConfirmationStatus = (ConfirmationStatus.PROPOSED)
 
-    """Ensure the element references match the selected proposal type."""
     @model_validator(mode="after")
     def validate_element_references(self,) -> "ReconciliationProposal":
+        """Ensure the element references match the selected proposal type."""
         if self.left_view_id == self.right_view_id:
             raise ValueError("A reconciliation proposal must compare two different views.")
 
@@ -40,4 +40,10 @@ class ReconciliationProposal(BaseModel):
             raise ValueError(f"A {self.proposal_type} proposal must reference an element from both views.")
 
         return self
+
+# Defining the allowed decisions after review.
+ReviewDecision = Literal[
+    "confirmed",
+    "rejected",
+]
 
