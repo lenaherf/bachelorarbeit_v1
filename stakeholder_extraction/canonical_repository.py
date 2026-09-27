@@ -1,3 +1,4 @@
+"""Persist canonical PASS elements and their provenance in Neo4j."""
 import os
 from dotenv import load_dotenv
 from neo4j import GraphDatabase, ManagedTransaction, Transaction

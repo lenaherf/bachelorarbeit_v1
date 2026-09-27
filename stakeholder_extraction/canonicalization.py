@@ -1,3 +1,4 @@
+"""Create and extend canonical PASS elements deterministically."""
 from hashlib import sha256
 
 from stakeholder_extraction.canonical_models import CanonicalSubject
@@ -9,7 +10,7 @@ def create_canonical_subject(
         left: PassSubject,
         right: PassSubject,
 ) -> CanonicalSubject:
-    """Create one deterministic subject from two equivalent subjects."""
+    """Create a new canonical subject from two equivalent sources."""
 
     if left.uri == right.uri:
         raise ValueError("Canonicalization requires two different source subjects.")
@@ -54,7 +55,9 @@ def extend_canonical_subject(
         left: PassSubject,
         right: PassSubject,
 ) -> CanonicalSubject:
-    """Extend an existing canonical subject with new sources."""
+    """Extend an existing canonical subject with new sources.
+
+    The URI remains but provenance and PASS type are updated."""
 
     normalized_names = {
         normalize_name(existing.label),
