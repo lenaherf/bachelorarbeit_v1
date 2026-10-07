@@ -1,10 +1,10 @@
-import os
 import uuid
 from uuid import uuid4
 import pytest
-from neo4j import GraphDatabase
-
-from stakeholder_extraction.canonical_repository import canonicalize_confirmed_subject_proposal
+from stakeholder_extraction.canonical_repository import canonicalize_confirmed_subject_proposal, \
+    canonicalize_confirmed_message_pair_proposal, canonicalize_confirmed_one_sided_message
+from stakeholder_extraction.models import CandidateMessage
+from stakeholder_extraction.neo4j_connection import open_neo4j_session
 from stakeholder_extraction.pass_fragment_repository import save_pass_model_fragment
 from stakeholder_extraction.pass_mapper import map_view_to_pass_fragment
 from stakeholder_extraction.reconciliation import compare_pass_fragments
@@ -59,12 +59,7 @@ def test_canonicalizes_confirmed_subject_proposal():
 
     assert second_canonical == canonical
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"])
-    )
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
+    with open_neo4j_session() as session:
             record = session.run(
                 """
                 MATCH (
@@ -99,9 +94,6 @@ def test_canonicalizes_confirmed_subject_proposal():
             assert record["status"] == "confirmed"
             assert record["provenance_count"] == 2
             assert record["source_count"] == 2
-
-    finally:
-        driver.close()
 
 @pytest.mark.integration
 def test_rejects_unconfirmed_subject_proposal():
@@ -168,3 +160,311 @@ def test_reuses_canonical_subject_across_three_views():
 
     assert second_canonical.uri == first_canonical.uri
     assert len(second_canonical.source_subject_uris) == 3
+
+@pytest.mark.integration
+def test_canonicalizes_confirmed_message_pair():
+    test_id = str(uuid4())
+
+    customer_fragment = map_view_to_pass_fragment(make_customer_complaint_view(), view_id=f"customer-message-{test_id}")
+    service_fragment = map_view_to_pass_fragment(make_complaint_view(), view_id=f"service-message-{test_id}")
+
+    save_pass_model_fragment(customer_fragment)
+    save_pass_model_fragment(service_fragment)
+
+    proposals = compare_pass_fragments(customer_fragment, service_fragment)
+
+    save_reconciliation_proposals(proposals)
+
+    subject_proposals = [
+        proposal for proposal in proposals
+        if proposal.proposal_type == "equivalent_subject"
+    ]
+
+    assert len(subject_proposals) == 2
+
+    for proposal in subject_proposals:
+        review_reconciliation_proposal(
+            proposal_id=proposal.proposal_id,
+            decision="confirmed",
+            reviewed_by="admin-test"
+        )
+
+        canonicalize_confirmed_subject_proposal(
+            proposal.proposal_id
+        )
+
+    complaint_proposal = next(
+        proposal for proposal in proposals
+        if (proposal.proposal_type == "message_pair"
+            and proposal.left_element_uri == customer_fragment.message_exchanges[0].uri
+            and proposal.right_element_uri == service_fragment.message_exchanges[0].uri
+        )
+    )
+
+    review_reconciliation_proposal(
+        proposal_id=complaint_proposal.proposal_id,
+        decision="confirmed",
+        reviewed_by="admin-test"
+    )
+
+    canonical_message, canonical_exchange = (
+        canonicalize_confirmed_message_pair_proposal(complaint_proposal.proposal_id)
+    )
+
+    second_message, second_exchange = (
+        canonicalize_confirmed_message_pair_proposal(complaint_proposal.proposal_id)
+    )
+
+    assert canonical_message.label == "Complaint"
+    assert canonical_message.status == "confirmed"
+    assert canonical_exchange.label == "Customer sends Complaint to Customer Service"
+    assert canonical_exchange.status == "confirmed"
+
+    assert second_message == canonical_message
+    assert second_exchange == canonical_exchange
+
+    with open_neo4j_session() as session:
+        record = session.run(
+            """
+            MATCH (
+                proposal:ReconciliationProposal {
+                    proposal_id: $proposal_id
+                }
+            )-[:CREATED_CANONICAL]->
+                (exchange:CanonicalMessageExchange)
+            MATCH (exchange)-[:HAS_SENDER]->
+                (sender:CanonicalSubject)
+            MATCH (exchange)-[:HAS_RECEIVER]->
+                (receiver:CanonicalSubject)
+            MATCH (exchange)-[
+                :HAS_MESSAGE_SPECIFICATION
+            ]->(message:CanonicalMessageSpecification)
+            OPTIONAL MATCH
+                (exchange)-[:DERIVED_FROM]->
+                    (source_exchange:PassMessageExchange)
+            OPTIONAL MATCH
+                (message)-[:DERIVED_FROM]->
+                    (source_message:PassMessageSpecification)
+            RETURN
+                exchange.uri AS exchange_uri,
+                message.uri AS message_uri,
+                sender.label AS sender_label,
+                receiver.label AS receiver_label,
+                count(DISTINCT source_exchange)
+                    AS exchange_source_count,
+                count(DISTINCT source_message)
+                    AS message_source_count
+            """,
+            proposal_id=complaint_proposal.proposal_id,
+        ).single()
+
+        assert record is not None
+        assert record["exchange_uri"] == canonical_exchange.uri
+        assert record["message_uri"] == canonical_message.uri
+        assert record["sender_label"] == "Customer"
+        assert record["receiver_label"] == "Customer Service"
+        assert record["exchange_source_count"] == 2
+        assert record["message_source_count"] == 2
+
+@pytest.mark.integration
+def test_rejects_unconfirmed_message_pair():
+    test_id = str(uuid4())
+
+    customer_fragment = map_view_to_pass_fragment(make_customer_complaint_view(), view_id=f"customer_unconfirmed_{test_id}")
+    service_fragment = map_view_to_pass_fragment(make_complaint_view(), view_id=f"service_unconfirmed_{test_id}")
+
+    save_pass_model_fragment(customer_fragment)
+    save_pass_model_fragment(service_fragment)
+
+    proposals = compare_pass_fragments(customer_fragment, service_fragment)
+
+    save_reconciliation_proposals(proposals)
+
+    message_proposal = next(
+        proposal for proposal in proposals
+        if proposal.proposal_type == "message_pair"
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="Only confirmed proposals"
+    ):
+        canonicalize_confirmed_message_pair_proposal(message_proposal.proposal_id)
+
+@pytest.mark.integration
+def test_requires_canonical_subjects_for_message_pair():
+    test_id = str(uuid4())
+
+    customer_fragment = map_view_to_pass_fragment(make_customer_complaint_view(), view_id=f"customer-dependency-{test_id}")
+    service_fragment = map_view_to_pass_fragment(make_complaint_view(), view_id=f"service-dependency-{test_id}")
+
+    save_pass_model_fragment(customer_fragment)
+    save_pass_model_fragment(service_fragment)
+
+    proposals = compare_pass_fragments(customer_fragment, service_fragment)
+
+    save_reconciliation_proposals(proposals)
+
+    message_proposal = next(
+        proposal for proposal in proposals
+        if proposal.proposal_type == "message_pair"
+    )
+
+    review_reconciliation_proposal(
+        proposal_id=message_proposal.proposal_id,
+        decision="confirmed",
+        reviewed_by="admin-test"
+    )
+
+    # Subject proposals have not been canonicalized.
+
+    with pytest.raises(
+        ValueError,
+        match="canonical sender must be created"
+    ):
+        canonicalize_confirmed_message_pair_proposal(message_proposal.proposal_id)
+
+@pytest.mark.integration
+def test_canonicalizes_confirmed_one_sided_message():
+    test_id = str(uuid4())
+    customer_view = make_customer_complaint_view()
+    service_view = make_complaint_view()
+
+    # This message occurs only in the Customer Service view
+    service_view.candidate_messages.append(
+        CandidateMessage(
+            name="Acknowledgement",
+            sender="Customer Service",
+            receiver="Customer",
+            evidence="send the customer an acknowledgement",
+        )
+    )
+
+    customer_fragment = map_view_to_pass_fragment(
+        customer_view,
+        view_id=f"customer-one-sided-{test_id}",
+    )
+
+    service_fragment = map_view_to_pass_fragment(
+        service_view,
+        view_id=f"service-one-sided-{test_id}",
+    )
+
+    save_pass_model_fragment(customer_fragment)
+    save_pass_model_fragment(service_fragment)
+
+    proposals = compare_pass_fragments(customer_fragment, service_fragment)
+
+    save_reconciliation_proposals(proposals)
+
+    # Canonical sender and receiver must exist before the exchange can be canonicalized
+    subject_proposals = [
+        proposal for proposal in proposals
+        if proposal.proposal_type == "equivalent_subject"
+    ]
+
+    assert len(subject_proposals) == 2
+
+    canonical_subjects = {}
+
+    for proposal in subject_proposals:
+        review_reconciliation_proposal(
+            proposal_id=proposal.proposal_id,
+            decision="confirmed",
+            reviewed_by="admin-test"
+        )
+
+        canonical_subject = (canonicalize_confirmed_subject_proposal(proposal.proposal_id))
+
+        canonical_subjects[canonical_subject.label] = canonical_subject
+
+    one_sided_proposals = [
+        proposal for proposal in proposals
+        if proposal.proposal_type == "one_sided_message"
+    ]
+
+    assert len(one_sided_proposals) == 1
+
+    one_sided_proposal = one_sided_proposals[0]
+
+    #The additional mesage exists only in the service fragment.
+    assert one_sided_proposal.left_element_uri is None
+    assert one_sided_proposal.right_element_uri == service_fragment.message_exchanges[2].uri
+
+    review_reconciliation_proposal(
+        proposal_id=one_sided_proposal.proposal_id,
+        decision="confirmed",
+        reviewed_by="admin-test"
+    )
+
+    canonical_message, canonical_exchange = (
+        canonicalize_confirmed_one_sided_message(
+            one_sided_proposal.proposal_id,
+        )
+    )
+
+    # Run second time to verify idempotence.
+    second_message, second_exchange = (
+        canonicalize_confirmed_one_sided_message(one_sided_proposal.proposal_id)
+    )
+
+    source_message = (service_fragment.message_specifications[2])
+    source_exchange = service_fragment.message_exchanges[2]
+
+    assert canonical_message.label == "Acknowledgement"
+    assert canonical_message.status == "confirmed"
+    assert canonical_message.source_message_uris == (source_message.uri, )
+    assert canonical_exchange.label == "Customer Service sends Acknowledgement to Customer"
+    assert canonical_exchange.status == "confirmed"
+    assert canonical_exchange.source_exchange_uris == (source_exchange.uri, )
+    assert canonical_exchange.sender_uri == canonical_subjects["Customer Service"].uri
+    assert canonical_exchange.receiver_uri == canonical_subjects["Customer"].uri
+    assert canonical_exchange.message_specification_uri == canonical_message.uri
+    assert second_message == canonical_message
+    assert second_exchange == canonical_exchange
+
+    # verify the Neo4j structure
+    with open_neo4j_session() as session:
+        record = session.run(
+            """
+            MATCH (
+                proposal:ReconciliationProposal {
+                    proposal_id: $proposal_id
+                }
+            )-[:CREATED_CANONICAL]->
+                (exchange:CanonicalMessageExchange)
+            MATCH (proposal)-[:CREATED_CANONICAL]->
+                (message:CanonicalMessageSpecification)
+            MATCH (exchange)-[:HAS_SENDER]->
+                (sender:CanonicalSubject)
+            MATCH (exchange)-[:HAS_RECEIVER]->
+                (receiver:CanonicalSubject)
+            MATCH (exchange)-[
+                :HAS_MESSAGE_SPECIFICATION
+            ]->(message)
+            OPTIONAL MATCH
+                (exchange)-[:DERIVED_FROM]->
+                    (source_exchange:PassMessageExchange)
+            OPTIONAL MATCH
+                (message)-[:DERIVED_FROM]->
+                    (source_message:PassMessageSpecification)
+            RETURN
+                exchange.uri AS exchange_uri,
+                message.uri AS message_uri,
+                sender.label AS sender_label,
+                receiver.label AS receiver_label,
+                count(DISTINCT source_exchange)
+                    AS exchange_source_count,
+                count(DISTINCT source_message)
+                    AS message_source_count
+            """,
+            proposal_id=one_sided_proposal.proposal_id,
+        ).single()
+
+        assert record is not None
+        assert record["exchange_uri"] == canonical_exchange.uri
+        assert record["message_uri"] == canonical_message.uri
+        assert record["sender_label"] == "Customer Service"
+        assert record["receiver_label"] == "Customer"
+        assert record["exchange_source_count"] == 1
+        assert record["message_source_count"] == 1
