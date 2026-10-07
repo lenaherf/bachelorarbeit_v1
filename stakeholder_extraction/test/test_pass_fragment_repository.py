@@ -4,6 +4,7 @@ import pytest
 from neo4j import GraphDatabase
 
 from stakeholder_extraction.models import StakeholderView, CandidateMessage, CandidateSubject
+from stakeholder_extraction.neo4j_connection import open_neo4j_session
 from stakeholder_extraction.pass_fragment_repository import save_pass_model_fragment
 from stakeholder_extraction.pass_mapper import map_view_to_pass_fragment
 from stakeholder_extraction.test.test_pass_mapper import make_complaint_view
@@ -21,13 +22,7 @@ def test_saves_complete_pass_fragment():
 
     assert saved_id == view_id
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"]),
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
+    with open_neo4j_session() as session:
             record = session.run(
                 """
                 MATCH (fragment:PassModelFragment {
@@ -55,8 +50,6 @@ def test_saves_complete_pass_fragment():
 
             assert relationship_record is not None
             assert relationship_record["relationship_count"] == 16
-    finally:
-        driver.close()
 
 @pytest.mark.integration
 def test_does_not_merge_matching_labels():
@@ -77,13 +70,7 @@ def test_does_not_merge_matching_labels():
     assert first_customer.label == second_customer.label
     assert first_customer.uri != second_customer.uri
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"]),
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
+    with open_neo4j_session() as session:
             record = session.run(
                 """
                 MATCH (subject:PassSubject {
@@ -104,8 +91,6 @@ def test_does_not_merge_matching_labels():
             assert record is not None
             assert record["subject_count"] == 2
             assert record["uri_count"] == 2
-    finally:
-        driver.close()
 
 @pytest.mark.integration
 def test_saves_mapping_issues():
@@ -147,13 +132,7 @@ def test_saves_mapping_issues():
 
     save_pass_model_fragment(fragment)
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"]),
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
+    with open_neo4j_session() as session:
             record = session.run(
                 """
                 MATCH (fragment:PassModelFragment {
@@ -170,8 +149,6 @@ def test_saves_mapping_issues():
             assert record is not None
             assert record["issue_count"] == 1
             assert record["issue_codes"] == ["missing_message_name"]
-    finally:
-        driver.close()
 
 @pytest.mark.integration
 def test_saving_same_fragment_twice_is_idempotent():
@@ -183,13 +160,7 @@ def test_saving_same_fragment_twice_is_idempotent():
     save_pass_model_fragment(fragment)
     save_pass_model_fragment(fragment)
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"]),
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
+    with open_neo4j_session() as session:
             fragment_record = session.run(
                 """
                 MATCH (fragment:PassModelFragment {
@@ -232,9 +203,6 @@ def test_saving_same_fragment_twice_is_idempotent():
             assert element_record["element_count"] == 11
             assert relationship_record["relationship_count"] == 16
 
-    finally:
-        driver.close()
-
 @pytest.mark.integration
 def test_preserves_formal_element_metadata():
     view_id = f"metadata-fragment-{uuid4()}"
@@ -242,13 +210,7 @@ def test_preserves_formal_element_metadata():
     fragment = map_view_to_pass_fragment(view, view_id=view_id)
     save_pass_model_fragment(fragment)
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"]),
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
+    with open_neo4j_session() as session:
             record = session.run(
                 """
                 MATCH (fragment:PassModelFragment {
@@ -288,5 +250,3 @@ def test_preserves_formal_element_metadata():
             assert record["has_evidence"] is True
             assert record["has_status"] is True
             assert record["has_stable_uri"] is True
-    finally:
-        driver.close()

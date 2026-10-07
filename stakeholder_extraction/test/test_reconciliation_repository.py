@@ -1,9 +1,7 @@
-import os
 from uuid import uuid4
 import pytest
-from neo4j import GraphDatabase
-
 from stakeholder_extraction.models import CandidateMessage
+from stakeholder_extraction.neo4j_connection import open_neo4j_session
 from stakeholder_extraction.pass_fragment_repository import save_pass_model_fragment
 from stakeholder_extraction.pass_mapper import map_view_to_pass_fragment
 from stakeholder_extraction.reconciliation import compare_pass_fragments
@@ -53,13 +51,7 @@ def test_saves_reconciliation_proposals():
 
     assert saved_ids == [proposal.proposal_id for proposal in proposals]
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.getenv("NEO4J_USERNAME"), os.getenv("NEO4J_PASSWORD"))
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
+    with open_neo4j_session() as session:
             record = session.run(
                 """
                 MATCH (
@@ -114,6 +106,3 @@ def test_saves_reconciliation_proposals():
             ).single()
 
             assert record["status"] == "confirmed"
-
-    finally:
-        driver.close()

@@ -1,9 +1,6 @@
-import os
-from neo4j import GraphDatabase, ManagedTransaction
+from neo4j import ManagedTransaction
+from stakeholder_extraction.neo4j_connection import open_neo4j_session
 from stakeholder_extraction.pass_models import (PassElement, PassModelFragment)
-from dotenv import load_dotenv
-
-load_dotenv()
 
 def _enum_value(value):
     return value.value if hasattr(value, "value") else value
@@ -236,15 +233,7 @@ def _connect_elements(
 def save_pass_model_fragment(
         fragment: PassModelFragment,
 ) -> str:
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"]),
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
-            session.execute_write(_save_fragment_transaction, fragment)
-    finally:
-        driver.close()
+    with open_neo4j_session() as session:
+        session.execute_write(_save_fragment_transaction, fragment)
 
     return fragment.view_id

@@ -1,11 +1,7 @@
-import os
-from dotenv import load_dotenv
-from neo4j import GraphDatabase, ManagedTransaction
-
+from neo4j import ManagedTransaction
 from stakeholder_extraction.models import ConfirmationStatus
+from stakeholder_extraction.neo4j_connection import open_neo4j_session
 from stakeholder_extraction.reconciliation_models import ReconciliationProposal, ReviewDecision
-
-load_dotenv()
 
 def _enum_value(value):
     return value.value if hasattr(value, "value") else value
@@ -113,19 +109,11 @@ def save_reconciliation_proposals(
     if not proposals:
         return []
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"]),
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
-            session.execute_write(
-                _save_proposals_transaction,
-                proposals,
-            )
-    finally:
-        driver.close()
+    with open_neo4j_session() as session:
+        session.execute_write(
+            _save_proposals_transaction,
+            proposals,
+        )
 
     return [
         proposal.proposal_id for proposal in proposals
@@ -202,18 +190,10 @@ def review_reconciliation_proposal(
     if not reviewed_by.strip():
         raise ValueError(f"Reviewed by '{reviewed_by}' is not valid.")
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(os.environ["NEO4J_USERNAME"], os.environ["NEO4J_PASSWORD"]),
-    )
-
-    try:
-        with driver.session(database=os.getenv("NEO4J_DATABASE", "neo4j")) as session:
-            return session.execute_write(
-                _review_proposal_transaction,
-                proposal_id=proposal_id,
-                decision=decision,
-                reviewed_by=reviewed_by,
-            )
-    finally:
-        driver.close()
+    with open_neo4j_session() as session:
+        return session.execute_write(
+            _review_proposal_transaction,
+            proposal_id=proposal_id,
+            decision=decision,
+            reviewed_by=reviewed_by,
+        )

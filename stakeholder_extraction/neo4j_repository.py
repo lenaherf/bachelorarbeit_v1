@@ -1,8 +1,4 @@
-import os
 from uuid import uuid4
-
-from dotenv import load_dotenv
-from neo4j import GraphDatabase
 from neo4j import ManagedTransaction
 
 from stakeholder_extraction.models import (
@@ -14,9 +10,7 @@ from stakeholder_extraction.models import (
     OpenQuestion,
     StakeholderView,
 )
-
-
-load_dotenv()
+from stakeholder_extraction.neo4j_connection import open_neo4j_session
 
 def _enum_value(value):
     """Convert an Enum into its string value if necessary."""
@@ -384,25 +378,12 @@ def save_stakeholder_view(view: StakeholderView) -> str:
     """
     view_id = str(uuid4())
 
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(
-            os.environ["NEO4J_USERNAME"],
-            os.environ["NEO4J_PASSWORD"],
-        ),
-    )
-
-    try:
-        with driver.session(
-            database=os.getenv("NEO4J_DATABASE", "neo4j")
-        ) as session:
-            session.execute_write(
-                _save_view_transaction,
-                view,
-                view_id,
-            )
-    finally:
-        driver.close()
+    with open_neo4j_session() as session:
+        session.execute_write(
+            _save_view_transaction,
+            view,
+            view_id,
+        )
 
     return view_id
 
@@ -604,24 +585,11 @@ def get_stakeholder_view(view_id: str) -> StakeholderView:
 
     Raises ValueError if the requested view does not exist.
     """
-    driver = GraphDatabase.driver(
-        os.environ["NEO4J_URI"],
-        auth=(
-            os.environ["NEO4J_USERNAME"],
-            os.environ["NEO4J_PASSWORD"],
-        ),
-    )
-
-    try:
-        with driver.session(
-            database=os.getenv("NEO4J_DATABASE", "neo4j")
-        ) as session:
-            view = session.execute_read(
-                _get_view_transaction,
-                view_id,
-            )
-    finally:
-        driver.close()
+    with open_neo4j_session() as session:
+        view = session.execute_read(
+            _get_view_transaction,
+            view_id,
+        )
 
     if view is None:
         raise ValueError(f"No StakeholderView found with view_id '{view_id}'.")
