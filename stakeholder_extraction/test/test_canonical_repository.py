@@ -1,6 +1,12 @@
 import uuid
 from uuid import uuid4
+from datetime import datetime, timezone
 import pytest
+
+from stakeholder_extraction.behavior_review_models import BehaviorReview
+from stakeholder_extraction.behavior_review_repository import save_behavior_review, get_behavior_review
+from stakeholder_extraction.canonical_behavior_repository import create_confirmed_behavior_container, \
+    assemble_saved_behavior, save_confirmed_behavior
 from stakeholder_extraction.canonical_repository import canonicalize_confirmed_subject_proposal, \
     canonicalize_confirmed_message_pair_proposal, canonicalize_confirmed_one_sided_message
 from stakeholder_extraction.models import CandidateMessage
@@ -8,6 +14,7 @@ from stakeholder_extraction.neo4j_connection import open_neo4j_session
 from stakeholder_extraction.pass_fragment_repository import save_pass_model_fragment
 from stakeholder_extraction.pass_mapper import map_view_to_pass_fragment
 from stakeholder_extraction.reconciliation import compare_pass_fragments
+from stakeholder_extraction.reconciliation_models import ReviewDecision
 from stakeholder_extraction.reconciliation_repository import save_reconciliation_proposals, \
     review_reconciliation_proposal
 from stakeholder_extraction.test.test_pass_mapper import make_complaint_view
@@ -468,3 +475,344 @@ def test_canonicalizes_confirmed_one_sided_message():
         assert record["receiver_label"] == "Customer"
         assert record["exchange_source_count"] == 1
         assert record["message_source_count"] == 1
+
+@pytest.mark.integration
+@pytest.mark.parametrize("decision", ["confirmed", "rejected"])
+def test_saves_behavior_review(decision: ReviewDecision):
+    customer_fragment, _, subject_proposal = ( _create_saved_subject_reconciliation())
+
+    # First establish the shared subject identity.
+    review_reconciliation_proposal(
+        proposal_id=subject_proposal.proposal_id,
+        decision="confirmed",
+        reviewed_by="admin-test"
+    )
+
+    customer = canonicalize_confirmed_subject_proposal(subject_proposal.proposal_id)
+
+    # Separately record the decision about its source behavior.
+    review = BehaviorReview(
+        source_view_id=customer_fragment.view_id,
+        source_subject_uri=customer_fragment.subjects[0].uri,
+        canonical_subject_uri=customer.uri,
+        decision=decision,
+        reviewed_by="admin-test",
+        reviewed_at=datetime.now(timezone.utc),
+    )
+
+    review_id = save_behavior_review(review)
+
+    loaded_review = get_behavior_review(review_id)
+
+    assert loaded_review == review
+
+    with open_neo4j_session() as session:
+        record = session.run(
+            """
+            MATCH (review:BehaviorReview {
+                review_id: $review_id
+            })-[:REVIEWS_FRAGMENT]->(fragment:PassModelFragment)
+
+            MATCH (review)-[:SELECTS_SOURCE]->(source:PassSubject)
+            MATCH (fragment)-[:CONTAINS]->(source)
+
+            MATCH (review)-[:FOR_SUBJECT]->(canonical:CanonicalSubject)
+            MATCH (canonical)-[:DERIVED_FROM]->(source)
+
+            RETURN
+                review.decision AS decision,
+                review.reviewed_by AS reviewed_by,
+                review.reviewed_at AS reviewed_at,
+                fragment.view_id AS view_id,
+                source.uri AS source_uri,
+                canonical.uri AS canonical_uri
+            """,
+            review_id=review_id,
+        ).single()
+
+        assert record is not None
+        assert record["decision"] == decision
+        assert record["reviewed_by"] == "admin-test"
+        assert record["reviewed_at"].to_native() == review.reviewed_at
+        assert record["view_id"] == customer_fragment.view_id
+        assert record["source_uri"] == review.source_subject_uri
+        assert record["canonical_uri"] == customer.uri
+
+        # An unrelated canonical subject must not receive the review.
+        invalid_review = BehaviorReview(
+            **{
+                **review.model_dump(),
+                "canonical_subject_uri": (
+                    "urn:pass:canonical:subject:missing"
+                ),
+            }
+        )
+
+        with pytest.raises(
+            ValueError,
+            match="matching canonical subject",
+        ):
+            save_behavior_review(invalid_review)
+
+@pytest.mark.integration
+def test_get_behavior_review_rejects_missing_id():
+    missing_id = str(uuid4())
+
+    with pytest.raises(
+        ValueError,
+        match="No behavior review found"
+    ):
+        get_behavior_review(missing_id)
+
+@pytest.mark.integration
+@pytest.mark.parametrize("decision", ["confirmed", "rejected"])
+def test_creates_only_confirmed_behavior_container(
+        decision: ReviewDecision,
+):
+    customer_fragment, _, subject_proposal = (_create_saved_subject_reconciliation())
+
+    review_reconciliation_proposal(
+        proposal_id=subject_proposal.proposal_id,
+        decision="confirmed",
+        reviewed_by="admin-test"
+    )
+
+    customer = canonicalize_confirmed_subject_proposal(subject_proposal.proposal_id)
+
+    review = BehaviorReview(
+        source_view_id=customer_fragment.view_id,
+        source_subject_uri=customer_fragment.subjects[0].uri,
+        canonical_subject_uri=customer.uri,
+        decision=decision,
+        reviewed_by="admin-test",
+        reviewed_at=datetime.now(timezone.utc),
+    )
+
+    review_id = save_behavior_review(review)
+
+    if decision == "rejected":
+        with pytest.raises(
+            ValueError,
+            match="Only confirmed behavior reviews",
+        ):
+            create_confirmed_behavior_container(review_id)
+
+        with open_neo4j_session() as session:
+            record = session.run(
+                """
+                MATCH (subject:CanonicalSubject {uri: $uri})
+                OPTIONAL MATCH (subject)-[:HAS_BEHAVIOR]->(behavior)
+                RETURN count(behavior) AS behavior_count
+                """,
+                uri=customer.uri,
+            ).single()
+
+        assert record["behavior_count"] == 0
+        return
+
+    behavior = create_confirmed_behavior_container(review_id)
+    second_behavior = create_confirmed_behavior_container(review_id)
+
+    assert second_behavior == behavior
+    assert behavior.subject_uri == customer.uri
+    assert behavior.source_subject_uri == review.source_subject_uri
+
+    with open_neo4j_session() as session:
+        record = session.run(
+            """
+            MATCH (review:BehaviorReview {
+                review_id: $review_id
+            })-[:CREATED_CANONICAL]->
+                (behavior:CanonicalSubjectBehavior)
+            MATCH (subject:CanonicalSubject {
+                uri: $subject_uri
+            })-[:HAS_BEHAVIOR]->(behavior)
+            MATCH (behavior)-[:DERIVED_FROM]->
+                (source:PassSubject {uri: $source_uri})
+            RETURN
+                collect(DISTINCT behavior.uri) AS behavior_uris,
+                count(*) AS path_count
+            """,
+            review_id=review_id,
+            subject_uri=customer.uri,
+            source_uri=review.source_subject_uri,
+        ).single()
+
+    assert record["behavior_uris"] == [behavior.uri]
+    assert record["path_count"] == 1
+
+@pytest.mark.integration
+def test_assembles_behavior_from_saved_review():
+    customer_fragment, service_fragment, _ = (_create_saved_subject_reconciliation())
+
+    proposals = compare_pass_fragments(customer_fragment, service_fragment)
+
+    canonical_subjects = {}
+
+    for proposal in proposals:
+        if proposal.proposal_type != "equivalent_subject":
+            continue
+
+        review_reconciliation_proposal(
+            proposal_id=proposal.proposal_id,
+            decision="confirmed",
+            reviewed_by="admin-test",
+        )
+
+        subject = canonicalize_confirmed_subject_proposal(proposal.proposal_id)
+
+        canonical_subjects[subject.label] = subject
+
+    service = canonical_subjects["Customer Service"]
+
+    review = BehaviorReview(
+        source_view_id=service_fragment.view_id,
+        source_subject_uri=service_fragment.subjects[1].uri,
+        canonical_subject_uri=service.uri,
+        decision="confirmed",
+        reviewed_by="admin-test",
+        reviewed_at=datetime.now(timezone.utc),
+    )
+
+    review_id = save_behavior_review(review)
+
+    # Communication has not been canonicalized yet.
+    with pytest.raises(
+        ValueError,
+        match="exactly one canonical message",
+    ):
+        assemble_saved_behavior(review_id)
+
+    for proposal in proposals:
+        if proposal.proposal_type != "message_pair":
+            continue
+
+        review_reconciliation_proposal(
+            proposal_id=proposal.proposal_id,
+            decision="confirmed",
+            reviewed_by="admin-test",
+        )
+
+        canonicalize_confirmed_message_pair_proposal(proposal.proposal_id)
+
+    result = assemble_saved_behavior(review_id)
+
+    assert result.behavior.subject_uri == service.uri
+    assert result.behavior.source_view_id == service_fragment.view_id
+    assert len(result.states) == 3
+    assert len(result.transitions) == 2
+
+    state_uris = {state.uri for state in result.states}
+
+    assert all(
+        transition.source_state_uri in state_uris
+        and transition.target_state_uri in state_uris
+        for transition in result.transitions
+    )
+
+    assert assemble_saved_behavior(review_id) == result
+
+    saved = save_confirmed_behavior(review_id)
+    second_saved = save_confirmed_behavior(review_id)
+
+    assert saved == result
+    assert second_saved == saved
+
+    with open_neo4j_session() as session:
+        state_records = list(
+            session.run(
+                """
+                MATCH (behavior:CanonicalSubjectBehavior {
+                    uri: $behavior_uri
+                })-[:CONTAINS]->(state:CanonicalState)
+                MATCH (state)-[:PERFORMED_BY]->
+                    (performer:CanonicalSubject)
+                MATCH (state)-[:DERIVED_FROM]->(source:PassState)
+                OPTIONAL MATCH (state)-[:REFERENCES_MESSAGE]->
+                    (message:CanonicalMessageSpecification)
+                RETURN
+                    state.uri AS uri,
+                    performer.uri AS performer_uri,
+                    source.uri AS source_uri,
+                    message.uri AS message_uri
+                """,
+                behavior_uri=saved.behavior.uri,
+            )
+        )
+
+        transition_records = list(
+            session.run(
+                """
+                MATCH (behavior:CanonicalSubjectBehavior {
+                    uri: $behavior_uri
+                })-[:CONTAINS]->(transition:CanonicalTransition)
+                MATCH (transition)-[:FROM_STATE]->(start:CanonicalState)
+                MATCH (transition)-[:TO_STATE]->(end:CanonicalState)
+                MATCH (transition)-[:DERIVED_FROM]->(source:PassTransition)
+                OPTIONAL MATCH (transition)-[:REFERENCES_EXCHANGE]->
+                    (exchange:CanonicalMessageExchange)
+                RETURN
+                    transition.uri AS uri,
+                    start.uri AS start_uri,
+                    end.uri AS end_uri,
+                    source.uri AS source_uri,
+                    exchange.uri AS exchange_uri
+                """,
+                behavior_uri=saved.behavior.uri,
+            )
+        )
+
+    # Check the persisted links.
+    assert len(state_records) == 3
+    assert {
+        (
+            row["uri"],
+            row["performer_uri"],
+            row["source_uri"],
+            row["message_uri"],
+        )
+        for row in state_records
+    } == {
+        (
+            state.uri,
+            state.performer_uri,
+            state.source_state_uri,
+            state.message_specification_uri,
+        )
+        for state in saved.states
+    }
+
+    assert len(transition_records) == 2
+    assert {
+        (
+            row["uri"],
+            row["start_uri"],
+            row["end_uri"],
+            row["source_uri"],
+            row["exchange_uri"],
+        )
+        for row in transition_records
+    } == {
+        (
+            transition.uri,
+            transition.source_state_uri,
+            transition.target_state_uri,
+            transition.source_transition_uri,
+            transition.message_exchange_uri,
+        )
+        for transition in saved.transitions
+    }
+
+    rejected_review = BehaviorReview(
+        **{
+            **review.model_dump(),
+            "decision": "rejected",
+        }
+    )
+    rejected_review_id = save_behavior_review(rejected_review)
+
+    with pytest.raises(
+        ValueError,
+        match="Only confirmed behavior reviews",
+    ):
+        assemble_saved_behavior(rejected_review_id)
