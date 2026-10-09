@@ -237,3 +237,97 @@ def save_pass_model_fragment(
         session.execute_write(_save_fragment_transaction, fragment)
 
     return fragment.view_id
+
+def _get_fragment_transaction(
+        transaction: ManagedTransaction,
+        view_id: str,
+) -> PassModelFragment:
+    """Reconstruct a saved fragment and its mapping issues."""
+
+    record = transaction.run(
+        """
+        MATCH (fragment:PassModelFragment {view_id: $view_id})
+        RETURN fragment
+        """,
+        view_id=view_id,
+    ).single()
+
+    if record is None:
+        raise ValueError(f"No PASS fragment found with ID '{view_id}'.")
+
+    properties = dict(record["fragment"])
+
+    elements = transaction.run(
+        """
+        MATCH (fragment:PassModelFragment {
+            view_id: $view_id
+        })-[:CONTAINS]->(element:PassElement)
+        RETURN labels(element) AS labels, element
+        ORDER BY element.uri
+        """,
+        view_id=view_id,
+    )
+
+    collections = {
+        "subjects": [],
+        "message_specifications": [],
+        "message_exchanges": [],
+        "states": [],
+        "transitions": [],
+    }
+
+    label_to_collection = {
+        "PassSubject": "subjects",
+        "PassMessageSpecification": "message_specifications",
+        "PassMessageExchange": "message_exchanges",
+        "PassState": "states",
+        "PassTransition": "transitions",
+    }
+
+    for row in elements:
+        matching_labels = [
+            label for label in label_to_collection
+            if label in row["labels"]
+        ]
+
+        if len(matching_labels) != 1:
+            raise ValueError("Each fragment element must have exactly one supported element type label.")
+
+        collection_name = label_to_collection[matching_labels[0]]
+        collections[collection_name].append(dict(row["element"]))
+
+    issue_records = transaction.run(
+        """
+        MATCH (fragment:PassModelFragment {
+            view_id: $view_id
+        })-[:HAS_MAPPING_ISSUE]->(issue:MappingIssue)
+        RETURN issue {
+            .code,
+            .source_kind,
+            .source_index,
+            .field,
+            .detail
+        } AS issue
+        ORDER BY issue.position
+        """,
+        view_id=view_id,
+    )
+
+    return PassModelFragment.model_validate(
+        {
+            "view_id": properties["view_id"],
+            "stakeholder": properties["stakeholder"],
+            "base_uri": properties["base_uri"],
+            **collections,
+            "mapping_issues": [row["issue"] for row in issue_records],
+        }
+    )
+
+def get_pass_model_fragment(view_id: str) -> PassModelFragment:
+    """Load PASS fragment by its saved view identifier."""
+
+    with open_neo4j_session() as session:
+        return session.execute_read(
+            _get_fragment_transaction,
+            view_id,
+        )

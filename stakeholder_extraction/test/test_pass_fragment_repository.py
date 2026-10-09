@@ -5,7 +5,7 @@ from neo4j import GraphDatabase
 
 from stakeholder_extraction.models import StakeholderView, CandidateMessage, CandidateSubject
 from stakeholder_extraction.neo4j_connection import open_neo4j_session
-from stakeholder_extraction.pass_fragment_repository import save_pass_model_fragment
+from stakeholder_extraction.pass_fragment_repository import save_pass_model_fragment, get_pass_model_fragment
 from stakeholder_extraction.pass_mapper import map_view_to_pass_fragment
 from stakeholder_extraction.test.test_pass_mapper import make_complaint_view
 
@@ -132,6 +132,10 @@ def test_saves_mapping_issues():
 
     save_pass_model_fragment(fragment)
 
+    loaded = get_pass_model_fragment(view_id)
+
+    assert loaded.mapping_issues == fragment.mapping_issues
+
     with open_neo4j_session() as session:
             record = session.run(
                 """
@@ -250,3 +254,23 @@ def test_preserves_formal_element_metadata():
             assert record["has_evidence"] is True
             assert record["has_status"] is True
             assert record["has_stable_uri"] is True
+
+@pytest.mark.integration
+def test_load_saved_pass_fragment():
+    view_id = f"fragment-roundtrip-{uuid4()}"
+
+    original = map_view_to_pass_fragment(make_complaint_view(), view_id=view_id)
+
+    save_pass_model_fragment(original)
+
+    loaded = get_pass_model_fragment(view_id)
+
+    assert loaded == original
+
+@pytest.mark.integration
+def test_rejects_missing_pass_fragment():
+    with pytest.raises(
+        ValueError,
+        match="No PASS fragment found",
+    ):
+        get_pass_model_fragment(str(uuid4()))
