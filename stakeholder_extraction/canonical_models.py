@@ -39,3 +39,61 @@ class CanonicalMessageExchange(BaseModel):
     message_specification_uri: str
     source_exchange_uris: tuple[str, ...]
     status: Literal["confirmed"] = "confirmed"
+
+class CanonicalSubjectBehavior(BaseModel):
+    """A subject's behavior selected from one stakeholder fragment."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    uri: str
+    model_component_id: str
+    label: str
+    pass_type: Literal["SubjectBehavior"] = "SubjectBehavior"
+    subject_uri: str
+
+    # Identify the fragment and local subject supplying the behavior.
+    source_view_id: str
+    source_subject_uri: str
+
+    status: Literal["confirmed"] = "confirmed"
+
+class CanonicalState(BaseModel):
+    """A state belonging to a canonical subject behavior."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    uri: str
+    model_component_id: str
+    label: str
+    pass_type: Literal["ReceiveState", "DoState", "SendState"]
+    behavior_uri: str
+    performer_uri: str
+    message_specification_uri: str | None = None
+    is_initial: bool = False
+    is_end: bool = False
+    source_state_uri: str
+    status: Literal["confirmed"] = "confirmed"
+
+class CanonicalTransition(BaseModel):
+    """A transition connecting states within a canonical behavior."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    uri: str
+    model_component_id: str
+    label: str
+    pass_type: Literal["ReceiveTransition", "DoTransition", "SendTransition"]
+    behavior_uri: str
+    source_state_uri: str
+    target_state_uri: str
+    message_exchange_uri: str | None = None
+    source_transition_uri: str
+    status: Literal["confirmed"] = "confirmed"
+
+class CanonicalBehaviorFragment(BaseModel):
+    """A canonical behavior together with its states and transitions."""
+
+    model_config = ConfigDict(extra="forbid")
+    behavior: CanonicalSubjectBehavior
+    states: list[CanonicalState]
+    transitions: list[CanonicalTransition]

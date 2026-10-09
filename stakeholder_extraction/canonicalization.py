@@ -2,9 +2,10 @@
 from hashlib import sha256
 
 from stakeholder_extraction.canonical_models import CanonicalSubject, CanonicalMessageSpecification, \
-    CanonicalMessageExchange
+    CanonicalMessageExchange, CanonicalSubjectBehavior, CanonicalState, CanonicalTransition
 from stakeholder_extraction.pass_mapper import normalize_name
-from stakeholder_extraction.pass_models import PassSubject, PassMessageExchange, PassMessageSpecification
+from stakeholder_extraction.pass_models import PassSubject, PassMessageExchange, PassMessageSpecification, PassState, \
+    PassTransition
 
 
 def create_canonical_subject(
@@ -227,4 +228,195 @@ def create_single_source_canonical_exchange(
         receiver_uri=receiver.uri,
         message_specification_uri=message.uri,
         source_exchange_uris=(source.uri,)
+    )
+
+def create_canonical_state(
+        source: PassState,
+        *,
+        behavior: CanonicalSubjectBehavior,
+        performer: CanonicalSubject,
+        message: CanonicalMessageSpecification | None = None,
+) -> CanonicalState:
+    """Convert a state from a approved source behavior."""
+
+    # State has to belong to selected source view.
+    if source.view_id != behavior.source_view_id:
+        raise ValueError("The state must belong to the selected source view.")
+
+    if source.performer_uri != behavior.source_subject_uri:
+        raise ValueError("The state must belong to the selected source subject.")
+
+    # Canonical performer must represent that source subject
+    if performer.uri != behavior.subject_uri:
+        raise ValueError("The performer must be the canonical bahavior owner.")
+
+    if behavior.source_subject_uri not in performer.source_subject_uris:
+        raise ValueError("The canonical performer must include source subject.")
+
+    if source.status == "rejected":
+        raise ValueError("A rejected state cannot be canonicalized.")
+
+    # Communication states need a matching canonical message.
+    if source.pass_type in ("ReceiveState", "SendState"):
+        if source.message_specification_uri is None:
+            raise ValueError("A communication state must reference a source message.")
+
+        if message is None:
+            raise ValueError("A communication state requires a canonical message.")
+
+        if source.message_specification_uri not in message.source_message_uris:
+            raise ValueError("The canonical message must include the source message.")
+
+    elif source.message_specification_uri is not None or message is not None:
+        raise ValueError("A DoState must not reference a message.")
+
+
+    # Include owning behavior so the state identity is scoped to it.
+    identity = f"{behavior.uri}|{source.uri}"
+    digest = sha256(identity.encode("utf-8")).hexdigest()[:16]
+
+    return CanonicalState(
+        uri=f"urn:pass:canonical:state:{digest}",
+        model_component_id=f"canonical:state:{digest}",
+        label=source.label,
+        pass_type=source.pass_type,
+        behavior_uri=behavior.uri,
+        performer_uri=performer.uri,
+        message_specification_uri=(message.uri if message is not None else None),
+        is_initial=source.is_initial,
+        is_end=source.is_end,
+        source_state_uri=source.uri,
+    )
+
+def create_canonical_transition(
+        source: PassTransition,
+        *,
+        behavior: CanonicalSubjectBehavior,
+        start: CanonicalState,
+        end: CanonicalState,
+        exchange: CanonicalMessageExchange | None = None,
+) -> CanonicalTransition:
+    """Convert a transition from an approved source behavior."""
+
+    if source.status == "rejected":
+        raise ValueError("A rejected transition cannot be canonicalized.")
+
+    if source.view_id != behavior.source_view_id:
+        raise ValueError("The transition must belong to the selected source view.")
+
+    # Both canonical states must belong to this behaviour and subject.
+    for state in (start, end):
+        if state.behavior_uri != behavior.uri:
+            raise ValueError(
+                "Both states must belong to the selected behaviour."
+            )
+
+        if state.performer_uri != behavior.subject_uri:
+            raise ValueError(
+                "Both states must belong to the behaviour owner."
+            )
+
+    # Check provenance to prevent connecting the wrong states.
+    if start.source_state_uri != source.source_state_uri:
+        raise ValueError(
+            "The starting state must represent the source endpoint."
+        )
+
+    if end.source_state_uri != source.target_state_uri:
+        raise ValueError(
+            "The ending state must represent the target endpoint."
+        )
+
+    expected_types = {
+        "ReceiveState": "ReceiveTransition",
+        "DoState": "DoTransition",
+        "SendState": "SendTransition",
+    }
+
+    if source.pass_type != expected_types[start.pass_type]:
+        raise ValueError(
+            "The transition type must match the starting state."
+        )
+
+    if source.pass_type == "DoTransition":
+        if source.message_exchange_uri is not None or exchange is not None:
+            raise ValueError(
+                "A DoTransition must not reference a message exchange."
+            )
+    else:
+        if source.message_exchange_uri is None or exchange is None:
+            raise ValueError(
+                "A communication transition requires a canonical exchange."
+            )
+
+        if source.message_exchange_uri not in exchange.source_exchange_uris:
+            raise ValueError(
+                "The canonical exchange must include the source exchange."
+            )
+
+        if (
+            start.message_specification_uri
+            != exchange.message_specification_uri
+        ):
+            raise ValueError(
+                "The exchange must match the starting state's message."
+            )
+
+        participant_uri = (
+            exchange.sender_uri
+            if source.pass_type == "SendTransition"
+            else exchange.receiver_uri
+        )
+
+        if participant_uri != behavior.subject_uri:
+            raise ValueError(
+                "The exchange direction must match the behaviour owner."
+            )
+
+    identity = f"{behavior.uri}|{source.uri}"
+    digest = sha256(identity.encode("utf-8")).hexdigest()[:16]
+
+    return CanonicalTransition(
+        uri=f"urn:pass:canonical:transition:{digest}",
+        model_component_id=f"canonical:transition:{digest}",
+        label=source.label,
+        pass_type=source.pass_type,
+        behavior_uri=behavior.uri,
+        source_state_uri=start.uri,
+        target_state_uri=end.uri,
+        message_exchange_uri=(
+            exchange.uri if exchange is not None else None
+        ),
+        source_transition_uri=source.uri,
+    )
+
+def create_canonical_subject_behavior(
+        source: PassSubject,
+        *,
+        subject: CanonicalSubject,
+) -> CanonicalSubjectBehavior:
+    """Create a behavior fro an explicitly approved source subject."""
+
+    if source.status == "rejected":
+        raise ValueError("A rejected source subject cannot supply behavior.")
+
+    if source.pass_type != "FullySpecifiedSubject":
+        raise ValueError("The source must be a FullySpecifiedSubject.")
+
+    if subject.pass_type != "FullySpecifiedSubject":
+        raise ValueError("The canonical subject must be a FullySpecifiedSubject.")
+
+    if source.uri not in subject.source_subject_uris:
+        raise ValueError("The canonical subject must include the source subject.")
+
+    identity = f"{subject.uri}|{source.uri}"
+    digest = sha256(identity.encode("utf-8")).hexdigest()[:16]
+
+    return CanonicalSubjectBehavior(
+        uri=f"urn:pass:canonical:behavior:{digest}",
+        model_component_id=f"canonical:behavior:{digest}",
+        label=f"{subject.label} behaviour",
+        subject_uri=subject.uri,
+        source_view_id=source.view_id,
+        source_subject_uri=source.uri,
     )
