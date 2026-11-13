@@ -304,3 +304,73 @@ def save_confirmed_behavior(
             _save_confirmed_behavior_transition,
             review_id,
         )
+
+def _get_canonical_behavior_transaction(
+        transaction: ManagedTransaction,
+        behavior_uri: str,
+) -> CanonicalBehaviorFragment:
+    """Load a persisted canonical behavior and its contained elements."""
+
+    record = transaction.run(
+        """
+        MATCH (behavior:CanonicalSubjectBehavior {
+            uri: $behavior_uri
+        })
+        RETURN behavior
+        """,
+        behavior_uri=behavior_uri,
+    ).single()
+
+    if record is None:
+        raise ValueError(f"No canonical behavior found with URI '{behavior_uri}'.")
+
+    behavior = CanonicalSubjectBehavior.model_validate(dict(record["behavior"]))
+
+    state_records = transaction.run(
+        """
+        MATCH (behavior:CanonicalSubjectBehavior {
+            uri: $behavior_uri
+        })-[:CONTAINS]->(state:CanonicalState)
+        RETURN state
+        ORDER BY state.source_state_uri, state.uri
+        """,
+        behavior_uri=behavior_uri,
+    )
+
+    states = [
+        CanonicalState.model_validate(dict(row["state"]))
+        for row in state_records
+    ]
+
+    transition_records = transaction.run(
+        """
+        MATCH (behavior:CanonicalSubjectBehavior {
+            uri: $behavior_uri
+        })-[:CONTAINS]->(transition:CanonicalTransition)
+        RETURN transition
+        ORDER BY transition.source_transition_uri, transition.uri
+        """,
+        behavior_uri=behavior_uri,
+    )
+
+    transitions = [
+        CanonicalTransition.model_validate(dict(row["transition"]))
+        for row in transition_records
+    ]
+
+    return CanonicalBehaviorFragment(
+        behavior=behavior,
+        states=states,
+        transitions=transitions,
+    )
+
+def get_canonical_behavior(
+        behavior_uri: str,
+) -> CanonicalBehaviorFragment:
+    """Read a saved canonical behavior by its URI."""
+
+    with open_neo4j_session() as session:
+        return session.execute_read(
+            _get_canonical_behavior_transaction,
+            behavior_uri,
+        )

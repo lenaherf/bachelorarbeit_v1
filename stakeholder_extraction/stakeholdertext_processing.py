@@ -1,6 +1,4 @@
 from pathlib import Path
-
-from langchain_core.prompts import prompt
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
@@ -16,10 +14,10 @@ LANGUAGE_CORRECTION_PROMPT = """
 You prepare a stakeholder's process description for further analysis.
 
 Correct only:
-- spelling errors;
-- grammatical errors;
-- punctuation errors;
-- clearly malformed sentence structure.
+- spelling errors
+- grammatical errors
+- punctuation errors
+- clearly malformed sentence structure
 
 Strict rules:
 - Preserve all process information.
@@ -70,6 +68,10 @@ Rules:
 - Repeat the process element instead of using a pronoun when the reference is
   unambiguous.
 - Do not replace a pronoun if its referent is ambiguous.
+- Preserve explicit sequence markers such as "after", "before",
+  "then", and "only after" when rewriting sentences.
+- Preserve explicit statements that identify the beginning or ending
+  of a stakeholder's behaviour. Do not reduce them to sentence order.
 
 Stakeholder:
 {stakeholder}

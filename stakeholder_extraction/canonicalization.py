@@ -177,8 +177,8 @@ def create_canonical_message_exchange(
     digest = sha256("|".join(source_exchange_uris).encode("utf-8")).hexdigest()[:16]
 
     return CanonicalMessageExchange(
-        uri=f"urn:pass:canonical:message:{digest}",
-        model_component_id=f"canonical:message:{digest}",
+        uri=f"urn:pass:canonical:exchange:{digest}",
+        model_component_id=f"canonical:exchange:{digest}",
         label=f"{sender.label} sends {message.label} to {receiver.label}",
         sender_uri=sender.uri,
         receiver_uri=receiver.uri,

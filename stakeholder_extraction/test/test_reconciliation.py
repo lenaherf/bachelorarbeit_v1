@@ -1,5 +1,6 @@
 import pytest
 
+from stakeholder_extraction.examples.complaint import make_customer_complaint_view
 from stakeholder_extraction.models import StakeholderView, CandidateTransition, CandidateStateType, CandidateState, \
     CandidateMessage, CandidateSubject
 from stakeholder_extraction.pass_mapper import map_view_to_pass_fragment
@@ -53,71 +54,6 @@ def test_rejects_comparison_with_same_view_id():
         match="Cannot compare a fragment with itself",
     ):
         compare_pass_fragments(left, right)
-
-def make_customer_complaint_view():
-    source_text = "I send a complaint to Customer Service. I then receive a response."
-
-    return StakeholderView(
-        stakeholder="Customer",
-        source_text=source_text,
-        corrected_text=source_text,
-        prepared_text=source_text,
-        candidate_subjects=[
-            CandidateSubject(
-                name="Customer",
-                evidence="I",
-            ),
-            CandidateSubject(
-                name="Customer Service",
-                evidence="Customer Service",
-            ),
-        ],
-        candidate_messages=[
-            CandidateMessage(
-                name="Complaint",
-                sender="Customer",
-                receiver="Customer Service",
-                evidence=(
-                    "send a complaint to "
-                    "Customer Service"
-                ),
-            ),
-            CandidateMessage(
-                name="Response",
-                sender="Customer Service",
-                receiver="Customer",
-                evidence="receive a response",
-            ),
-        ],
-        candidate_activities=[],
-        candidate_states=[
-            CandidateState(
-                local_id="state-1",
-                name="Send complaint",
-                state_type=CandidateStateType.SEND,
-                performed_by="Customer",
-                message_name="Complaint",
-                is_initial=True,
-                evidence="I send a complaint to Customer Service",
-            ),
-            CandidateState(
-                local_id="state-2",
-                name="Receive response",
-                state_type=CandidateStateType.RECEIVE,
-                performed_by="Customer",
-                message_name="Response",
-                evidence="I then receive a response",
-            ),
-        ],
-        candidate_transitions=[
-            CandidateTransition(
-                source_state_id="state-1",
-                target_state_id="state-2",
-                sequence_evidence="I send a complaint to Customer Service. I then receive a response.",
-            ),
-        ],
-        open_questions=[],
-    )
 
 def test_pairs_send_receive_messages():
     customer_fragment = map_view_to_pass_fragment(make_customer_complaint_view(), view_id="customer-view")

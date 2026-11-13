@@ -1,4 +1,6 @@
 import pytest
+
+from stakeholder_extraction.examples.complaint import make_complaint_view
 from stakeholder_extraction.models import (
     CandidateActivity,
     CandidateMessage,
@@ -8,89 +10,6 @@ from stakeholder_extraction.models import (
 from stakeholder_extraction.pass_mapper import (
     map_view_to_pass_fragment,
 )
-
-def make_complaint_view() -> StakeholderView:
-    source_text = (
-        "I receive a complaint from the customer. I then review the complaint "
-        " and send the customer a response."
-    )
-
-    return StakeholderView(
-        stakeholder="Customer Service",
-        source_text=source_text,
-        corrected_text=source_text,
-        prepared_text=source_text,
-        candidate_subjects=[
-            CandidateSubject(
-                name="Customer",
-                evidence="the customer"
-            ),
-            CandidateSubject(
-                name="Customer Service",
-                evidence="I"
-            ),
-        ],
-        candidate_messages=[
-            CandidateMessage(
-                name="Complaint",
-                sender="Customer",
-                receiver="Customer Service",
-                evidence="receive a complaint from the customer",
-            ),
-            CandidateMessage(
-                name="Response",
-                sender="Customer Service",
-                receiver="Customer",
-                evidence="send the customer a response",
-            ),
-        ],
-        candidate_activities=[
-            CandidateActivity(
-                name="Review complaint",
-                performed_by="Customer Service",
-                evidence="review the complaint",
-            ),
-        ],
-        open_questions=[],
-        candidate_states=[
-            CandidateState(
-                local_id="state-1",
-                name="Receive complaint",
-                state_type=CandidateStateType.RECEIVE,
-                performed_by="Customer Service",
-                message_name="Complaint",
-                is_initial=True,
-                evidence="I receive a complaint from the customer"
-            ),
-            CandidateState(
-                local_id="state-2",
-                name="Review complaint",
-                state_type=CandidateStateType.DO,
-                performed_by="Customer Service",
-                evidence="I then review the complaint",
-            ),
-            CandidateState(
-                local_id="state-3",
-                name="Send response",
-                state_type=CandidateStateType.SEND,
-                performed_by="Customer Service",
-                message_name="Response",
-                evidence="send the customer a response"
-            )
-        ],
-        candidate_transitions=[
-            CandidateTransition(
-                source_state_id="state-1",
-                target_state_id="state-2",
-                sequence_evidence="I receive a complaint from the customer. I then review the complaint"
-            ),
-            CandidateTransition(
-                source_state_id="state-2",
-                target_state_id="state-3",
-                sequence_evidence="review the complaint and send the customer a response"
-            )
-        ]
-    )
 
 def test_maps_complaint_view():
     view = make_complaint_view()

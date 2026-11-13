@@ -6,7 +6,9 @@ import pytest
 from stakeholder_extraction.behavior_review_models import BehaviorReview
 from stakeholder_extraction.behavior_review_repository import save_behavior_review, get_behavior_review
 from stakeholder_extraction.canonical_behavior_repository import create_confirmed_behavior_container, \
-    assemble_saved_behavior, save_confirmed_behavior
+    assemble_saved_behavior, save_confirmed_behavior, get_canonical_behavior
+from stakeholder_extraction.canonical_process import create_canonical_process_model
+from stakeholder_extraction.canonical_process_repository import get_canonical_process_model, save_canonical_process_model
 from stakeholder_extraction.canonical_repository import canonicalize_confirmed_subject_proposal, \
     canonicalize_confirmed_message_pair_proposal, canonicalize_confirmed_one_sided_message
 from stakeholder_extraction.models import CandidateMessage
@@ -683,6 +685,9 @@ def test_assembles_behavior_from_saved_review():
     ):
         assemble_saved_behavior(review_id)
 
+    canonical_messages = []
+    canonical_exchanges = []
+
     for proposal in proposals:
         if proposal.proposal_type != "message_pair":
             continue
@@ -693,7 +698,9 @@ def test_assembles_behavior_from_saved_review():
             reviewed_by="admin-test",
         )
 
-        canonicalize_confirmed_message_pair_proposal(proposal.proposal_id)
+        message, exchange = canonicalize_confirmed_message_pair_proposal(proposal.proposal_id)
+        canonical_messages.append(message)
+        canonical_exchanges.append(exchange)
 
     result = assemble_saved_behavior(review_id)
 
@@ -717,6 +724,65 @@ def test_assembles_behavior_from_saved_review():
 
     assert saved == result
     assert second_saved == saved
+
+    process = create_canonical_process_model(
+        model_id=f"complaint-process-{uuid4()}",
+        label="Complaint handling",
+        subject_uris=[subject.uri for subject in canonical_subjects.values()],
+        behavior_uris=[saved.behavior.uri],
+        message_specification_uris=[message.uri for message in canonical_messages],
+        message_exchange_uris=[exchange.uri for exchange in canonical_exchanges],
+    )
+
+    assert save_canonical_process_model(process) == process.uri
+    assert save_canonical_process_model(process) == process.uri
+    assert get_canonical_process_model(process.uri) == process
+
+    expected_members = {
+        *process.subject_uris,
+        *process.behavior_uris,
+        *process.message_specification_uris,
+        *process.message_exchange_uris,
+    }
+
+    with open_neo4j_session() as session:
+        record = session.run(
+            """
+            MATCH (model:CanonicalProcessModel {
+                uri: $uri
+            })-[membership:CONTAINS]->(element)
+            RETURN
+                collect(element.uri) AS member_uris,
+                count(membership) AS relationship_count
+            """,
+            uri=process.uri,
+        ).single()
+
+    assert set(record["member_uris"]) == expected_members
+    assert record["relationship_count"] == len(expected_members)
+
+    # Missing selected elements must prevent the process from being saved.
+    invalid_process = process.model_copy(
+        update={
+            "uri": f"urn:pass:canonical:process:invalid-{uuid4()}",
+            "subject_uris": (
+                *process.subject_uris,
+                "urn:pass:canonical:subject:missing",
+            ),
+        }
+    )
+
+    with pytest.raises(
+            ValueError,
+            match="Could not resolve exactly the selected CanonicalSubject",
+    ):
+        save_canonical_process_model(invalid_process)
+
+    with pytest.raises(ValueError, match="No canonical process found"):
+        get_canonical_process_model(invalid_process.uri)
+
+    loaded = get_canonical_behavior(saved.behavior.uri)
+    assert loaded == result
 
     with open_neo4j_session() as session:
         state_records = list(
@@ -816,3 +882,14 @@ def test_assembles_behavior_from_saved_review():
         match="Only confirmed behavior reviews",
     ):
         assemble_saved_behavior(rejected_review_id)
+
+@pytest.mark.integration
+def test_rejects_missing_canonical_behavior():
+    missing_uri = f"urn:pass:canonical:behavior:{uuid4()}"
+
+    with pytest.raises(
+        ValueError,
+        match="No canonical behavior found",
+    ):
+        get_canonical_behavior(missing_uri)
+

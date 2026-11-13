@@ -3,6 +3,8 @@ import pytest
 from datetime import datetime, timezone
 from stakeholder_extraction.behavior_review_models import BehaviorReview
 from stakeholder_extraction.canonical_behavior import assemble_canonical_behavior, assemble_reviewed_behavior
+from stakeholder_extraction.canonical_process import create_canonical_process_model, validate_process_membership, \
+    validate_process_structure
 from stakeholder_extraction.canonicalization import create_canonical_subject, create_canonical_message_specification, \
     create_canonical_message_exchange, create_single_source_canonical_message, create_single_source_canonical_exchange, \
     create_canonical_state, create_canonical_transition, create_canonical_subject_behavior
@@ -71,6 +73,8 @@ def test_creates_canonical_message_exchange():
     assert canonical_exchange.message_specification_uri == canonical_message.uri
     assert len(canonical_message.source_message_uris) == 2
     assert len(canonical_exchange.source_exchange_uris) == 2
+    assert canonical_exchange.uri.startswith("urn:pass:canonical:exchange:")
+    assert canonical_exchange.model_component_id.startswith("canonical:exchange:")
 
 def test_creates_single_source_canonical_message():
     customer_fragment = map_view_to_pass_fragment(make_customer_complaint_view(), view_id="customer-view")
@@ -667,3 +671,138 @@ def test_assembles_service_behavior():
                 messages=[complaint, response],
                 exchanges=[complaint_exchange],
             )
+
+    process = create_canonical_process_model(
+        model_id="complaint-membership-test",
+        label="Complaint handling",
+        subject_uris=[customer.uri, service.uri],
+        behavior_uris=[result.behavior.uri],
+        message_specification_uris=[complaint.uri, response.uri],
+        message_exchange_uris=[complaint_exchange.uri],
+    )
+
+    validate_process_membership(
+        process,
+        subjects=[customer, service],
+        behaviors=[result.behavior],
+        messages=[complaint, response],
+        exchanges=[complaint_exchange],
+    )
+
+    # Element listed in the process cannot be missing form the supplied data.
+    with pytest.raises(
+        ValueError,
+        match="Supplied subjects must exactly match",
+    ):
+        validate_process_membership(
+            process,
+            subjects=[service],
+            behaviors=[result.behavior],
+            messages=[complaint, response],
+            exchanges=[complaint_exchange],
+        )
+
+    # A behavior cannot belong to a subject outside this process.
+    wrong_owner_behavior = result.behavior.model_copy(
+        update={"subject_uri": "urn:pass:canonical:subject:outside"}
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="must belong to a selected subject",
+    ):
+        validate_process_membership(
+            process,
+            subjects=[customer, service],
+            behaviors=[wrong_owner_behavior],
+            messages=[complaint, response],
+            exchanges=[complaint_exchange],
+        )
+
+    #An exchange cannot reference a mesage outside this process.
+    wrong_message_exchange = complaint_exchange.model_copy(
+        update={"message_specification_uri": "urn:pass:canonical:message:outside"}
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="must reference a selected message",
+    ):
+        validate_process_membership(
+            process,
+            subjects=[customer, service],
+            behaviors=[result.behavior],
+            messages=[complaint, response],
+            exchanges=[wrong_message_exchange],
+        )
+
+    validate_process_structure(
+        process,
+        subjects=[customer, service],
+        behavior_fragments=[result],
+        messages=[complaint, response],
+        exchanges=[complaint_exchange],
+    )
+
+    # A state cannot reference a message outside the selected process.
+    outside_message_state = result.states[0].model_copy(
+        update={"message_specification_uri": "urn:pass:canonical:message:outside"}
+    )
+
+    invalid_states = result.model_copy(
+        update={"states": [outside_message_state, *result.states[1:],]}
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="communication state must reference a selected message",
+    ):
+        validate_process_structure(
+            process,
+            subjects=[customer, service],
+            behavior_fragments=[invalid_states],
+            messages=[complaint, response],
+            exchanges=[complaint_exchange],
+        )
+
+    # A transition cannot leave its containing behavior.
+    outside_target = result.transitions[0].model_copy(
+        update={"target_state_uri": "urn:pass:canonical:state:outside"}
+    )
+
+    invalid_transitions = result.model_copy(
+        update={"transitions": [outside_target, *result.transitions[1:]]},
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="Transition endpoints must belong",
+    ):
+        validate_process_structure(
+            process,
+            subjects=[customer, service],
+            behavior_fragments=[invalid_transitions],
+            messages=[complaint, response],
+            exchanges=[complaint_exchange],
+        )
+
+    # A communication transition cannot reference an unselected exchange.
+    outside_exchange = result.transitions[0].model_copy(
+        update={"message_exchange_uri": "urn:pass:canonical:exchange:outside"}
+    )
+
+    invalid_exchanges_reference = result.model_copy(
+        update={"transitions": [outside_exchange, *result.transitions[1:]]},
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="communication transition must reference a selected exchange",
+    ):
+        validate_process_structure(
+            process,
+            subjects=[customer, service],
+            behavior_fragments=[invalid_exchanges_reference],
+            messages=[complaint, response],
+            exchanges=[complaint_exchange],
+        )

@@ -97,3 +97,29 @@ class CanonicalBehaviorFragment(BaseModel):
     behavior: CanonicalSubjectBehavior
     states: list[CanonicalState]
     transitions: list[CanonicalTransition]
+
+class CanonicalProcessModel(BaseModel):
+    """Identify the canonical elements selected for one process model."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    uri: str
+    model_component_id: str
+    label: str
+    pass_type: Literal["PASSProcessModel"] = "PASSProcessModel"
+
+    subject_uris: tuple[str, ...]
+    behavior_uris: tuple[str, ...]
+    message_specification_uris: tuple[str, ...]
+    message_exchange_uris: tuple[str, ...]
+
+class CanonicalProcessContents(BaseModel):
+    """A process selection together with its resolved canonical elements."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    model: CanonicalProcessModel
+    subjects: list[CanonicalSubject]
+    behavior_fragments: list[CanonicalBehaviorFragment]
+    messages: list[CanonicalMessageSpecification]
+    exchanges: list[CanonicalMessageExchange]
