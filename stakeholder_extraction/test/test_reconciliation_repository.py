@@ -91,6 +91,9 @@ def test_saves_reconciliation_proposals():
 
             assert confirmed_status.value == "confirmed"
 
+            # Saving the original proposals again must preserve the review.
+            save_reconciliation_proposals(proposals)
+
             record = session.run(
                 """
                     MATCH (proposal:ReconciliationProposal {

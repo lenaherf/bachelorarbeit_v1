@@ -22,9 +22,9 @@ def _save_proposal_transaction(
         MERGE (proposal:ReconciliationProposal {
             proposal_id: $proposal_id
         })
+        ON CREATE SET proposal.status = $status
         SET proposal.proposal_type = $proposal_type,
             proposal.explanation = $explanation,
-            proposal.status = $status,
             proposal.left_view_id = $left_view_id,
             proposal.right_view_id = $right_view_id
 
