@@ -14,3 +14,18 @@ venv/
 
 # Environment variables and secrets
 .env
+
+# Old virtual environments
+.venv-python39-backup
+
+# pytest cache
+.pytest_cache/
+
+# Local neo4j spike data
+infra/neo4j-pass-spike/.env
+infra/neo4j-pass-spike/data/
+infra/neo4j-pass-spike/logs/
+infra/neo4j-pass-spike/plugins/*.jar
+
+# Neo4j spike runtime files
+infra/neo4j-pass-spike/import/

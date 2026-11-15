@@ -1,0 +1,463 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pass: <http://www.i2pm.net/standard-pass-ont#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+pass:belongsTo a owl:ObjectProperty .
+
+pass:contains a owl:ObjectProperty .
+
+pass:containsBaseBehavior a owl:ObjectProperty .
+
+pass:containsBehavior a owl:ObjectProperty .
+
+pass:hasEndState a owl:ObjectProperty .
+
+pass:hasIncomingMessageExchange a owl:ObjectProperty .
+
+pass:hasIncomingTransition a owl:ObjectProperty .
+
+pass:hasInitialState a owl:ObjectProperty .
+
+pass:hasMessageType a owl:ObjectProperty .
+
+pass:hasModelComponentID a owl:DatatypeProperty .
+
+pass:hasModelComponentLabel a owl:DatatypeProperty .
+
+pass:hasOutgoingMessageExchange a owl:ObjectProperty .
+
+pass:hasOutgoingTransition a owl:ObjectProperty .
+
+pass:hasPriorityNumber a owl:DatatypeProperty .
+
+pass:hasReceiver a owl:ObjectProperty .
+
+pass:hasSender a owl:ObjectProperty .
+
+pass:hasSourceState a owl:ObjectProperty .
+
+pass:hasStartSubject a owl:ObjectProperty .
+
+pass:hasTargetState a owl:ObjectProperty .
+
+pass:hasTransitionCondition a owl:ObjectProperty .
+
+pass:isBaseBehaviorOf a owl:ObjectProperty .
+
+pass:requiresPerformedMessageExchange a owl:ObjectProperty .
+
+<urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a:ontology> a owl:Ontology ;
+    rdfs:comment "Prototype PASS instance export. Ontology conformance and consuming-tool compatibility require separate validation." .
+
+pass:PASSProcessModel a owl:Class .
+
+pass:StartSubject a owl:Class .
+
+pass:DoTransition a owl:Class .
+
+pass:DoTransitionCondition a owl:Class .
+
+pass:FullySpecifiedSubject a owl:Class .
+
+pass:InitialStateOfBehavior a owl:Class .
+
+pass:ReceiveState a owl:Class .
+
+pass:SubjectBaseBehavior a owl:Class .
+
+<urn:pass:canonical:message:b16f5c9ed5425af1> a pass:MessageSpecification,
+        owl:NamedIndividual ;
+    rdfs:label "registration confirmation" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:hasModelComponentID "canonical:message:b16f5c9ed5425af1"^^xsd:string ;
+    pass:hasModelComponentLabel "registration confirmation" .
+
+<urn:pass:canonical:message:e903a678fd0856c0> a pass:MessageSpecification,
+        owl:NamedIndividual ;
+    rdfs:label "registration rejection" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:hasModelComponentID "canonical:message:e903a678fd0856c0"^^xsd:string ;
+    pass:hasModelComponentLabel "registration rejection" .
+
+<urn:pass:canonical:message:ec6c332364e708a6> a pass:MessageSpecification,
+        owl:NamedIndividual ;
+    rdfs:label "registration request" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:hasModelComponentID "canonical:message:ec6c332364e708a6"^^xsd:string ;
+    pass:hasModelComponentLabel "registration request" .
+
+<urn:pass:canonical:transition:475dc53036fecc23:condition> a pass:SendTransitionCondition,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration request to Receive registration response (confirmation or rejection) condition" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasModelComponentID "canonical:transition:475dc53036fecc23:condition"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration request to Receive registration response (confirmation or rejection) condition" ;
+    pass:requiresPerformedMessageExchange <urn:pass:canonical:exchange:1013ad5cc9b70918> .
+
+<urn:pass:canonical:transition:591185c628df9028:condition> a pass:SendTransitionCondition,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration rejection to Archive rejected registration request condition" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:591185c628df9028:condition"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration rejection to Archive rejected registration request condition" ;
+    pass:requiresPerformedMessageExchange <urn:pass:canonical:exchange:7e92dfa6c82c309c> .
+
+<urn:pass:canonical:transition:7aedf48af1ed7fc4:condition> a pass:ReceiveTransitionCondition,
+        owl:NamedIndividual ;
+    rdfs:label "Receive registration request to Check participation requirements condition" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:7aedf48af1ed7fc4:condition"^^xsd:string ;
+    pass:hasModelComponentLabel "Receive registration request to Check participation requirements condition" ;
+    pass:requiresPerformedMessageExchange <urn:pass:canonical:exchange:1013ad5cc9b70918> .
+
+<urn:pass:canonical:transition:8ce5864a08aee772:condition> a pass:DoTransitionCondition,
+        owl:NamedIndividual ;
+    rdfs:label "Employee does not meet the participation requirements" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:8ce5864a08aee772:condition"^^xsd:string ;
+    pass:hasModelComponentLabel "Employee does not meet the participation requirements" .
+
+<urn:pass:canonical:transition:b0658dc83ec46f20:condition> a pass:DoTransitionCondition,
+        owl:NamedIndividual ;
+    rdfs:label "Employee meets the participation requirements" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:b0658dc83ec46f20:condition"^^xsd:string ;
+    pass:hasModelComponentLabel "Employee meets the participation requirements" .
+
+<urn:pass:canonical:transition:d30c5efef5c8f712:condition> a pass:SendTransitionCondition,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration confirmation to Archive approved registration request condition" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:d30c5efef5c8f712:condition"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration confirmation to Archive approved registration request condition" ;
+    pass:requiresPerformedMessageExchange <urn:pass:canonical:exchange:f51352b4f8345182> .
+
+<urn:pass:canonical:transition:dd003c83447473b7:condition> a pass:ReceiveTransitionCondition,
+        owl:NamedIndividual ;
+    rdfs:label "Receive registration response (confirmation or rejection) to Record rejected registration condition" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasModelComponentID "canonical:transition:dd003c83447473b7:condition"^^xsd:string ;
+    pass:hasModelComponentLabel "Receive registration response (confirmation or rejection) to Record rejected registration condition" ;
+    pass:requiresPerformedMessageExchange <urn:pass:canonical:exchange:7e92dfa6c82c309c> .
+
+<urn:pass:canonical:transition:fe0e1560f9d14e72:condition> a pass:ReceiveTransitionCondition,
+        owl:NamedIndividual ;
+    rdfs:label "Receive registration response (confirmation or rejection) to Record confirmed registration condition" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasModelComponentID "canonical:transition:fe0e1560f9d14e72:condition"^^xsd:string ;
+    pass:hasModelComponentLabel "Receive registration response (confirmation or rejection) to Record confirmed registration condition" ;
+    pass:requiresPerformedMessageExchange <urn:pass:canonical:exchange:f51352b4f8345182> .
+
+pass:MessageExchange a owl:Class .
+
+pass:MessageSpecification a owl:Class .
+
+pass:ReceiveTransition a owl:Class .
+
+pass:ReceiveTransitionCondition a owl:Class .
+
+pass:SendState a owl:Class .
+
+pass:SendTransition a owl:Class .
+
+pass:SendTransitionCondition a owl:Class .
+
+<urn:pass:canonical:state:20568982792989e4> a pass:SendState,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration confirmation" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasIncomingTransition <urn:pass:canonical:transition:b0658dc83ec46f20> ;
+    pass:hasModelComponentID "canonical:state:20568982792989e4"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration confirmation" ;
+    pass:hasOutgoingTransition <urn:pass:canonical:transition:d30c5efef5c8f712> .
+
+<urn:pass:canonical:state:5ce375068fc5f710> a pass:DoState,
+        pass:EndState,
+        owl:NamedIndividual ;
+    rdfs:label "Archive approved registration request" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasIncomingTransition <urn:pass:canonical:transition:d30c5efef5c8f712> ;
+    pass:hasModelComponentID "canonical:state:5ce375068fc5f710"^^xsd:string ;
+    pass:hasModelComponentLabel "Archive approved registration request" .
+
+<urn:pass:canonical:state:76782ce713f80b6c> a pass:DoState,
+        pass:EndState,
+        owl:NamedIndividual ;
+    rdfs:label "Record rejected registration" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasIncomingTransition <urn:pass:canonical:transition:dd003c83447473b7> ;
+    pass:hasModelComponentID "canonical:state:76782ce713f80b6c"^^xsd:string ;
+    pass:hasModelComponentLabel "Record rejected registration" .
+
+<urn:pass:canonical:state:883a6067996c441b> a pass:InitialStateOfBehavior,
+        pass:ReceiveState,
+        owl:NamedIndividual ;
+    rdfs:label "Receive registration request" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:state:883a6067996c441b"^^xsd:string ;
+    pass:hasModelComponentLabel "Receive registration request" ;
+    pass:hasOutgoingTransition <urn:pass:canonical:transition:7aedf48af1ed7fc4> .
+
+<urn:pass:canonical:state:8f4640b60f3075bd> a pass:DoState,
+        pass:EndState,
+        owl:NamedIndividual ;
+    rdfs:label "Archive rejected registration request" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasIncomingTransition <urn:pass:canonical:transition:591185c628df9028> ;
+    pass:hasModelComponentID "canonical:state:8f4640b60f3075bd"^^xsd:string ;
+    pass:hasModelComponentLabel "Archive rejected registration request" .
+
+<urn:pass:canonical:state:a317850513fa949f> a pass:DoState,
+        pass:EndState,
+        owl:NamedIndividual ;
+    rdfs:label "Record confirmed registration" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasIncomingTransition <urn:pass:canonical:transition:fe0e1560f9d14e72> ;
+    pass:hasModelComponentID "canonical:state:a317850513fa949f"^^xsd:string ;
+    pass:hasModelComponentLabel "Record confirmed registration" .
+
+<urn:pass:canonical:state:bf42c37bdb6c0f90> a pass:SendState,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration rejection" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasIncomingTransition <urn:pass:canonical:transition:8ce5864a08aee772> ;
+    pass:hasModelComponentID "canonical:state:bf42c37bdb6c0f90"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration rejection" ;
+    pass:hasOutgoingTransition <urn:pass:canonical:transition:591185c628df9028> .
+
+<urn:pass:canonical:state:fe19f980fac2848d> a pass:InitialStateOfBehavior,
+        pass:SendState,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration request" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasModelComponentID "canonical:state:fe19f980fac2848d"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration request" ;
+    pass:hasOutgoingTransition <urn:pass:canonical:transition:475dc53036fecc23> .
+
+<urn:pass:canonical:transition:475dc53036fecc23> a pass:SendTransition,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration request to Receive registration response (confirmation or rejection)" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasModelComponentID "canonical:transition:475dc53036fecc23"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration request to Receive registration response (confirmation or rejection)" ;
+    pass:hasSourceState <urn:pass:canonical:state:fe19f980fac2848d> ;
+    pass:hasTargetState <urn:pass:canonical:state:41cbcb188437f35e> ;
+    pass:hasTransitionCondition <urn:pass:canonical:transition:475dc53036fecc23:condition> .
+
+<urn:pass:canonical:transition:591185c628df9028> a pass:SendTransition,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration rejection to Archive rejected registration request" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:591185c628df9028"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration rejection to Archive rejected registration request" ;
+    pass:hasSourceState <urn:pass:canonical:state:bf42c37bdb6c0f90> ;
+    pass:hasTargetState <urn:pass:canonical:state:8f4640b60f3075bd> ;
+    pass:hasTransitionCondition <urn:pass:canonical:transition:591185c628df9028:condition> .
+
+<urn:pass:canonical:transition:7aedf48af1ed7fc4> a pass:ReceiveTransition,
+        owl:NamedIndividual ;
+    rdfs:label "Receive registration request to Check participation requirements" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:7aedf48af1ed7fc4"^^xsd:string ;
+    pass:hasModelComponentLabel "Receive registration request to Check participation requirements" ;
+    pass:hasSourceState <urn:pass:canonical:state:883a6067996c441b> ;
+    pass:hasTargetState <urn:pass:canonical:state:059cd5eeb3a57f48> ;
+    pass:hasTransitionCondition <urn:pass:canonical:transition:7aedf48af1ed7fc4:condition> .
+
+<urn:pass:canonical:transition:8ce5864a08aee772> a pass:DoTransition,
+        owl:NamedIndividual ;
+    rdfs:label "Employee does not meet the participation requirements" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:8ce5864a08aee772"^^xsd:string ;
+    pass:hasModelComponentLabel "Employee does not meet the participation requirements" ;
+    pass:hasSourceState <urn:pass:canonical:state:059cd5eeb3a57f48> ;
+    pass:hasTargetState <urn:pass:canonical:state:bf42c37bdb6c0f90> ;
+    pass:hasTransitionCondition <urn:pass:canonical:transition:8ce5864a08aee772:condition> .
+
+<urn:pass:canonical:transition:b0658dc83ec46f20> a pass:DoTransition,
+        owl:NamedIndividual ;
+    rdfs:label "Employee meets the participation requirements" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:b0658dc83ec46f20"^^xsd:string ;
+    pass:hasModelComponentLabel "Employee meets the participation requirements" ;
+    pass:hasSourceState <urn:pass:canonical:state:059cd5eeb3a57f48> ;
+    pass:hasTargetState <urn:pass:canonical:state:20568982792989e4> ;
+    pass:hasTransitionCondition <urn:pass:canonical:transition:b0658dc83ec46f20:condition> .
+
+<urn:pass:canonical:transition:d30c5efef5c8f712> a pass:SendTransition,
+        owl:NamedIndividual ;
+    rdfs:label "Send registration confirmation to Archive approved registration request" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasModelComponentID "canonical:transition:d30c5efef5c8f712"^^xsd:string ;
+    pass:hasModelComponentLabel "Send registration confirmation to Archive approved registration request" ;
+    pass:hasSourceState <urn:pass:canonical:state:20568982792989e4> ;
+    pass:hasTargetState <urn:pass:canonical:state:5ce375068fc5f710> ;
+    pass:hasTransitionCondition <urn:pass:canonical:transition:d30c5efef5c8f712:condition> .
+
+<urn:pass:canonical:transition:dd003c83447473b7> a pass:ReceiveTransition,
+        owl:NamedIndividual ;
+    rdfs:label "Receive registration response (confirmation or rejection) to Record rejected registration" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasModelComponentID "canonical:transition:dd003c83447473b7"^^xsd:string ;
+    pass:hasModelComponentLabel "Receive registration response (confirmation or rejection) to Record rejected registration" ;
+    pass:hasSourceState <urn:pass:canonical:state:41cbcb188437f35e> ;
+    pass:hasTargetState <urn:pass:canonical:state:76782ce713f80b6c> ;
+    pass:hasTransitionCondition <urn:pass:canonical:transition:dd003c83447473b7:condition> .
+
+<urn:pass:canonical:transition:fe0e1560f9d14e72> a pass:ReceiveTransition,
+        owl:NamedIndividual ;
+    rdfs:label "Receive registration response (confirmation or rejection) to Record confirmed registration" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasModelComponentID "canonical:transition:fe0e1560f9d14e72"^^xsd:string ;
+    pass:hasModelComponentLabel "Receive registration response (confirmation or rejection) to Record confirmed registration" ;
+    pass:hasSourceState <urn:pass:canonical:state:41cbcb188437f35e> ;
+    pass:hasTargetState <urn:pass:canonical:state:a317850513fa949f> ;
+    pass:hasTransitionCondition <urn:pass:canonical:transition:fe0e1560f9d14e72:condition> .
+
+pass:EndState a owl:Class .
+
+<urn:pass:canonical:state:059cd5eeb3a57f48> a pass:DoState,
+        owl:NamedIndividual ;
+    rdfs:label "Check participation requirements" ;
+    pass:belongsTo <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasIncomingTransition <urn:pass:canonical:transition:7aedf48af1ed7fc4> ;
+    pass:hasModelComponentID "canonical:state:059cd5eeb3a57f48"^^xsd:string ;
+    pass:hasModelComponentLabel "Check participation requirements" ;
+    pass:hasOutgoingTransition <urn:pass:canonical:transition:8ce5864a08aee772>,
+        <urn:pass:canonical:transition:b0658dc83ec46f20> .
+
+<urn:pass:canonical:state:41cbcb188437f35e> a pass:ReceiveState,
+        owl:NamedIndividual ;
+    rdfs:label "Receive registration response (confirmation or rejection)" ;
+    pass:belongsTo <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasIncomingTransition <urn:pass:canonical:transition:475dc53036fecc23> ;
+    pass:hasModelComponentID "canonical:state:41cbcb188437f35e"^^xsd:string ;
+    pass:hasModelComponentLabel "Receive registration response (confirmation or rejection)" ;
+    pass:hasOutgoingTransition <urn:pass:canonical:transition:dd003c83447473b7>,
+        <urn:pass:canonical:transition:fe0e1560f9d14e72> .
+
+pass:DoState a owl:Class .
+
+<urn:pass:canonical:exchange:1013ad5cc9b70918> a pass:MessageExchange,
+        owl:NamedIndividual ;
+    rdfs:label "Employee sends registration request to Training Coordinator" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:hasMessageType <urn:pass:canonical:message:ec6c332364e708a6> ;
+    pass:hasModelComponentID "canonical:exchange:1013ad5cc9b70918"^^xsd:string ;
+    pass:hasModelComponentLabel "Employee sends registration request to Training Coordinator" ;
+    pass:hasReceiver <urn:pass:canonical:subject:49ce2a9e9f8697b8> ;
+    pass:hasSender <urn:pass:canonical:subject:59d5ddb6cb3c7a68> .
+
+<urn:pass:canonical:exchange:7e92dfa6c82c309c> a pass:MessageExchange,
+        owl:NamedIndividual ;
+    rdfs:label "Training Coordinator sends registration rejection to Employee" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:hasMessageType <urn:pass:canonical:message:e903a678fd0856c0> ;
+    pass:hasModelComponentID "canonical:exchange:7e92dfa6c82c309c"^^xsd:string ;
+    pass:hasModelComponentLabel "Training Coordinator sends registration rejection to Employee" ;
+    pass:hasReceiver <urn:pass:canonical:subject:59d5ddb6cb3c7a68> ;
+    pass:hasSender <urn:pass:canonical:subject:49ce2a9e9f8697b8> .
+
+<urn:pass:canonical:exchange:f51352b4f8345182> a pass:MessageExchange,
+        owl:NamedIndividual ;
+    rdfs:label "Training Coordinator sends registration confirmation to Employee" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:hasMessageType <urn:pass:canonical:message:b16f5c9ed5425af1> ;
+    pass:hasModelComponentID "canonical:exchange:f51352b4f8345182"^^xsd:string ;
+    pass:hasModelComponentLabel "Training Coordinator sends registration confirmation to Employee" ;
+    pass:hasReceiver <urn:pass:canonical:subject:59d5ddb6cb3c7a68> ;
+    pass:hasSender <urn:pass:canonical:subject:49ce2a9e9f8697b8> .
+
+<urn:pass:canonical:subject:49ce2a9e9f8697b8> a pass:FullySpecifiedSubject,
+        owl:NamedIndividual ;
+    rdfs:label "Training Coordinator" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:containsBaseBehavior <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:containsBehavior <urn:pass:canonical:behavior:2dbb9bd80bf8b750> ;
+    pass:hasIncomingMessageExchange <urn:pass:canonical:exchange:1013ad5cc9b70918> ;
+    pass:hasModelComponentID "canonical:subject:49ce2a9e9f8697b8"^^xsd:string ;
+    pass:hasModelComponentLabel "Training Coordinator" ;
+    pass:hasOutgoingMessageExchange <urn:pass:canonical:exchange:7e92dfa6c82c309c>,
+        <urn:pass:canonical:exchange:f51352b4f8345182> .
+
+<urn:pass:canonical:subject:59d5ddb6cb3c7a68> a pass:FullySpecifiedSubject,
+        pass:StartSubject,
+        owl:NamedIndividual ;
+    rdfs:label "Employee" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:containsBaseBehavior <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:containsBehavior <urn:pass:canonical:behavior:88df1a82b4256ab7> ;
+    pass:hasIncomingMessageExchange <urn:pass:canonical:exchange:7e92dfa6c82c309c>,
+        <urn:pass:canonical:exchange:f51352b4f8345182> ;
+    pass:hasModelComponentID "canonical:subject:59d5ddb6cb3c7a68"^^xsd:string ;
+    pass:hasModelComponentLabel "Employee" ;
+    pass:hasOutgoingMessageExchange <urn:pass:canonical:exchange:1013ad5cc9b70918> .
+
+<urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> a pass:PASSProcessModel,
+        owl:NamedIndividual ;
+    rdfs:label "Reviewed complaint handling example" ;
+    pass:contains <urn:pass:canonical:behavior:2dbb9bd80bf8b750>,
+        <urn:pass:canonical:behavior:88df1a82b4256ab7>,
+        <urn:pass:canonical:exchange:1013ad5cc9b70918>,
+        <urn:pass:canonical:exchange:7e92dfa6c82c309c>,
+        <urn:pass:canonical:exchange:f51352b4f8345182>,
+        <urn:pass:canonical:message:b16f5c9ed5425af1>,
+        <urn:pass:canonical:message:e903a678fd0856c0>,
+        <urn:pass:canonical:message:ec6c332364e708a6>,
+        <urn:pass:canonical:subject:49ce2a9e9f8697b8>,
+        <urn:pass:canonical:subject:59d5ddb6cb3c7a68> ;
+    pass:hasModelComponentID "canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"^^xsd:string ;
+    pass:hasModelComponentLabel "Reviewed complaint handling example" ;
+    pass:hasStartSubject <urn:pass:canonical:subject:59d5ddb6cb3c7a68> .
+
+<urn:pass:canonical:behavior:88df1a82b4256ab7> a pass:SubjectBaseBehavior,
+        owl:NamedIndividual ;
+    rdfs:label "Employee behaviour" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:contains <urn:pass:canonical:state:41cbcb188437f35e>,
+        <urn:pass:canonical:state:76782ce713f80b6c>,
+        <urn:pass:canonical:state:a317850513fa949f>,
+        <urn:pass:canonical:state:fe19f980fac2848d>,
+        <urn:pass:canonical:transition:475dc53036fecc23>,
+        <urn:pass:canonical:transition:475dc53036fecc23:condition>,
+        <urn:pass:canonical:transition:dd003c83447473b7>,
+        <urn:pass:canonical:transition:dd003c83447473b7:condition>,
+        <urn:pass:canonical:transition:fe0e1560f9d14e72>,
+        <urn:pass:canonical:transition:fe0e1560f9d14e72:condition> ;
+    pass:hasEndState <urn:pass:canonical:state:76782ce713f80b6c>,
+        <urn:pass:canonical:state:a317850513fa949f> ;
+    pass:hasInitialState <urn:pass:canonical:state:fe19f980fac2848d> ;
+    pass:hasModelComponentID "canonical:behavior:88df1a82b4256ab7"^^xsd:string ;
+    pass:hasModelComponentLabel "Employee behaviour" ;
+    pass:hasPriorityNumber "1"^^xsd:positiveInteger ;
+    pass:isBaseBehaviorOf <urn:pass:canonical:subject:59d5ddb6cb3c7a68> .
+
+<urn:pass:canonical:behavior:2dbb9bd80bf8b750> a pass:SubjectBaseBehavior,
+        owl:NamedIndividual ;
+    rdfs:label "Training Coordinator behaviour" ;
+    pass:belongsTo <urn:pass:canonical:process:complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a> ;
+    pass:contains <urn:pass:canonical:state:059cd5eeb3a57f48>,
+        <urn:pass:canonical:state:20568982792989e4>,
+        <urn:pass:canonical:state:5ce375068fc5f710>,
+        <urn:pass:canonical:state:883a6067996c441b>,
+        <urn:pass:canonical:state:8f4640b60f3075bd>,
+        <urn:pass:canonical:state:bf42c37bdb6c0f90>,
+        <urn:pass:canonical:transition:591185c628df9028>,
+        <urn:pass:canonical:transition:591185c628df9028:condition>,
+        <urn:pass:canonical:transition:7aedf48af1ed7fc4>,
+        <urn:pass:canonical:transition:7aedf48af1ed7fc4:condition>,
+        <urn:pass:canonical:transition:8ce5864a08aee772>,
+        <urn:pass:canonical:transition:8ce5864a08aee772:condition>,
+        <urn:pass:canonical:transition:b0658dc83ec46f20>,
+        <urn:pass:canonical:transition:b0658dc83ec46f20:condition>,
+        <urn:pass:canonical:transition:d30c5efef5c8f712>,
+        <urn:pass:canonical:transition:d30c5efef5c8f712:condition> ;
+    pass:hasEndState <urn:pass:canonical:state:5ce375068fc5f710>,
+        <urn:pass:canonical:state:8f4640b60f3075bd> ;
+    pass:hasInitialState <urn:pass:canonical:state:883a6067996c441b> ;
+    pass:hasModelComponentID "canonical:behavior:2dbb9bd80bf8b750"^^xsd:string ;
+    pass:hasModelComponentLabel "Training Coordinator behaviour" ;
+    pass:hasPriorityNumber "1"^^xsd:positiveInteger ;
+    pass:isBaseBehaviorOf <urn:pass:canonical:subject:49ce2a9e9f8697b8> .
+

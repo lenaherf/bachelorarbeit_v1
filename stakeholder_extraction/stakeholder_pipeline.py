@@ -27,4 +27,6 @@ def process_stakeholder_input(
         candidate_messages=extracted_view.candidate_messages,
         candidate_activities=extracted_view.candidate_activities,
         open_questions=extracted_view.open_questions,
+        candidate_states=extracted_view.candidate_states,
+        candidate_transitions=extracted_view.candidate_transitions,
     )

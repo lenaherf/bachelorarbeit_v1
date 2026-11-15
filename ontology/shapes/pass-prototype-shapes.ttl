@@ -1,0 +1,261 @@
+@prefix pass: <http://www.i2pm.net/standard-pass-ont#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix shape: <urn:pass:shapes:> .
+
+# These shapes describe the prototype's supported export profile.
+# They are not a complete translation of the PASS OWL ontology.
+
+shape:ElementShape
+    a sh:NodeShape ;
+    sh:targetClass
+        pass:PASSProcessModel,
+        pass:FullySpecifiedSubject,
+        pass:InterfaceSubject,
+        pass:SubjectBaseBehavior,
+        pass:MessageSpecification,
+        pass:MessageExchange,
+        pass:SendState,
+        pass:ReceiveState,
+        pass:DoState,
+        pass:SendTransition,
+        pass:ReceiveTransition,
+        pass:DoTransition,
+        pass:SendTransitionCondition,
+        pass:ReceiveTransitionCondition,
+        pass:DoTransitionCondition ;
+    sh:nodeKind sh:IRI ;
+    sh:property [
+        sh:path pass:hasModelComponentID ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 1
+    ] ;
+    sh:property [
+        sh:path pass:hasModelComponentLabel ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 1
+    ] .
+
+shape:ProcessShape
+    a sh:NodeShape ;
+    sh:targetClass pass:PASSProcessModel ;
+    sh:property [
+        sh:path pass:hasStartSubject ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:StartSubject ;
+        sh:or (
+            [ sh:class pass:FullySpecifiedSubject ]
+            [ sh:class pass:InterfaceSubject ]
+        )
+    ] ;
+    sh:property [
+        sh:path pass:contains ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI
+    ] .
+
+shape:FullySpecifiedSubjectShape
+    a sh:NodeShape ;
+    sh:targetClass pass:FullySpecifiedSubject ;
+    sh:property [
+        sh:path pass:containsBaseBehavior ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:SubjectBaseBehavior
+    ] .
+
+shape:BaseBehaviorShape
+    a sh:NodeShape ;
+    sh:targetClass pass:SubjectBaseBehavior ;
+    sh:property [
+        sh:path pass:isBaseBehaviorOf ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:FullySpecifiedSubject
+    ] ;
+    sh:property [
+        sh:path pass:hasPriorityNumber ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:positiveInteger
+    ] ;
+    sh:property [
+        sh:path pass:hasInitialState ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:InitialStateOfBehavior
+    ] ;
+    sh:property [
+        sh:path pass:hasEndState ;
+        sh:minCount 1 ;
+        sh:class pass:EndState
+    ] .
+
+shape:StateType
+    a sh:NodeShape ;
+    sh:xone (
+        [ sh:class pass:SendState ]
+        [ sh:class pass:ReceiveState ]
+        [ sh:class pass:DoState ]
+    ) .
+
+shape:StateShape
+    a sh:NodeShape ;
+    sh:targetClass pass:SendState, pass:ReceiveState, pass:DoState ;
+    sh:node shape:StateType ;
+    sh:property [
+        sh:path pass:belongsTo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:SubjectBaseBehavior
+    ] .
+
+shape:EndStateShape
+    a sh:NodeShape ;
+    sh:targetClass pass:EndState ;
+    sh:node shape:StateType ;
+    sh:not [ sh:class pass:SendState ] ;
+    sh:property [
+        sh:path pass:hasOutgoingTransition ;
+        sh:maxCount 0
+    ] .
+
+shape:MessageExchangeShape
+    a sh:NodeShape ;
+    sh:targetClass pass:MessageExchange ;
+    sh:property [
+        sh:path pass:hasSender ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:or (
+            [ sh:class pass:FullySpecifiedSubject ]
+            [ sh:class pass:InterfaceSubject ]
+        )
+    ] ;
+    sh:property [
+        sh:path pass:hasReceiver ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:or (
+            [ sh:class pass:FullySpecifiedSubject ]
+            [ sh:class pass:InterfaceSubject ]
+        )
+    ] ;
+    sh:property [
+        sh:path pass:hasMessageType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:MessageSpecification
+    ] .
+
+shape:TransitionShape
+    a sh:NodeShape ;
+    sh:targetClass
+        pass:SendTransition,
+        pass:ReceiveTransition,
+        pass:DoTransition ;
+    sh:property [
+        sh:path pass:belongsTo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:SubjectBaseBehavior
+    ] ;
+    sh:property [
+        sh:path pass:hasSourceState ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node shape:StateType
+    ] ;
+    sh:property [
+        sh:path pass:hasTargetState ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node shape:StateType
+    ] ;
+    sh:property [
+        sh:path pass:hasTransitionCondition ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI
+    ] .
+
+shape:SendTransitionShape
+    a sh:NodeShape ;
+    sh:targetClass pass:SendTransition ;
+    sh:property [
+        sh:path pass:hasSourceState ;
+        sh:class pass:SendState
+    ] ;
+    sh:property [
+        sh:path pass:hasTransitionCondition ;
+        sh:class pass:SendTransitionCondition
+    ] .
+
+shape:ReceiveTransitionShape
+    a sh:NodeShape ;
+    sh:targetClass pass:ReceiveTransition ;
+    sh:property [
+        sh:path pass:hasSourceState ;
+        sh:class pass:ReceiveState
+    ] ;
+    sh:property [
+        sh:path pass:hasTransitionCondition ;
+        sh:class pass:ReceiveTransitionCondition
+    ] .
+
+shape:DoTransitionShape
+    a sh:NodeShape ;
+    sh:targetClass pass:DoTransition ;
+    sh:property [
+        sh:path pass:hasSourceState ;
+        sh:class pass:DoState
+    ] ;
+    sh:property [
+        sh:path pass:hasTransitionCondition ;
+        sh:class pass:DoTransitionCondition
+    ] .
+
+shape:ConditionShape
+    a sh:NodeShape ;
+    sh:targetClass
+        pass:SendTransitionCondition,
+        pass:ReceiveTransitionCondition,
+        pass:DoTransitionCondition ;
+    sh:property [
+        sh:path pass:belongsTo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:SubjectBaseBehavior
+    ] .
+
+shape:CommunicationConditionShape
+    a sh:NodeShape ;
+    sh:targetClass
+        pass:SendTransitionCondition,
+        pass:ReceiveTransitionCondition ;
+    sh:property [
+        sh:path pass:requiresPerformedMessageExchange ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class pass:MessageExchange
+    ] .
+
+shape:DoConditionShape
+    a sh:NodeShape ;
+    sh:targetClass pass:DoTransitionCondition ;
+    sh:property [
+        sh:path pass:requiresPerformedMessageExchange ;
+        sh:maxCount 0
+    ] .
+
+shape:SendStateOutgoingShape
+    a sh:NodeShape ;
+    sh:targetClass pass:SendState ;
+    sh:property [
+        sh:path pass:hasOutgoingTransition ;
+        sh:maxCount 1
+    ] .

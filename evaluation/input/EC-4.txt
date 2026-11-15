@@ -1,0 +1,22 @@
+EC-4 — The registration process has alternative confirmation and rejection outcomes.
+
+Stakeholder A:
+Role: Employee
+Description:
+I send a registration request to the Training Coordinator.
+After sending the registration request, I receive either a registration confirmation or a registration rejection from the Training Coordinator.
+These are alternative responses to the same request. I receive only one of them.
+If I receive a registration confirmation, I record the confirmed registration. This ends my part of the process.
+If I receive a registration rejection, I record the rejected registration. This ends my part of the process.
+
+Stakeholder B:
+Role: Training Coordinator
+Description:
+I receive a registration request from the Employee.
+I then check whether the Employee meets the participation requirements.
+If the Employee meets the participation requirements, I send a registration confirmation to the Employee.
+After sending the registration confirmation, I archive the approved registration request. This ends my part of the process.
+If the Employee does not meet the participation requirements, I send a registration rejection to the Employee.
+After sending the registration rejection, I archive the rejected registration request. This ends my part of the process.
+The two outcomes are mutually exclusive. For each registration request, I send either a registration confirmation or a registration rejection, never both.
+

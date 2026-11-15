@@ -38,3 +38,5 @@ uuid_utils==0.17.0
 websockets==17.1
 xxhash==4.0.1
 zstandard==0.25.0
+rdflib==7.6.0
+pyshacl==0.40.2

@@ -1,0 +1,13 @@
+
+Select the process start subject:
+1. Training Coordinator
+   urn:pass:canonical:subject:5ff41241a98cec6b
+2. Employee
+   urn:pass:canonical:subject:90f455c56f0c2c70
+Start subject number: 2
+
+Turtle: /Users/lena/bachelorarbeit_v1/evaluation/runs/EC-5/R2/export/model.ttl
+Visio OWL: /Users/lena/bachelorarbeit_v1/evaluation/runs/EC-5/R2/export/model.owl
+Validation report: /Users/lena/bachelorarbeit_v1/evaluation/runs/EC-5/R2/export/validation.json
+The export conforms to the prototype SHACL profile.
+Full ontology conformance and consuming-tool compatibility are still pending.

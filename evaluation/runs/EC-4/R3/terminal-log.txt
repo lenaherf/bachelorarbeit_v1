@@ -1,0 +1,367 @@
+
+Stakeholder 1
+Role name: Employee
+Enter the description.
+Finish with a line containing only a dot: .
+I send a registration request to the Training Coordinator.
+After sending the registration request, I receive either a registration confirmation or a registration rejection from the Training Coordinator.
+These are alternative responses to the same request. I receive only one of them.
+If I receive a registration confirmation, I record the confirmed registration. This ends my part of the process.
+If I receive a registration rejection, I record the rejected registration. This ends my part of the process.
+.
+
+Preparing and extracting the description...
+
+Extracted view:
+{
+  "stakeholder": "Employee",
+  "source_text": "I send a registration request to the Training Coordinator.\nAfter sending the registration request, I receive either a registration confirmation or a registration rejection from the Training Coordinator.\nThese are alternative responses to the same request. I receive only one of them.\nIf I receive a registration confirmation, I record the confirmed registration. This ends my part of the process.\nIf I receive a registration rejection, I record the rejected registration. This ends my part of the process.",
+  "corrected_text": "I send a registration request to the Training Coordinator.\nAfter sending the registration request, I receive either a registration confirmation or a registration rejection from the Training Coordinator.\nThese are alternative responses to the same request. I receive only one of them.\nIf I receive a registration confirmation, I record the confirmed registration. This ends my part of the process.\nIf I receive a registration rejection, I record the rejected registration. This ends my part of the process.",
+  "prepared_text": "Employee sends a registration request to the Training Coordinator.  \nAfter sending the registration request, Employee receives either a registration confirmation from the Training Coordinator or a registration rejection from the Training Coordinator.  \nThe registration confirmation and the registration rejection are alternative responses to the same request.  \nEmployee receives only one of the registration confirmation and the registration rejection.  \nIf Employee receives a registration confirmation, Employee records the confirmed registration.  \nThis ends Employee's part of the process.  \nIf Employee receives a registration rejection, Employee records the rejected registration.  \nThis ends Employee's part of the process.",
+  "candidate_subjects": [
+    {
+      "name": "Employee",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "Training Coordinator",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_messages": [
+    {
+      "name": "registration request",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "registration confirmation",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Employee receives either a registration confirmation from the Training Coordinator",
+      "status": "proposed"
+    },
+    {
+      "name": "registration rejection",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "or a registration rejection from the Training Coordinator.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_activities": [
+    {
+      "name": "record the confirmed registration",
+      "performed_by": "Employee",
+      "evidence": "Employee records the confirmed registration.",
+      "status": "proposed"
+    },
+    {
+      "name": "record the rejected registration",
+      "performed_by": "Employee",
+      "evidence": "Employee records the rejected registration.",
+      "status": "proposed"
+    }
+  ],
+  "open_questions": [
+    {
+      "related_element_type": "transition",
+      "related_field": "exit_condition",
+      "reason": "missing_information",
+      "question": "What must hold before Employee can leave the activity \"record the confirmed registration\" (state-3) and thereby end Employee's part of the process?"
+    },
+    {
+      "related_element_type": "transition",
+      "related_field": "exit_condition",
+      "reason": "missing_information",
+      "question": "What must hold before Employee can leave the activity \"record the rejected registration\" (state-4) and thereby end Employee's part of the process?"
+    }
+  ],
+  "candidate_states": [
+    {
+      "local_id": "state-1",
+      "name": "Send registration request",
+      "state_type": "send",
+      "performed_by": "Employee",
+      "message_name": "registration request",
+      "is_initial": true,
+      "is_end": false,
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-2",
+      "name": "Receive registration response (confirmation or rejection)",
+      "state_type": "receive",
+      "performed_by": "Employee",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "After sending the registration request, Employee receives either a registration confirmation from the Training Coordinator or a registration rejection from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-3",
+      "name": "Record the confirmed registration",
+      "state_type": "do",
+      "performed_by": "Employee",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": true,
+      "evidence": "If Employee receives a registration confirmation, Employee records the confirmed registration.\nThis ends Employee's part of the process.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-4",
+      "name": "Record the rejected registration",
+      "state_type": "do",
+      "performed_by": "Employee",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": true,
+      "evidence": "If Employee receives a registration rejection, Employee records the rejected registration.\nThis ends Employee's part of the process.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_transitions": [
+    {
+      "source_state_id": "state-1",
+      "target_state_id": "state-2",
+      "sequence_evidence": "After sending the registration request, Employee receives either a registration confirmation from the Training Coordinator or a registration rejection from the Training Coordinator.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-3",
+      "sequence_evidence": "If Employee receives a registration confirmation, Employee records the confirmed registration.",
+      "received_message_name": "registration confirmation",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-4",
+      "sequence_evidence": "If Employee receives a registration rejection, Employee records the rejected registration.",
+      "received_message_name": "registration rejection",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    }
+  ]
+}
+Continue with this extraction? [c=confirm, r=reject, q=quit]: c
+
+Stakeholder 2
+Role name: Training Coordinator
+Enter the description.
+Finish with a line containing only a dot: .
+I receive a registration request from the Employee.
+I then check whether the Employee meets the participation requirements.
+If the Employee meets the participation requirements, I send a registration confirmation to the Employee.
+After sending the registration confirmation, I archive the approved registration request. This ends my part of the process.
+If the Employee does not meet the participation requirements, I send a registration rejection to the Employee.
+After sending the registration rejection, I archive the rejected registration request. This ends my part of the process.
+The two outcomes are mutually exclusive. For each registration request, I send either a registration confirmation or a registration rejection, never both.
+.
+
+Preparing and extracting the description...
+
+Extracted view:
+{
+  "stakeholder": "Training Coordinator",
+  "source_text": "I receive a registration request from the Employee.\nI then check whether the Employee meets the participation requirements.\nIf the Employee meets the participation requirements, I send a registration confirmation to the Employee.\nAfter sending the registration confirmation, I archive the approved registration request. This ends my part of the process.\nIf the Employee does not meet the participation requirements, I send a registration rejection to the Employee.\nAfter sending the registration rejection, I archive the rejected registration request. This ends my part of the process.\nThe two outcomes are mutually exclusive. For each registration request, I send either a registration confirmation or a registration rejection, never both.",
+  "corrected_text": "I receive a registration request from the Employee.  \nI then check whether the Employee meets the participation requirements.  \nIf the Employee meets the participation requirements, I send a registration confirmation to the Employee.  \nAfter sending the registration confirmation, I archive the approved registration request. This ends my part of the process.  \nIf the Employee does not meet the participation requirements, I send a registration rejection to the Employee.  \nAfter sending the registration rejection, I archive the rejected registration request. This ends my part of the process.  \nThe two outcomes are mutually exclusive. For each registration request, I send either a registration confirmation or a registration rejection, never both.",
+  "prepared_text": "Training Coordinator receives a registration request from the Employee.  \nTraining Coordinator then checks whether the Employee meets the participation requirements.  \nIf the Employee meets the participation requirements, Training Coordinator sends a registration confirmation to the Employee.  \nAfter sending the registration confirmation, Training Coordinator archives the approved registration request.  \nThis ends Training Coordinator's part of the process.  \nIf the Employee does not meet the participation requirements, Training Coordinator sends a registration rejection to the Employee.  \nAfter sending the registration rejection, Training Coordinator archives the rejected registration request.  \nThis ends Training Coordinator's part of the process.  \nThe two outcomes are mutually exclusive.  \nFor each registration request, Training Coordinator sends either a registration confirmation or a registration rejection, never both.",
+  "candidate_subjects": [
+    {
+      "name": "Training Coordinator",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "Employee",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_messages": [
+    {
+      "name": "registration request",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "registration confirmation",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Training Coordinator sends a registration confirmation to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "registration rejection",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Training Coordinator sends a registration rejection to the Employee.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_activities": [
+    {
+      "name": "Check whether the Employee meets the participation requirements",
+      "performed_by": "Training Coordinator",
+      "evidence": "Training Coordinator then checks whether the Employee meets the participation requirements.",
+      "status": "proposed"
+    },
+    {
+      "name": "Archive the approved registration request",
+      "performed_by": "Training Coordinator",
+      "evidence": "Training Coordinator archives the approved registration request.",
+      "status": "proposed"
+    },
+    {
+      "name": "Archive the rejected registration request",
+      "performed_by": "Training Coordinator",
+      "evidence": "Training Coordinator archives the rejected registration request.",
+      "status": "proposed"
+    }
+  ],
+  "open_questions": [],
+  "candidate_states": [
+    {
+      "local_id": "state-1",
+      "name": "Receive registration request",
+      "state_type": "receive",
+      "performed_by": "Training Coordinator",
+      "message_name": "registration request",
+      "is_initial": true,
+      "is_end": false,
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-2",
+      "name": "Check participation requirements",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator then checks whether the Employee meets the participation requirements.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-3",
+      "name": "Send registration confirmation",
+      "state_type": "send",
+      "performed_by": "Training Coordinator",
+      "message_name": "registration confirmation",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator sends a registration confirmation to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-4",
+      "name": "Archive approved registration request",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": true,
+      "evidence": "Training Coordinator archives the approved registration request.\nThis ends Training Coordinator's part of the process.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-5",
+      "name": "Send registration rejection",
+      "state_type": "send",
+      "performed_by": "Training Coordinator",
+      "message_name": "registration rejection",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator sends a registration rejection to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-6",
+      "name": "Archive rejected registration request",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": true,
+      "evidence": "Training Coordinator archives the rejected registration request.\nThis ends Training Coordinator's part of the process.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_transitions": [
+    {
+      "source_state_id": "state-1",
+      "target_state_id": "state-2",
+      "sequence_evidence": "Training Coordinator receives a registration request from the Employee.  \nTraining Coordinator then checks whether the Employee meets the participation requirements.",
+      "received_message_name": "registration request",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-3",
+      "sequence_evidence": "If the Employee meets the participation requirements, Training Coordinator sends a registration confirmation to the Employee.",
+      "received_message_name": null,
+      "exit_condition": "Employee meets the participation requirements",
+      "exit_condition_evidence": "If the Employee meets the participation requirements, Training Coordinator sends a registration confirmation to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-3",
+      "target_state_id": "state-4",
+      "sequence_evidence": "After sending the registration confirmation, Training Coordinator archives the approved registration request.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-5",
+      "sequence_evidence": "If the Employee does not meet the participation requirements, Training Coordinator sends a registration rejection to the Employee.",
+      "received_message_name": null,
+      "exit_condition": "Employee does not meet the participation requirements",
+      "exit_condition_evidence": "If the Employee does not meet the participation requirements, Training Coordinator sends a registration rejection to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-5",
+      "target_state_id": "state-6",
+      "sequence_evidence": "After sending the registration rejection, Training Coordinator archives the rejected registration request.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    }
+  ]
+}
+Continue with this extraction? [c=confirm, r=reject, q=quit]: c
+
+Description from Employee:
+I send a registration request to the Training Coordinator.
+After sending the registration request, I receive either a registration confirmation or a registration rejection from the Training Coordinator.
+These are alternative responses to the same request. I receive only one of them.
+If I receive a registration confirmation, I record the confirmed registration. This ends my part of the process.
+If I receive a registration rejection, I record the rejected registration. This ends my part of the process.
+Open question: What must hold before Employee can leave the activity "record the confirmed registration" (state-3) and thereby end Employee's part of the process?
+Open question: What must hold before Employee can leave the activity "record the rejected registration" (state-4) and thereby end Employee's part of the process?
+
+Resolve the source questions before continuing.
+Previously saved views and decisions remain in Neo4j.

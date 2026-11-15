@@ -1,0 +1,367 @@
+
+Stakeholder 1
+Role name: Employee
+Enter the description.
+Finish with a line containing only a dot: .
+I send a registration request to the Training Coordinator.
+I then receive an acknowledgement from the Training Coordinator.
+After receiving the acknowledgement, I wait for and receive a registration confirmation from the Training Coordinator.
+I then record the registration confirmation. This ends my part of the process.
+.
+
+Preparing and extracting the description...
+
+Extracted view:
+{
+  "stakeholder": "Employee",
+  "source_text": "I send a registration request to the Training Coordinator.\nI then receive an acknowledgement from the Training Coordinator.\nAfter receiving the acknowledgement, I wait for and receive a registration confirmation from the Training Coordinator.\nI then record the registration confirmation. This ends my part of the process.",
+  "corrected_text": "I send a registration request to the Training Coordinator.  \nI then receive an acknowledgement from the Training Coordinator.  \nAfter receiving the acknowledgement, I wait for and receive a registration confirmation from the Training Coordinator.  \nI then record the registration confirmation. This ends my part of the process.",
+  "prepared_text": "Employee sends a registration request to the Training Coordinator.  \nEmployee then receives an acknowledgement from the Training Coordinator.  \nAfter receiving the acknowledgement, Employee waits for and receives a registration confirmation from the Training Coordinator.  \nEmployee then records the registration confirmation.  \nThis ends Employee's part of the process.",
+  "candidate_subjects": [
+    {
+      "name": "Employee",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "Training Coordinator",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_messages": [
+    {
+      "name": "registration request",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "acknowledgement",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Employee then receives an acknowledgement from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "registration confirmation",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "After receiving the acknowledgement, Employee waits for and receives a registration confirmation from the Training Coordinator.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_activities": [
+    {
+      "name": "record the registration confirmation",
+      "performed_by": "Employee",
+      "evidence": "Employee then records the registration confirmation.",
+      "status": "proposed"
+    }
+  ],
+  "open_questions": [],
+  "candidate_states": [
+    {
+      "local_id": "state-1",
+      "name": "Send registration request",
+      "state_type": "send",
+      "performed_by": "Employee",
+      "message_name": "registration request",
+      "is_initial": true,
+      "is_end": false,
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-2",
+      "name": "Receive acknowledgement",
+      "state_type": "receive",
+      "performed_by": "Employee",
+      "message_name": "acknowledgement",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee then receives an acknowledgement from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-3",
+      "name": "Receive registration confirmation",
+      "state_type": "receive",
+      "performed_by": "Employee",
+      "message_name": "registration confirmation",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "After receiving the acknowledgement, Employee waits for and receives a registration confirmation from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-4",
+      "name": "Record the registration confirmation",
+      "state_type": "do",
+      "performed_by": "Employee",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": true,
+      "evidence": "Employee then records the registration confirmation.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_transitions": [
+    {
+      "source_state_id": "state-1",
+      "target_state_id": "state-2",
+      "sequence_evidence": "Employee sends a registration request to the Training Coordinator.\nEmployee then receives an acknowledgement from the Training Coordinator.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-3",
+      "sequence_evidence": "After receiving the acknowledgement, Employee waits for and receives a registration confirmation from the Training Coordinator.",
+      "received_message_name": "acknowledgement",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-3",
+      "target_state_id": "state-4",
+      "sequence_evidence": "After receiving the acknowledgement, Employee waits for and receives a registration confirmation from the Training Coordinator.\nEmployee then records the registration confirmation.",
+      "received_message_name": "registration confirmation",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    }
+  ]
+}
+Continue with this extraction? [c=confirm, r=reject, q=quit]: c
+
+Stakeholder 2
+Role name: Training Coordinator
+Enter the description.
+Finish with a line containing only a dot: .
+I receive a registration request from the Employee.
+I then send an acknowledgement to the Employee.
+After sending the acknowledgement, I check whether a place is available and check whether the Employee meets the participation requirements.
+I send the registration confirmation to the Employee after both checks are complete. After sending the registration confirmation, I close the registration request.
+This ends my part of the process.
+.
+
+Preparing and extracting the description...
+
+Extracted view:
+{
+  "stakeholder": "Training Coordinator",
+  "source_text": "I receive a registration request from the Employee.\nI then send an acknowledgement to the Employee.\nAfter sending the acknowledgement, I check whether a place is available and check whether the Employee meets the participation requirements.\nI send the registration confirmation to the Employee after both checks are complete. After sending the registration confirmation, I close the registration request.\nThis ends my part of the process.",
+  "corrected_text": "I receive a registration request from the Employee.  \nI then send an acknowledgement to the Employee.  \nAfter sending the acknowledgement, I check whether a place is available and whether the Employee meets the participation requirements.  \nI send the registration confirmation to the Employee after both checks are complete. After sending the registration confirmation, I close the registration request.  \nThis ends my part of the process.",
+  "prepared_text": "Training Coordinator receives a registration request from the Employee.  \nTraining Coordinator then sends an acknowledgement to the Employee.  \nAfter sending the acknowledgement, Training Coordinator checks whether a place is available.  \nAfter sending the acknowledgement, Training Coordinator checks whether the Employee meets the participation requirements.  \nTraining Coordinator sends the registration confirmation to the Employee after both checks are complete.  \nAfter sending the registration confirmation, Training Coordinator closes the registration request.  \nThis ends Training Coordinator's part of the process.",
+  "candidate_subjects": [
+    {
+      "name": "Training Coordinator",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "Employee",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_messages": [
+    {
+      "name": "registration request",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "acknowledgement",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Training Coordinator then sends an acknowledgement to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "registration confirmation",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Training Coordinator sends the registration confirmation to the Employee after both checks are complete.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_activities": [
+    {
+      "name": "check whether a place is available",
+      "performed_by": "Training Coordinator",
+      "evidence": "After sending the acknowledgement, Training Coordinator checks whether a place is available.",
+      "status": "proposed"
+    },
+    {
+      "name": "check whether the Employee meets the participation requirements",
+      "performed_by": "Training Coordinator",
+      "evidence": "After sending the acknowledgement, Training Coordinator checks whether the Employee meets the participation requirements.",
+      "status": "proposed"
+    },
+    {
+      "name": "close the registration request",
+      "performed_by": "Training Coordinator",
+      "evidence": "After sending the registration confirmation, Training Coordinator closes the registration request.",
+      "status": "proposed"
+    }
+  ],
+  "open_questions": [
+    {
+      "related_element_type": "transition",
+      "related_field": "target_state_id",
+      "reason": "ambiguous_information",
+      "question": "The text states two checks occur \"After sending the acknowledgement\". Are these two checks performed in a specific order (and if so, which one first), or can they be done in any order / in parallel?"
+    }
+  ],
+  "candidate_states": [
+    {
+      "local_id": "state-1",
+      "name": "Receive registration request",
+      "state_type": "receive",
+      "performed_by": "Training Coordinator",
+      "message_name": "registration request",
+      "is_initial": true,
+      "is_end": false,
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-2",
+      "name": "Send acknowledgement",
+      "state_type": "send",
+      "performed_by": "Training Coordinator",
+      "message_name": "acknowledgement",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator then sends an acknowledgement to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-3",
+      "name": "Check whether a place is available",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "After sending the acknowledgement, Training Coordinator checks whether a place is available.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-4",
+      "name": "Check whether the Employee meets the participation requirements",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "After sending the acknowledgement, Training Coordinator checks whether the Employee meets the participation requirements.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-5",
+      "name": "Send registration confirmation",
+      "state_type": "send",
+      "performed_by": "Training Coordinator",
+      "message_name": "registration confirmation",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator sends the registration confirmation to the Employee after both checks are complete.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-6",
+      "name": "Close the registration request",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": true,
+      "evidence": "After sending the registration confirmation, Training Coordinator closes the registration request.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_transitions": [
+    {
+      "source_state_id": "state-1",
+      "target_state_id": "state-2",
+      "sequence_evidence": "Training Coordinator then sends an acknowledgement to the Employee.",
+      "received_message_name": "registration request",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-3",
+      "sequence_evidence": "After sending the acknowledgement, Training Coordinator checks whether a place is available.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-4",
+      "sequence_evidence": "After sending the acknowledgement, Training Coordinator checks whether the Employee meets the participation requirements.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-3",
+      "target_state_id": "state-5",
+      "sequence_evidence": "Training Coordinator sends the registration confirmation to the Employee after both checks are complete.",
+      "received_message_name": null,
+      "exit_condition": "both checks are complete",
+      "exit_condition_evidence": "Training Coordinator sends the registration confirmation to the Employee after both checks are complete.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-4",
+      "target_state_id": "state-5",
+      "sequence_evidence": "Training Coordinator sends the registration confirmation to the Employee after both checks are complete.",
+      "received_message_name": null,
+      "exit_condition": "both checks are complete",
+      "exit_condition_evidence": "Training Coordinator sends the registration confirmation to the Employee after both checks are complete.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-5",
+      "target_state_id": "state-6",
+      "sequence_evidence": "After sending the registration confirmation, Training Coordinator closes the registration request.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    }
+  ]
+}
+Continue with this extraction? [c=confirm, r=reject, q=quit]: c
+
+Description from Employee:
+I send a registration request to the Training Coordinator.
+I then receive an acknowledgement from the Training Coordinator.
+After receiving the acknowledgement, I wait for and receive a registration confirmation from the Training Coordinator.
+I then record the registration confirmation. This ends my part of the process.
+Saved source view: 73d23889-192b-423d-b208-d08769fc270e
+
+Description from Training Coordinator:
+I receive a registration request from the Employee.
+I then send an acknowledgement to the Employee.
+After sending the acknowledgement, I check whether a place is available and check whether the Employee meets the participation requirements.
+I send the registration confirmation to the Employee after both checks are complete. After sending the registration confirmation, I close the registration request.
+This ends my part of the process.
+Open question: The text states two checks occur "After sending the acknowledgement". Are these two checks performed in a specific order (and if so, which one first), or can they be done in any order / in parallel?
+
+Resolve the source questions before continuing.
+Previously saved views and decisions remain in Neo4j.

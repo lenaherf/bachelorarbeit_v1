@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xml:base="https://example.org/pass/models/urn%3Apass%3Acanonical%3Aprocess%3Acomplaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"
+   xmlns:pass="http://www.i2pm.net/standard-pass-ont#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="#canonical_transition_7aedf48af1ed7fc4">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#ReceiveTransition"/>
+    <pass:hasSourceState rdf:resource="#canonical_state_883a6067996c441b"/>
+    <pass:hasTargetState rdf:resource="#canonical_state_059cd5eeb3a57f48"/>
+    <pass:hasTransitionCondition rdf:resource="#canonical_transition_7aedf48af1ed7fc4_condition"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration request to Check participation requirements</pass:hasModelComponentLabel>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration request to Check participation requirements</rdfs:label>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_7aedf48af1ed7fc4</pass:hasModelComponentID>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_41cbcb188437f35e">
+    <pass:hasIncomingTransition rdf:resource="#canonical_transition_475dc53036fecc23"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection)</pass:hasModelComponentLabel>
+    <pass:hasOutgoingTransition rdf:resource="#canonical_transition_fe0e1560f9d14e72"/>
+    <pass:hasOutgoingTransition rdf:resource="#canonical_transition_dd003c83447473b7"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection)</rdfs:label>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_41cbcb188437f35e</pass:hasModelComponentID>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#ReceiveState"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_8ce5864a08aee772">
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee does not meet the participation requirements</pass:hasModelComponentLabel>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoTransition"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasSourceState rdf:resource="#canonical_state_059cd5eeb3a57f48"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee does not meet the participation requirements</rdfs:label>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_8ce5864a08aee772</pass:hasModelComponentID>
+    <pass:hasTransitionCondition rdf:resource="#canonical_transition_8ce5864a08aee772_condition"/>
+    <pass:hasTargetState rdf:resource="#canonical_state_bf42c37bdb6c0f90"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_behavior_2dbb9bd80bf8b750">
+    <pass:contains rdf:resource="#canonical_transition_d30c5efef5c8f712"/>
+    <pass:contains rdf:resource="#canonical_transition_7aedf48af1ed7fc4_condition"/>
+    <pass:contains rdf:resource="#canonical_state_059cd5eeb3a57f48"/>
+    <pass:contains rdf:resource="#canonical_transition_b0658dc83ec46f20"/>
+    <pass:contains rdf:resource="#canonical_state_5ce375068fc5f710"/>
+    <pass:contains rdf:resource="#canonical_transition_8ce5864a08aee772_condition"/>
+    <pass:contains rdf:resource="#canonical_transition_b0658dc83ec46f20_condition"/>
+    <pass:contains rdf:resource="#canonical_state_bf42c37bdb6c0f90"/>
+    <pass:contains rdf:resource="#canonical_transition_d30c5efef5c8f712_condition"/>
+    <pass:contains rdf:resource="#canonical_state_20568982792989e4"/>
+    <pass:contains rdf:resource="#canonical_state_8f4640b60f3075bd"/>
+    <pass:contains rdf:resource="#canonical_transition_591185c628df9028_condition"/>
+    <pass:contains rdf:resource="#canonical_state_883a6067996c441b"/>
+    <pass:contains rdf:resource="#canonical_transition_591185c628df9028"/>
+    <pass:contains rdf:resource="#canonical_transition_7aedf48af1ed7fc4"/>
+    <pass:contains rdf:resource="#canonical_transition_8ce5864a08aee772"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Training Coordinator behaviour</pass:hasModelComponentLabel>
+    <pass:hasEndState rdf:resource="#canonical_state_5ce375068fc5f710"/>
+    <pass:hasEndState rdf:resource="#canonical_state_8f4640b60f3075bd"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_behavior_2dbb9bd80bf8b750</pass:hasModelComponentID>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SubjectBaseBehavior"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SubjectBehavior"/>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+    <pass:hasInitialState rdf:resource="#canonical_state_883a6067996c441b"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Training Coordinator behaviour</rdfs:label>
+    <pass:hasPriorityNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#positiveInteger">1</pass:hasPriorityNumber>
+    <pass:isBaseBehaviorOf rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_b0658dc83ec46f20">
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoTransition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasTransitionCondition rdf:resource="#canonical_transition_b0658dc83ec46f20_condition"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee meets the participation requirements</pass:hasModelComponentLabel>
+    <pass:hasTargetState rdf:resource="#canonical_state_20568982792989e4"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_b0658dc83ec46f20</pass:hasModelComponentID>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasSourceState rdf:resource="#canonical_state_059cd5eeb3a57f48"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee meets the participation requirements</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_a317850513fa949f">
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoState"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#EndState"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_a317850513fa949f</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Record confirmed registration</pass:hasModelComponentLabel>
+    <pass:hasIncomingTransition rdf:resource="#canonical_transition_fe0e1560f9d14e72"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Record confirmed registration</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a">
+    <pass:contains rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:contains rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:contains rdf:resource="#canonical_exchange_1013ad5cc9b70918"/>
+    <pass:contains rdf:resource="#canonical_exchange_7e92dfa6c82c309c"/>
+    <pass:contains rdf:resource="#canonical_message_b16f5c9ed5425af1"/>
+    <pass:contains rdf:resource="#canonical_exchange_f51352b4f8345182"/>
+    <pass:contains rdf:resource="#canonical_message_e903a678fd0856c0"/>
+    <pass:contains rdf:resource="#canonical_message_ec6c332364e708a6"/>
+    <pass:contains rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:contains rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+    <pass:contains rdf:resource="#SID_1"/>
+    <pass:contains rdf:resource="#MessageExchangeList_1"/>
+    <pass:contains rdf:resource="#MessageExchangeList_2"/>
+    <pass:contains rdf:resource="#canonical_transition_7aedf48af1ed7fc4"/>
+    <pass:contains rdf:resource="#canonical_state_883a6067996c441b"/>
+    <pass:contains rdf:resource="#canonical_state_059cd5eeb3a57f48"/>
+    <pass:contains rdf:resource="#canonical_state_a317850513fa949f"/>
+    <pass:contains rdf:resource="#canonical_state_20568982792989e4"/>
+    <pass:contains rdf:resource="#canonical_state_8f4640b60f3075bd"/>
+    <pass:contains rdf:resource="#canonical_transition_8ce5864a08aee772"/>
+    <pass:contains rdf:resource="#canonical_transition_475dc53036fecc23"/>
+    <pass:contains rdf:resource="#canonical_transition_fe0e1560f9d14e72_condition"/>
+    <pass:contains rdf:resource="#canonical_state_fe19f980fac2848d"/>
+    <pass:contains rdf:resource="#canonical_state_bf42c37bdb6c0f90"/>
+    <pass:contains rdf:resource="#canonical_transition_591185c628df9028_condition"/>
+    <pass:contains rdf:resource="#canonical_transition_7aedf48af1ed7fc4_condition"/>
+    <pass:contains rdf:resource="#canonical_transition_fe0e1560f9d14e72"/>
+    <pass:contains rdf:resource="#canonical_transition_d30c5efef5c8f712"/>
+    <pass:contains rdf:resource="#canonical_transition_dd003c83447473b7_condition"/>
+    <pass:contains rdf:resource="#canonical_state_76782ce713f80b6c"/>
+    <pass:contains rdf:resource="#canonical_transition_b0658dc83ec46f20_condition"/>
+    <pass:contains rdf:resource="#canonical_state_5ce375068fc5f710"/>
+    <pass:contains rdf:resource="#canonical_transition_b0658dc83ec46f20"/>
+    <pass:contains rdf:resource="#canonical_transition_dd003c83447473b7"/>
+    <pass:contains rdf:resource="#canonical_transition_8ce5864a08aee772_condition"/>
+    <pass:contains rdf:resource="#canonical_transition_591185c628df9028"/>
+    <pass:contains rdf:resource="#canonical_transition_d30c5efef5c8f712_condition"/>
+    <pass:contains rdf:resource="#canonical_transition_475dc53036fecc23_condition"/>
+    <pass:contains rdf:resource="#canonical_state_41cbcb188437f35e"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reviewed complaint handling example</rdfs:label>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reviewed complaint handling example</pass:hasModelComponentLabel>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#PASSProcessModel"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a</pass:hasModelComponentID>
+    <pass:hasStartSubject rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasIncomingMessageExchange">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_475dc53036fecc23">
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration request to Receive registration response (confirmation or rejection)</pass:hasModelComponentLabel>
+    <pass:hasTargetState rdf:resource="#canonical_state_41cbcb188437f35e"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendTransition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_475dc53036fecc23</pass:hasModelComponentID>
+    <pass:hasTransitionCondition rdf:resource="#canonical_transition_475dc53036fecc23_condition"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration request to Receive registration response (confirmation or rejection)</rdfs:label>
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:hasSourceState rdf:resource="#canonical_state_fe19f980fac2848d"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_subject_59d5ddb6cb3c7a68">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee</rdfs:label>
+    <pass:hasOutgoingMessageExchange rdf:resource="#canonical_exchange_1013ad5cc9b70918"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#FullySpecifiedSubject"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#StartSubject"/>
+    <pass:containsBehavior rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:containsBaseBehavior rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:hasIncomingMessageExchange rdf:resource="#canonical_exchange_7e92dfa6c82c309c"/>
+    <pass:hasIncomingMessageExchange rdf:resource="#canonical_exchange_f51352b4f8345182"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_subject_59d5ddb6cb3c7a68</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee</pass:hasModelComponentLabel>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#SID_1">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.imi.kit.edu/abstract-pass-ont#ModelLayer"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SID_1</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subject interaction</pass:hasModelComponentLabel>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subject interaction</rdfs:label>
+    <pass:hasPriorityNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#positiveInteger">1</pass:hasPriorityNumber>
+    <pass:contains rdf:resource="#canonical_exchange_7e92dfa6c82c309c"/>
+    <pass:contains rdf:resource="#canonical_exchange_1013ad5cc9b70918"/>
+    <pass:contains rdf:resource="#canonical_message_b16f5c9ed5425af1"/>
+    <pass:contains rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:contains rdf:resource="#canonical_message_e903a678fd0856c0"/>
+    <pass:contains rdf:resource="#canonical_exchange_f51352b4f8345182"/>
+    <pass:contains rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+    <pass:contains rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:contains rdf:resource="#canonical_message_ec6c332364e708a6"/>
+    <pass:contains rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:contains rdf:resource="#MessageExchangeList_1"/>
+    <pass:contains rdf:resource="#MessageExchangeList_2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_subject_49ce2a9e9f8697b8">
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_subject_49ce2a9e9f8697b8</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Training Coordinator</pass:hasModelComponentLabel>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#FullySpecifiedSubject"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Training Coordinator</rdfs:label>
+    <pass:containsBaseBehavior rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasIncomingMessageExchange rdf:resource="#canonical_exchange_1013ad5cc9b70918"/>
+    <pass:hasOutgoingMessageExchange rdf:resource="#canonical_exchange_7e92dfa6c82c309c"/>
+    <pass:hasOutgoingMessageExchange rdf:resource="#canonical_exchange_f51352b4f8345182"/>
+    <pass:containsBehavior rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_message_b16f5c9ed5425af1">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#MessageSpecification"/>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_message_b16f5c9ed5425af1</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">registration confirmation</pass:hasModelComponentLabel>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">registration confirmation</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_message_e903a678fd0856c0">
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#MessageSpecification"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_message_e903a678fd0856c0</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">registration rejection</pass:hasModelComponentLabel>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">registration rejection</rdfs:label>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_exchange_7e92dfa6c82c309c">
+    <pass:hasSender rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Training Coordinator sends registration rejection to Employee</rdfs:label>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#MessageExchange"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasReceiver rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_exchange_7e92dfa6c82c309c</pass:hasModelComponentID>
+    <pass:hasMessageType rdf:resource="#canonical_message_e903a678fd0856c0"/>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Training Coordinator sends registration rejection to Employee</pass:hasModelComponentLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_exchange_1013ad5cc9b70918">
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee sends registration request to Training Coordinator</pass:hasModelComponentLabel>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#MessageExchange"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_exchange_1013ad5cc9b70918</pass:hasModelComponentID>
+    <pass:hasSender rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:hasMessageType rdf:resource="#canonical_message_ec6c332364e708a6"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee sends registration request to Training Coordinator</rdfs:label>
+    <pass:hasReceiver rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_bf42c37bdb6c0f90">
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration rejection</pass:hasModelComponentLabel>
+    <pass:hasOutgoingTransition rdf:resource="#canonical_transition_591185c628df9028"/>
+    <pass:hasIncomingTransition rdf:resource="#canonical_transition_8ce5864a08aee772"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration rejection</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendState"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_bf42c37bdb6c0f90</pass:hasModelComponentID>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_059cd5eeb3a57f48">
+    <pass:hasOutgoingTransition rdf:resource="#canonical_transition_8ce5864a08aee772"/>
+    <pass:hasOutgoingTransition rdf:resource="#canonical_transition_b0658dc83ec46f20"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoState"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Check participation requirements</rdfs:label>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_059cd5eeb3a57f48</pass:hasModelComponentID>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Check participation requirements</pass:hasModelComponentLabel>
+    <pass:hasIncomingTransition rdf:resource="#canonical_transition_7aedf48af1ed7fc4"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_behavior_88df1a82b4256ab7">
+    <pass:contains rdf:resource="#canonical_state_fe19f980fac2848d"/>
+    <pass:contains rdf:resource="#canonical_transition_475dc53036fecc23_condition"/>
+    <pass:contains rdf:resource="#canonical_transition_fe0e1560f9d14e72_condition"/>
+    <pass:contains rdf:resource="#canonical_transition_dd003c83447473b7"/>
+    <pass:contains rdf:resource="#canonical_transition_475dc53036fecc23"/>
+    <pass:contains rdf:resource="#canonical_state_41cbcb188437f35e"/>
+    <pass:contains rdf:resource="#canonical_state_a317850513fa949f"/>
+    <pass:contains rdf:resource="#canonical_state_76782ce713f80b6c"/>
+    <pass:contains rdf:resource="#canonical_transition_dd003c83447473b7_condition"/>
+    <pass:contains rdf:resource="#canonical_transition_fe0e1560f9d14e72"/>
+    <pass:isBaseBehaviorOf rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_behavior_88df1a82b4256ab7</pass:hasModelComponentID>
+    <pass:hasInitialState rdf:resource="#canonical_state_fe19f980fac2848d"/>
+    <pass:hasEndState rdf:resource="#canonical_state_76782ce713f80b6c"/>
+    <pass:hasEndState rdf:resource="#canonical_state_a317850513fa949f"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee behaviour</pass:hasModelComponentLabel>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SubjectBaseBehavior"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SubjectBehavior"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee behaviour</rdfs:label>
+    <pass:hasPriorityNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#positiveInteger">1</pass:hasPriorityNumber>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasEndState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_message_ec6c332364e708a6">
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#MessageSpecification"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_message_ec6c332364e708a6</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">registration request</pass:hasModelComponentLabel>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">registration request</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_5ce375068fc5f710">
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Archive approved registration request</pass:hasModelComponentLabel>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Archive approved registration request</rdfs:label>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoState"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#EndState"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_5ce375068fc5f710</pass:hasModelComponentID>
+    <pass:hasIncomingTransition rdf:resource="#canonical_transition_d30c5efef5c8f712"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_883a6067996c441b">
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#InitialStateOfBehavior"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#ReceiveState"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_883a6067996c441b</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration request</pass:hasModelComponentLabel>
+    <pass:hasOutgoingTransition rdf:resource="#canonical_transition_7aedf48af1ed7fc4"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration request</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_fe19f980fac2848d">
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#InitialStateOfBehavior"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendState"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_fe19f980fac2848d</pass:hasModelComponentID>
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration request</pass:hasModelComponentLabel>
+    <pass:hasOutgoingTransition rdf:resource="#canonical_transition_475dc53036fecc23"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration request</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#containsBehavior">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_fe0e1560f9d14e72">
+    <pass:hasSourceState rdf:resource="#canonical_state_41cbcb188437f35e"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection) to Record confirmed registration</rdfs:label>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_fe0e1560f9d14e72</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection) to Record confirmed registration</pass:hasModelComponentLabel>
+    <pass:hasTargetState rdf:resource="#canonical_state_a317850513fa949f"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#ReceiveTransition"/>
+    <pass:hasTransitionCondition rdf:resource="#canonical_transition_fe0e1560f9d14e72_condition"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_exchange_f51352b4f8345182">
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Training Coordinator sends registration confirmation to Employee</pass:hasModelComponentLabel>
+    <pass:hasSender rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#MessageExchange"/>
+    <pass:belongsTo rdf:resource="#canonical_process_complaint-demo-622d061c-da0b-404e-9043-8b7eb7094f6a"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Training Coordinator sends registration confirmation to Employee</rdfs:label>
+    <pass:hasReceiver rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_exchange_f51352b4f8345182</pass:hasModelComponentID>
+    <pass:hasMessageType rdf:resource="#canonical_message_b16f5c9ed5425af1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_d30c5efef5c8f712">
+    <pass:hasTargetState rdf:resource="#canonical_state_5ce375068fc5f710"/>
+    <pass:hasTransitionCondition rdf:resource="#canonical_transition_d30c5efef5c8f712_condition"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendTransition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasSourceState rdf:resource="#canonical_state_20568982792989e4"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration confirmation to Archive approved registration request</pass:hasModelComponentLabel>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_d30c5efef5c8f712</pass:hasModelComponentID>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration confirmation to Archive approved registration request</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#requiresReceptionOfMessage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_dd003c83447473b7_condition">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection) to Record rejected registration condition</rdfs:label>
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_dd003c83447473b7_condition</pass:hasModelComponentID>
+    <pass:requiresPerformedMessageExchange rdf:resource="#canonical_exchange_7e92dfa6c82c309c"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#ReceiveTransitionCondition"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection) to Record rejected registration condition</pass:hasModelComponentLabel>
+    <pass:requiresMessageSentFrom rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+    <pass:requiresReceptionOfMessage rdf:resource="#canonical_message_e903a678fd0856c0"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_7aedf48af1ed7fc4_condition">
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration request to Check participation requirements condition</pass:hasModelComponentLabel>
+    <pass:requiresPerformedMessageExchange rdf:resource="#canonical_exchange_1013ad5cc9b70918"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration request to Check participation requirements condition</rdfs:label>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#ReceiveTransitionCondition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_7aedf48af1ed7fc4_condition</pass:hasModelComponentID>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:requiresMessageSentFrom rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:requiresReceptionOfMessage rdf:resource="#canonical_message_ec6c332364e708a6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_591185c628df9028">
+    <pass:hasSourceState rdf:resource="#canonical_state_bf42c37bdb6c0f90"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration rejection to Archive rejected registration request</pass:hasModelComponentLabel>
+    <pass:hasTransitionCondition rdf:resource="#canonical_transition_591185c628df9028_condition"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_591185c628df9028</pass:hasModelComponentID>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendTransition"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration rejection to Archive rejected registration request</rdfs:label>
+    <pass:hasTargetState rdf:resource="#canonical_state_8f4640b60f3075bd"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_b0658dc83ec46f20_condition">
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_b0658dc83ec46f20_condition</pass:hasModelComponentID>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee meets the participation requirements</rdfs:label>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoTransitionCondition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee meets the participation requirements</pass:hasModelComponentLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#MessageSpecification">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#MessageExchangeList_1">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#MessageExchangeList"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MessageExchangeList_1</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Messages 1</pass:hasModelComponentLabel>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Messages 1</rdfs:label>
+    <pass:contains rdf:resource="#canonical_exchange_7e92dfa6c82c309c"/>
+    <pass:contains rdf:resource="#canonical_exchange_f51352b4f8345182"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_591185c628df9028_condition">
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_591185c628df9028_condition</pass:hasModelComponentID>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendTransitionCondition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:requiresPerformedMessageExchange rdf:resource="#canonical_exchange_7e92dfa6c82c309c"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration rejection to Archive rejected registration request condition</pass:hasModelComponentLabel>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration rejection to Archive rejected registration request condition</rdfs:label>
+    <pass:requiresMessageSentTo rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:requiresSendingOfMessage rdf:resource="#canonical_message_e903a678fd0856c0"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_fe0e1560f9d14e72_condition">
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection) to Record confirmed registration condition</pass:hasModelComponentLabel>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#ReceiveTransitionCondition"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection) to Record confirmed registration condition</rdfs:label>
+    <pass:requiresPerformedMessageExchange rdf:resource="#canonical_exchange_f51352b4f8345182"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_fe0e1560f9d14e72_condition</pass:hasModelComponentID>
+    <pass:requiresMessageSentFrom rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+    <pass:requiresReceptionOfMessage rdf:resource="#canonical_message_b16f5c9ed5425af1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasOutgoingTransition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_8ce5864a08aee772_condition">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee does not meet the participation requirements</rdfs:label>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoTransitionCondition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_8ce5864a08aee772_condition</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Employee does not meet the participation requirements</pass:hasModelComponentLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_d30c5efef5c8f712_condition">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration confirmation to Archive approved registration request condition</rdfs:label>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendTransitionCondition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration confirmation to Archive approved registration request condition</pass:hasModelComponentLabel>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_d30c5efef5c8f712_condition</pass:hasModelComponentID>
+    <pass:requiresPerformedMessageExchange rdf:resource="#canonical_exchange_f51352b4f8345182"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:requiresMessageSentTo rdf:resource="#canonical_subject_59d5ddb6cb3c7a68"/>
+    <pass:requiresSendingOfMessage rdf:resource="#canonical_message_b16f5c9ed5425af1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#SendTransitionCondition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_76782ce713f80b6c">
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoState"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#EndState"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Record rejected registration</pass:hasModelComponentLabel>
+    <pass:hasIncomingTransition rdf:resource="#canonical_transition_dd003c83447473b7"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_76782ce713f80b6c</pass:hasModelComponentID>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Record rejected registration</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prototype PASS instance export. Ontology conformance and consuming-tool compatibility require separate validation.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasSender">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#requiresSendingOfMessage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasModelComponentLabel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#FullySpecifiedSubject">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#ReceiveTransitionCondition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasIncomingTransition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_dd003c83447473b7">
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_dd003c83447473b7</pass:hasModelComponentID>
+    <pass:hasSourceState rdf:resource="#canonical_state_41cbcb188437f35e"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection) to Record rejected registration</pass:hasModelComponentLabel>
+    <pass:hasTransitionCondition rdf:resource="#canonical_transition_dd003c83447473b7_condition"/>
+    <pass:hasTargetState rdf:resource="#canonical_state_76782ce713f80b6c"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#ReceiveTransition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receive registration response (confirmation or rejection) to Record rejected registration</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_20568982792989e4">
+    <pass:hasIncomingTransition rdf:resource="#canonical_transition_b0658dc83ec46f20"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendState"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_20568982792989e4</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration confirmation</pass:hasModelComponentLabel>
+    <pass:hasOutgoingTransition rdf:resource="#canonical_transition_d30c5efef5c8f712"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration confirmation</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasInitialState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_transition_475dc53036fecc23_condition">
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_transition_475dc53036fecc23_condition</pass:hasModelComponentID>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#SendTransitionCondition"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <pass:requiresPerformedMessageExchange rdf:resource="#canonical_exchange_1013ad5cc9b70918"/>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration request to Receive registration response (confirmation or rejection) condition</pass:hasModelComponentLabel>
+    <pass:belongsTo rdf:resource="#canonical_behavior_88df1a82b4256ab7"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Send registration request to Receive registration response (confirmation or rejection) condition</rdfs:label>
+    <pass:requiresMessageSentTo rdf:resource="#canonical_subject_49ce2a9e9f8697b8"/>
+    <pass:requiresSendingOfMessage rdf:resource="#canonical_message_ec6c332364e708a6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.imi.kit.edu/abstract-pass-ont#ModelLayer">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#MessageExchangeList_2">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#MessageExchangeList"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MessageExchangeList_2</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Messages 2</pass:hasModelComponentLabel>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Messages 2</rdfs:label>
+    <pass:contains rdf:resource="#canonical_exchange_1013ad5cc9b70918"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasOutgoingMessageExchange">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#DoTransition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#MessageExchangeList">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#requiresMessageSentTo">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasSourceState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#requiresMessageSentFrom">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#canonical_state_8f4640b60f3075bd">
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#DoState"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.i2pm.net/standard-pass-ont#EndState"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Archive rejected registration request</rdfs:label>
+    <pass:hasIncomingTransition rdf:resource="#canonical_transition_591185c628df9028"/>
+    <pass:belongsTo rdf:resource="#canonical_behavior_2dbb9bd80bf8b750"/>
+    <pass:hasModelComponentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">canonical_state_8f4640b60f3075bd</pass:hasModelComponentID>
+    <pass:hasModelComponentLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Archive rejected registration request</pass:hasModelComponentLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#ReceiveState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasTransitionCondition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#SendTransition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#SubjectBehavior">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasModelComponentID">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#DoState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasMessageType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#InitialStateOfBehavior">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#isBaseBehaviorOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#DoTransitionCondition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasPriorityNumber">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#containsBaseBehavior">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#SubjectBaseBehavior">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#ReceiveTransition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#requiresPerformedMessageExchange">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasReceiver">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#SendState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#StartSubject">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#EndState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasTargetState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#contains">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#hasStartSubject">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#MessageExchange">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#belongsTo">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.i2pm.net/standard-pass-ont#PASSProcessModel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+</rdf:RDF>

@@ -1,0 +1,39 @@
+{
+  "model_uri": "urn:pass:canonical:process:complaint-demo-9d671e25-d157-4d1f-976b-f54fafeeb3ff",
+  "issues": [
+    {
+      "code": "single_source_exchange",
+      "element_uri": "urn:pass:canonical:exchange:a4b8119f4892f378",
+      "message": "This exchange is supported by only one source view.",
+      "severity": "warning"
+    },
+    {
+      "code": "missing_receive_transition",
+      "element_uri": "urn:pass:canonical:exchange:a4b8119f4892f378",
+      "message": "The selected receiver behavior has no receive transition referencing this exchange.",
+      "severity": "warning"
+    }
+  ],
+  "start_subject_uri": "urn:pass:canonical:subject:7c94f0af2c6fc96d",
+  "passes_completeness_checks": true,
+  "has_warnings": true,
+  "export_status": "draft_with_warnings",
+  "shacl_validation": {
+    "profile": "ontology/shapes/pass-prototype-shapes.ttl",
+    "conforms": true,
+    "inference": "none"
+  },
+  "ontology_validation": "not_run",
+  "consuming_tool_validation": "not_run",
+  "triple_count": 352,
+  "visio_export": {
+    "file": "model.owl",
+    "base_uri": "https://example.org/pass/models/urn%3Apass%3Acanonical%3Aprocess%3Acomplaint-demo-9d671e25-d157-4d1f-976b-f54fafeeb3ff",
+    "triple_count": 428,
+    "shacl_validation": {
+      "conforms": true,
+      "profile": "ontology/shapes/pass-prototype-shapes.ttl",
+      "inference": "none"
+    }
+  }
+}

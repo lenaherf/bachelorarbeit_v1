@@ -1,0 +1,26 @@
+{
+  "model_uri": "urn:pass:canonical:process:complaint-demo-46a9b199-ad52-4c01-99d4-1c54c1c6cf99",
+  "issues": [],
+  "start_subject_uri": "urn:pass:canonical:subject:3af1dcb613169635",
+  "passes_completeness_checks": true,
+  "has_warnings": false,
+  "export_status": "passes_prototype_checks",
+  "shacl_validation": {
+    "profile": "ontology/shapes/pass-prototype-shapes.ttl",
+    "conforms": true,
+    "inference": "none"
+  },
+  "ontology_validation": "not_run",
+  "consuming_tool_validation": "not_run",
+  "triple_count": 377,
+  "visio_export": {
+    "file": "model.owl",
+    "base_uri": "https://example.org/pass/models/urn%3Apass%3Acanonical%3Aprocess%3Acomplaint-demo-46a9b199-ad52-4c01-99d4-1c54c1c6cf99",
+    "triple_count": 458,
+    "shacl_validation": {
+      "conforms": true,
+      "profile": "ontology/shapes/pass-prototype-shapes.ttl",
+      "inference": "none"
+    }
+  }
+}

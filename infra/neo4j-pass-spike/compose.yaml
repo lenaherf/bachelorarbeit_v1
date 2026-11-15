@@ -1,0 +1,17 @@
+services:
+  neo4j-pass:
+    image: neo4j:5.26.0-community
+    container_name: pass-neo4j-spike
+
+    ports:
+      - "127.0.0.1:7475:7474"
+      - "127.0.0.1:7688:7687"
+
+    environment:
+      NEO4J_AUTH: "neo4j/${PASS_NEO4J_PASSWORD}"
+
+    volumes:
+      - ./data:/data
+      - ./logs:/logs
+
+    restart: unless-stopped

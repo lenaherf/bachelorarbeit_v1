@@ -1,0 +1,183 @@
+@prefix ex: <https://example.org/bachelorarbeit/pass/complaint/> .
+@prefix pass: <http://www.i2pm.net/standard-pass-ont#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Process Model
+
+ex:model
+    a pass:PASSProcessModel ;
+    pass:hasModelComponentID "complaint-process" ;
+    pass:hasModelComponentLabel "Complaint handling process" ;
+    pass:hasStartSubject ex:customer ;
+    pass:contains
+        ex:customer ,
+        ex:customer-service ,
+        ex:complaint-message ,
+        ex:response-message ,
+        ex:complaint-exchange ,
+        ex:response-exchange .
+
+# Subjects
+
+ex:customer
+    a pass:InterfaceSubject ,
+      pass:StartSubject ;
+    pass:hasModelComponentId "customer" ;
+    pass:hasModelComponentLabel "Customer" ;
+    pass:hasOutgoingMessageExchange ex:complaint-exchange ;
+    pass:hasIncomingMessageExchange ex:response-exchange .
+
+ex:customer-service
+    a pass:FullySpecifiedSubject ;
+    pass:hasModelComponentId "customer-service" ;
+    pass:hasModelComponentLabel "Customer Service" ;
+    pass:containsBehavior ex:customer-service-behavior ;
+    pass:containsBaseBehavior ex:customer-service-behavior ;
+    pass:hasIncomingMessageExchange ex:complaint-exchange ;
+    pass:hasOutgoingMessageExchange ex:response-exchange .
+
+# Message Specifications
+
+ex:complaint-message
+    a pass:MessageSpecification ;
+    pass:hasModelComponentID "complaint-message" ;
+    pass:hasModelComponentLabel "Complaint message" .
+
+ex:response-message
+    a pass:MessageSpecification ;
+    pass:hasModelComponentID "response-message" ;
+    pass:hasModelComponentLabel "Response message" .
+
+# Message Exchanges
+
+ex:complaint-exchange
+    a pass:MessageExchange ;
+    pass:hasModelComponentID "complaint-exchange" ;
+    pass:hasModelComponentLabel "Customer sends complaint to Customer Service" ;
+    pass:hasSender ex:customer ;
+    pass:hasReceiver ex:customer-service ;
+    pass:hasMessageType ex:complaint-message .
+
+ex:response-exchange
+    a pass:MessageExchange ;
+    pass:hasModelComponentID "response-exchange" ;
+    pass:hasModelComponentLabel "Customer Service sends response to Customer" ;
+    pass:hasSender ex:customer-service ;
+    pass:hasReceiver ex:customer ;
+    pass:hasMessageType ex:response-message .
+
+# Customer Service Behavior
+
+ex:customer-service-behavior
+    a pass:SubjectBaseBehavior ;
+    pass:hasModelComponentID "customer-service-behavior" ;
+    pass:hasModelComponentLabel "Customer Service complaint handling behavior" ;
+    pass:hasPriorityNumber "1"^^xsd:positiveInteger ;
+    pass:isBaseBehaviorOf ex:customer-service ;
+    pass:hasInitialState ex:receive-complaint ;
+    pass:hasEndState ex:finished ;
+    pass:contains
+        ex:receive-complaint ,
+        ex:review-complaint ,
+        ex:send-response ,
+        ex:finished ,
+        ex:receive-complaint-transition ,
+        ex:review-complete-transition ,
+        ex:send-response-transition ,
+        ex:receive-complaint-condition ,
+        ex:review-complete-condition ,
+        ex:send-response-condition .
+
+# States
+
+ex:receive-complaint
+    a pass:ReceiveState ,
+      pass:InitialStateOfBehavior ;
+    pass:hasModelComponentID "receive-complaint" ;
+    pass:hasModelComponentLabel "Receive complaint" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:hasOutgoingTransition ex:receive-complaint-transition .
+
+
+ex:review-complaint
+    a pass:DoState ;
+    pass:hasModelComponentID "review-complaint" ;
+    pass:hasModelComponentLabel "Review complaint" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:hasIncomingTransition ex:receive-complaint-transition ;
+    pass:hasOutgoingTransition ex:review-complete-transition .
+
+
+ex:send-response
+    a pass:SendState ;
+    pass:hasModelComponentID "send-response" ;
+    pass:hasModelComponentLabel "Send response" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:hasIncomingTransition ex:review-complete-transition ;
+    pass:hasOutgoingTransition ex:send-response-transition .
+
+
+ex:finished
+    a pass:DoState ,
+      pass:EndState ;
+    pass:hasModelComponentID "finished" ;
+    pass:hasModelComponentLabel "Complaint handling finished" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:hasIncomingTransition ex:send-response-transition .
+
+# Transitions
+
+ex:receive-complaint-transition
+    a pass:ReceiveTransition ;
+    pass:hasModelComponentID "receive-complaint-transition" ;
+    pass:hasModelComponentLabel "Complaint received" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:hasSourceState ex:receive-complaint ;
+    pass:hasTargetState ex:review-complaint ;
+    pass:hasTransitionCondition ex:receive-complaint-condition .
+
+
+ex:review-complete-transition
+    a pass:DoTransition ;
+    pass:hasModelComponentID "review-complete-transition" ;
+    pass:hasModelComponentLabel "Complaint review completed" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:hasSourceState ex:review-complaint ;
+    pass:hasTargetState ex:send-response ;
+    pass:hasTransitionCondition ex:review-complete-condition .
+
+
+ex:send-response-transition
+    a pass:SendTransition ;
+    pass:hasModelComponentID "send-response-transition" ;
+    pass:hasModelComponentLabel "Response sent" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:hasSourceState ex:send-response ;
+    pass:hasTargetState ex:finished ;
+    pass:hasTransitionCondition ex:send-response-condition .
+
+# Transition Conditions
+
+ex:receive-complaint-condition
+    a pass:ReceiveTransitionCondition ;
+    pass:hasModelComponentID "receive-complaint-condition" ;
+    pass:hasModelComponentLabel "Complaint from Customer is received" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:requiresPerformedMessageExchange ex:complaint-exchange .
+
+
+ex:review-complete-condition
+    a pass:DoTransitionCondition ;
+    pass:hasModelComponentID "review-complete-condition" ;
+    pass:hasModelComponentLabel "Complaint review is complete" ;
+    pass:belongsTo ex:customer-service-behavior .
+
+
+ex:send-response-condition
+    a pass:SendTransitionCondition ;
+    pass:hasModelComponentID "send-response-condition" ;
+    pass:hasModelComponentLabel "Response is sent to Customer" ;
+    pass:belongsTo ex:customer-service-behavior ;
+    pass:requiresPerformedMessageExchange ex:response-exchange .
+
+
