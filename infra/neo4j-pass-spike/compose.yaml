@@ -4,21 +4,14 @@ services:
     container_name: pass-neo4j-spike
 
     ports:
-      - "7475:7474"
-      - "7688:7687"
+      - "127.0.0.1:7475:7474"
+      - "127.0.0.1:7688:7687"
 
     environment:
       NEO4J_AUTH: "neo4j/${PASS_NEO4J_PASSWORD}"
 
-      NEO4J_dbms_security_procedures_unrestricted: "n10s.*"
-      NEO4J_dbms_security_procedures_allowlist: "n10s.*"
-
-      NEO4J_server_unmanaged__extension__classes: "n10s.endpoint=/rdf"
-
     volumes:
       - ./data:/data
       - ./logs:/logs
-      - ./plugins:/plugins
-      - ./import:/var/lib/neo4j/import
 
     restart: unless-stopped
