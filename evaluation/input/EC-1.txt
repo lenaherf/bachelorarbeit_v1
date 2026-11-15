@@ -1,0 +1,17 @@
+EC-1 - Both stakeholder contributions describe the same registration process consistently.
+
+Stakeholder A:
+Role: Employee
+Description:
+I send a registration request to the Training Coordinator. I then receive an acknowledgement from the Training Coordinator.
+After receiving the acknowledgement, I wait for and receive a registration confirmation from the Training Coordinator.
+I then record the registration confirmation. This ends my part of the process.
+
+Stakeholder B:
+Role: Training Coordinator
+Description:
+I receive a registration request from the Employee. I then send an acknowledgement to the Employee.
+After sending the acknowledgement, I check the available training openings. Once i find an opening, I sign up the Employee to the training program.
+Once I signed up the Employee, I send a registration confirmation to the Employee. After sending the registration confirmation, I close the registration request.
+This ends my part of the process.
+

@@ -1,0 +1,1011 @@
+
+Stakeholder 1
+Role name: Employee
+Enter the description.
+Finish with a line containing only a dot: .
+I send a registration request to the Training Coordinator. I then receive an acknowledgement from the Training Coordinator.
+After receiving the acknowledgement, I receive a document request from the Training Coordinator.
+I prepare the requested documents. Once the requested documents are ready, I send the requested documents to the Training Coordinator.
+I then receive a training offer from the Training Coordinator.
+I review the training offer. Once I have decided to accept the training offer, I send an offer acceptance to the Training Coordinator.
+I then receive a registration confirmation from the Training Coordinator.
+I record the registration confirmation. After the registration confirmation has been recorded, I send a receipt confirmation to the Training Coordinator.
+After sending the receipt confirmation, I archive my registration documents. This ends my part of the process.
+.
+
+Preparing and extracting the description...
+
+Extracted view:
+{
+  "stakeholder": "Employee",
+  "source_text": "I send a registration request to the Training Coordinator. I then receive an acknowledgement from the Training Coordinator.\nAfter receiving the acknowledgement, I receive a document request from the Training Coordinator.\nI prepare the requested documents. Once the requested documents are ready, I send the requested documents to the Training Coordinator.\nI then receive a training offer from the Training Coordinator.\nI review the training offer. Once I have decided to accept the training offer, I send an offer acceptance to the Training Coordinator.\nI then receive a registration confirmation from the Training Coordinator.\nI record the registration confirmation. After the registration confirmation has been recorded, I send a receipt confirmation to the Training Coordinator.\nAfter sending the receipt confirmation, I archive my registration documents. This ends my part of the process.",
+  "corrected_text": "I send a registration request to the Training Coordinator. I then receive an acknowledgement from the Training Coordinator. After receiving the acknowledgement, I receive a document request from the Training Coordinator. I prepare the requested documents. Once the requested documents are ready, I send the requested documents to the Training Coordinator. I then receive a training offer from the Training Coordinator. I review the training offer. Once I have decided to accept the training offer, I send an offer acceptance to the Training Coordinator. I then receive a registration confirmation from the Training Coordinator. I record the registration confirmation. After the registration confirmation has been recorded, I send a receipt confirmation to the Training Coordinator. After sending the receipt confirmation, I archive my registration documents. This ends my part of the process.",
+  "prepared_text": "Employee sends a registration request to the Training Coordinator.  \nEmployee then receives an acknowledgement from the Training Coordinator.  \nAfter receiving the acknowledgement, Employee receives a document request from the Training Coordinator.  \nEmployee prepares the requested documents.  \nOnce the requested documents are ready, Employee sends the requested documents to the Training Coordinator.  \nEmployee then receives a training offer from the Training Coordinator.  \nEmployee reviews the training offer.  \nOnce Employee has decided to accept the training offer, Employee sends an offer acceptance to the Training Coordinator.  \nEmployee then receives a registration confirmation from the Training Coordinator.  \nEmployee records the registration confirmation.  \nAfter the registration confirmation has been recorded, Employee sends a receipt confirmation to the Training Coordinator.  \nAfter sending the receipt confirmation, Employee archives Employee's registration documents.  \nThis ends Employee's part of the process.",
+  "candidate_subjects": [
+    {
+      "name": "Employee",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "Training Coordinator",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_messages": [
+    {
+      "name": "registration request",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "acknowledgement",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Employee then receives an acknowledgement from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "document request",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Employee receives a document request from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "requested documents",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Employee sends the requested documents to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "training offer",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Employee then receives a training offer from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "offer acceptance",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Employee sends an offer acceptance to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "registration confirmation",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Employee then receives a registration confirmation from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "name": "receipt confirmation",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Employee sends a receipt confirmation to the Training Coordinator.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_activities": [
+    {
+      "name": "prepare the requested documents",
+      "performed_by": "Employee",
+      "evidence": "Employee prepares the requested documents.",
+      "status": "proposed"
+    },
+    {
+      "name": "review the training offer",
+      "performed_by": "Employee",
+      "evidence": "Employee reviews the training offer.",
+      "status": "proposed"
+    },
+    {
+      "name": "record the registration confirmation",
+      "performed_by": "Employee",
+      "evidence": "Employee records the registration confirmation.",
+      "status": "proposed"
+    },
+    {
+      "name": "archive Employee's registration documents",
+      "performed_by": "Employee",
+      "evidence": "Employee archives Employee's registration documents.",
+      "status": "proposed"
+    }
+  ],
+  "open_questions": [],
+  "candidate_states": [
+    {
+      "local_id": "state-1",
+      "name": "Send registration request",
+      "state_type": "send",
+      "performed_by": "Employee",
+      "message_name": "registration request",
+      "is_initial": true,
+      "is_end": false,
+      "evidence": "Employee sends a registration request to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-2",
+      "name": "Receive acknowledgement",
+      "state_type": "receive",
+      "performed_by": "Employee",
+      "message_name": "acknowledgement",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee then receives an acknowledgement from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-3",
+      "name": "Receive document request",
+      "state_type": "receive",
+      "performed_by": "Employee",
+      "message_name": "document request",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee receives a document request from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-4",
+      "name": "Prepare requested documents",
+      "state_type": "do",
+      "performed_by": "Employee",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee prepares the requested documents.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-5",
+      "name": "Send requested documents",
+      "state_type": "send",
+      "performed_by": "Employee",
+      "message_name": "requested documents",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee sends the requested documents to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-6",
+      "name": "Receive training offer",
+      "state_type": "receive",
+      "performed_by": "Employee",
+      "message_name": "training offer",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee then receives a training offer from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-7",
+      "name": "Review training offer",
+      "state_type": "do",
+      "performed_by": "Employee",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee reviews the training offer.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-8",
+      "name": "Send offer acceptance",
+      "state_type": "send",
+      "performed_by": "Employee",
+      "message_name": "offer acceptance",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee sends an offer acceptance to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-9",
+      "name": "Receive registration confirmation",
+      "state_type": "receive",
+      "performed_by": "Employee",
+      "message_name": "registration confirmation",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee then receives a registration confirmation from the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-10",
+      "name": "Record registration confirmation",
+      "state_type": "do",
+      "performed_by": "Employee",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee records the registration confirmation.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-11",
+      "name": "Send receipt confirmation",
+      "state_type": "send",
+      "performed_by": "Employee",
+      "message_name": "receipt confirmation",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Employee sends a receipt confirmation to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-12",
+      "name": "Archive registration documents",
+      "state_type": "do",
+      "performed_by": "Employee",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": true,
+      "evidence": "Employee archives Employee's registration documents.\nThis ends Employee's part of the process.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_transitions": [
+    {
+      "source_state_id": "state-1",
+      "target_state_id": "state-2",
+      "sequence_evidence": "Employee sends a registration request to the Training Coordinator.  \nEmployee then receives an acknowledgement from the Training Coordinator.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-3",
+      "sequence_evidence": "After receiving the acknowledgement, Employee receives a document request from the Training Coordinator.",
+      "received_message_name": "acknowledgement",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-3",
+      "target_state_id": "state-4",
+      "sequence_evidence": "After receiving the acknowledgement, Employee receives a document request from the Training Coordinator.  \nEmployee prepares the requested documents.",
+      "received_message_name": "document request",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-4",
+      "target_state_id": "state-5",
+      "sequence_evidence": "Once the requested documents are ready, Employee sends the requested documents to the Training Coordinator.",
+      "received_message_name": null,
+      "exit_condition": "requested documents are ready",
+      "exit_condition_evidence": "Once the requested documents are ready, Employee sends the requested documents to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-5",
+      "target_state_id": "state-6",
+      "sequence_evidence": "Employee sends the requested documents to the Training Coordinator.  \nEmployee then receives a training offer from the Training Coordinator.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-6",
+      "target_state_id": "state-7",
+      "sequence_evidence": "Employee then receives a training offer from the Training Coordinator.  \nEmployee reviews the training offer.",
+      "received_message_name": "training offer",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-7",
+      "target_state_id": "state-8",
+      "sequence_evidence": "Once Employee has decided to accept the training offer, Employee sends an offer acceptance to the Training Coordinator.",
+      "received_message_name": null,
+      "exit_condition": "Employee has decided to accept the training offer",
+      "exit_condition_evidence": "Once Employee has decided to accept the training offer, Employee sends an offer acceptance to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-8",
+      "target_state_id": "state-9",
+      "sequence_evidence": "Employee sends an offer acceptance to the Training Coordinator.  \nEmployee then receives a registration confirmation from the Training Coordinator.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-9",
+      "target_state_id": "state-10",
+      "sequence_evidence": "Employee then receives a registration confirmation from the Training Coordinator.  \nEmployee records the registration confirmation.",
+      "received_message_name": "registration confirmation",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-10",
+      "target_state_id": "state-11",
+      "sequence_evidence": "After the registration confirmation has been recorded, Employee sends a receipt confirmation to the Training Coordinator.",
+      "received_message_name": null,
+      "exit_condition": "registration confirmation has been recorded",
+      "exit_condition_evidence": "After the registration confirmation has been recorded, Employee sends a receipt confirmation to the Training Coordinator.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-11",
+      "target_state_id": "state-12",
+      "sequence_evidence": "After sending the receipt confirmation, Employee archives Employee's registration documents.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    }
+  ]
+}
+Continue with this extraction? [c=confirm, r=reject, q=quit]: c
+
+Stakeholder 2
+Role name: Training Coordinator
+Enter the description.
+Finish with a line containing only a dot: .
+I receive a registration request from the Employee. I then send an acknowledgement to the Employee.
+After sending the acknowledgement, I check whether the registration documents are complete. In this case, documents are missing.
+Once I have established that documents are missing, I send a document request to the Employee.
+I then receive the requested documents from the Employee. I verify that the registration documents are now complete.
+Once I have established that the registration documents are complete, I check whether the Employee meets the participation requirements.
+In this case, the Employee meets the participation requirements. Once I have established that the Employee meets the participation requirements, I send a training offer to the Employee.
+I then receive an offer acceptance from the Employee. I reserve a training place for the Employee. Once the training place has been reserved, I send a registration confirmation to the Employee.
+I then receive a receipt confirmation from the Employee. Afess.
+.
+
+Preparing and extracting the description...
+
+Extracted view:
+{
+  "stakeholder": "Training Coordinator",
+  "source_text": "I receive a registration request from the Employee. I then send an acknowledgement to the Employee.\nAfter sending the acknowledgement, I check whether the registration documents are complete. In this case, documents are missing.\nOnce I have established that documents are missing, I send a document request to the Employee.\nI then receive the requested documents from the Employee. I verify that the registration documents are now complete.\nOnce I have established that the registration documents are complete, I check whether the Employee meets the participation requirements.\nIn this case, the Employee meets the participation requirements. Once I have established that the Employee meets the participation requirements, I send a training offer to the Employee.\nI then receive an offer acceptance from the Employee. I reserve a training place for the Employee. Once the training place has been reserved, I send a registration confirmation to the Employee.\nI then receive a receipt confirmation from the Employee. After receiving the receipt confirmation, I archive the registration request. This ends my part of the process.",
+  "corrected_text": "I receive a registration request from the Employee. I then send an acknowledgement to the Employee. After sending the acknowledgement, I check whether the registration documents are complete. In this case, documents are missing. Once I have established that documents are missing, I send a document request to the Employee. I then receive the requested documents from the Employee. I verify that the registration documents are now complete. Once I have established that the registration documents are complete, I check whether the Employee meets the participation requirements. In this case, the Employee meets the participation requirements. Once I have established that the Employee meets the participation requirements, I send a training offer to the Employee. I then receive an offer acceptance from the Employee. I reserve a training place for the Employee. Once the training place has been reserved, I send a registration confirmation to the Employee. I then receive a receipt confirmation from the Employee. After receiving the receipt confirmation, I archive the registration request. This ends my part of the process.",
+  "prepared_text": "Training Coordinator receives a registration request from the Employee.  \nTraining Coordinator then sends an acknowledgement to the Employee.  \nAfter sending the acknowledgement, Training Coordinator checks whether the registration documents are complete.  \nIn this case, registration documents are missing.  \nOnce Training Coordinator has established that registration documents are missing, Training Coordinator sends a document request to the Employee.  \nTraining Coordinator then receives the requested documents from the Employee.  \nTraining Coordinator verifies that the registration documents are now complete.  \nOnce Training Coordinator has established that the registration documents are complete, Training Coordinator checks whether the Employee meets the participation requirements.  \nIn this case, the Employee meets the participation requirements.  \nOnce Training Coordinator has established that the Employee meets the participation requirements, Training Coordinator sends a training offer to the Employee.  \nTraining Coordinator then receives an offer acceptance from the Employee.  \nTraining Coordinator reserves a training place for the Employee.  \nOnce Training Coordinator has reserved the training place, Training Coordinator sends a registration confirmation to the Employee.  \nTraining Coordinator then receives a receipt confirmation from the Employee.  \nAfter receiving the receipt confirmation, Training Coordinator archives the registration request.  \nThis ends Training Coordinator's part of the process.",
+  "candidate_subjects": [
+    {
+      "name": "Training Coordinator",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "Employee",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_messages": [
+    {
+      "name": "registration request",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "acknowledgement",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Training Coordinator then sends an acknowledgement to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "document request",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Training Coordinator sends a document request to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "requested documents",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Training Coordinator then receives the requested documents from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "training offer",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Training Coordinator sends a training offer to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "offer acceptance",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Training Coordinator then receives an offer acceptance from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "registration confirmation",
+      "sender": "Training Coordinator",
+      "receiver": "Employee",
+      "evidence": "Training Coordinator sends a registration confirmation to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "receipt confirmation",
+      "sender": "Employee",
+      "receiver": "Training Coordinator",
+      "evidence": "Training Coordinator then receives a receipt confirmation from the Employee.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_activities": [
+    {
+      "name": "Check whether the registration documents are complete",
+      "performed_by": "Training Coordinator",
+      "evidence": "Training Coordinator checks whether the registration documents are complete.",
+      "status": "proposed"
+    },
+    {
+      "name": "Verify that the registration documents are now complete",
+      "performed_by": "Training Coordinator",
+      "evidence": "Training Coordinator verifies that the registration documents are now complete.",
+      "status": "proposed"
+    },
+    {
+      "name": "Check whether the Employee meets the participation requirements",
+      "performed_by": "Training Coordinator",
+      "evidence": "Training Coordinator checks whether the Employee meets the participation requirements.",
+      "status": "proposed"
+    },
+    {
+      "name": "Reserve a training place for the Employee",
+      "performed_by": "Training Coordinator",
+      "evidence": "Training Coordinator reserves a training place for the Employee.",
+      "status": "proposed"
+    },
+    {
+      "name": "Archive the registration request",
+      "performed_by": "Training Coordinator",
+      "evidence": "Training Coordinator archives the registration request.",
+      "status": "proposed"
+    }
+  ],
+  "open_questions": [],
+  "candidate_states": [
+    {
+      "local_id": "state-1",
+      "name": "Receive registration request",
+      "state_type": "receive",
+      "performed_by": "Training Coordinator",
+      "message_name": "registration request",
+      "is_initial": true,
+      "is_end": false,
+      "evidence": "Training Coordinator receives a registration request from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-2",
+      "name": "Send acknowledgement",
+      "state_type": "send",
+      "performed_by": "Training Coordinator",
+      "message_name": "acknowledgement",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator then sends an acknowledgement to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-3",
+      "name": "Check whether the registration documents are complete",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "After sending the acknowledgement, Training Coordinator checks whether the registration documents are complete.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-4",
+      "name": "Send document request",
+      "state_type": "send",
+      "performed_by": "Training Coordinator",
+      "message_name": "document request",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Once Training Coordinator has established that registration documents are missing, Training Coordinator sends a document request to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-5",
+      "name": "Receive requested documents",
+      "state_type": "receive",
+      "performed_by": "Training Coordinator",
+      "message_name": "requested documents",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator then receives the requested documents from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-6",
+      "name": "Verify that the registration documents are now complete",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator verifies that the registration documents are now complete.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-7",
+      "name": "Check whether the Employee meets the participation requirements",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator checks whether the Employee meets the participation requirements.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-8",
+      "name": "Send training offer",
+      "state_type": "send",
+      "performed_by": "Training Coordinator",
+      "message_name": "training offer",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Once Training Coordinator has established that the Employee meets the participation requirements, Training Coordinator sends a training offer to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-9",
+      "name": "Receive offer acceptance",
+      "state_type": "receive",
+      "performed_by": "Training Coordinator",
+      "message_name": "offer acceptance",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator then receives an offer acceptance from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-10",
+      "name": "Reserve a training place for the Employee",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator reserves a training place for the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-11",
+      "name": "Send registration confirmation",
+      "state_type": "send",
+      "performed_by": "Training Coordinator",
+      "message_name": "registration confirmation",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Once Training Coordinator has reserved the training place, Training Coordinator sends a registration confirmation to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-12",
+      "name": "Receive receipt confirmation",
+      "state_type": "receive",
+      "performed_by": "Training Coordinator",
+      "message_name": "receipt confirmation",
+      "is_initial": false,
+      "is_end": false,
+      "evidence": "Training Coordinator then receives a receipt confirmation from the Employee.",
+      "status": "proposed"
+    },
+    {
+      "local_id": "state-13",
+      "name": "Archive the registration request",
+      "state_type": "do",
+      "performed_by": "Training Coordinator",
+      "message_name": null,
+      "is_initial": false,
+      "is_end": true,
+      "evidence": "After receiving the receipt confirmation, Training Coordinator archives the registration request.\nThis ends Training Coordinator's part of the process.",
+      "status": "proposed"
+    }
+  ],
+  "candidate_transitions": [
+    {
+      "source_state_id": "state-1",
+      "target_state_id": "state-2",
+      "sequence_evidence": "Training Coordinator receives a registration request from the Employee.  \nTraining Coordinator then sends an acknowledgement to the Employee.",
+      "received_message_name": "registration request",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-2",
+      "target_state_id": "state-3",
+      "sequence_evidence": "After sending the acknowledgement, Training Coordinator checks whether the registration documents are complete.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-3",
+      "target_state_id": "state-4",
+      "sequence_evidence": "Once Training Coordinator has established that registration documents are missing, Training Coordinator sends a document request to the Employee.",
+      "received_message_name": null,
+      "exit_condition": "registration documents are missing",
+      "exit_condition_evidence": "Once Training Coordinator has established that registration documents are missing, Training Coordinator sends a document request to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-4",
+      "target_state_id": "state-5",
+      "sequence_evidence": "Training Coordinator sends a document request to the Employee.  \nTraining Coordinator then receives the requested documents from the Employee.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-5",
+      "target_state_id": "state-6",
+      "sequence_evidence": "Training Coordinator then receives the requested documents from the Employee.  \nTraining Coordinator verifies that the registration documents are now complete.",
+      "received_message_name": "requested documents",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-6",
+      "target_state_id": "state-7",
+      "sequence_evidence": "Once Training Coordinator has established that the registration documents are complete, Training Coordinator checks whether the Employee meets the participation requirements.",
+      "received_message_name": null,
+      "exit_condition": "registration documents are complete",
+      "exit_condition_evidence": "Once Training Coordinator has established that the registration documents are complete, Training Coordinator checks whether the Employee meets the participation requirements.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-7",
+      "target_state_id": "state-8",
+      "sequence_evidence": "Once Training Coordinator has established that the Employee meets the participation requirements, Training Coordinator sends a training offer to the Employee.",
+      "received_message_name": null,
+      "exit_condition": "the Employee meets the participation requirements",
+      "exit_condition_evidence": "Once Training Coordinator has established that the Employee meets the participation requirements, Training Coordinator sends a training offer to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-8",
+      "target_state_id": "state-9",
+      "sequence_evidence": "Training Coordinator sends a training offer to the Employee.  \nTraining Coordinator then receives an offer acceptance from the Employee.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-9",
+      "target_state_id": "state-10",
+      "sequence_evidence": "Training Coordinator then receives an offer acceptance from the Employee.  \nTraining Coordinator reserves a training place for the Employee.",
+      "received_message_name": "offer acceptance",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-10",
+      "target_state_id": "state-11",
+      "sequence_evidence": "Once Training Coordinator has reserved the training place, Training Coordinator sends a registration confirmation to the Employee.",
+      "received_message_name": null,
+      "exit_condition": "Training Coordinator has reserved the training place",
+      "exit_condition_evidence": "Once Training Coordinator has reserved the training place, Training Coordinator sends a registration confirmation to the Employee.",
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-11",
+      "target_state_id": "state-12",
+      "sequence_evidence": "Training Coordinator sends a registration confirmation to the Employee.  \nTraining Coordinator then receives a receipt confirmation from the Employee.",
+      "received_message_name": null,
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    },
+    {
+      "source_state_id": "state-12",
+      "target_state_id": "state-13",
+      "sequence_evidence": "After receiving the receipt confirmation, Training Coordinator archives the registration request.",
+      "received_message_name": "receipt confirmation",
+      "exit_condition": null,
+      "exit_condition_evidence": null,
+      "status": "proposed"
+    }
+  ]
+}
+Continue with this extraction? [c=confirm, r=reject, q=quit]: c
+
+Description from Employee:
+I send a registration request to the Training Coordinator. I then receive an acknowledgement from the Training Coordinator.
+After receiving the acknowledgement, I receive a document request from the Training Coordinator.
+I prepare the requested documents. Once the requested documents are ready, I send the requested documents to the Training Coordinator.
+I then receive a training offer from the Training Coordinator.
+I review the training offer. Once I have decided to accept the training offer, I send an offer acceptance to the Training Coordinator.
+I then receive a registration confirmation from the Training Coordinator.
+I record the registration confirmation. After the registration confirmation has been recorded, I send a receipt confirmation to the Training Coordinator.
+After sending the receipt confirmation, I archive my registration documents. This ends my part of the process.
+Saved source view: ee05af16-214b-47ea-9ef8-5f12ab67c5b6
+
+Description from Training Coordinator:
+I receive a registration request from the Employee. I then send an acknowledgement to the Employee.
+After sending the acknowledgement, I check whether the registration documents are complete. In this case, documents are missing.
+Once I have established that documents are missing, I send a document request to the Employee.
+I then receive the requested documents from the Employee. I verify that the registration documents are now complete.
+Once I have established that the registration documents are complete, I check whether the Employee meets the participation requirements.
+In this case, the Employee meets the participation requirements. Once I have established that the Employee meets the participation requirements, I send a training offer to the Employee.
+I then receive an offer acceptance from the Employee. I reserve a training place for the Employee. Once the training place has been reserved, I send a registration confirmation to the Employee.
+I then receive a receipt confirmation from the Employee. After receiving the receipt confirmation, I archive the registration request. This ends my part of the process.
+Saved source view: e6611c85-9279-422c-918f-ecdc03df98e0
+
+Proposal: equivalent_subject
+Both subjects have the normalized name 'employee'.
+Perspective: Employee
+  Element: Employee
+  Evidence: Employee sends a registration request to the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Employee
+  Evidence: Training Coordinator receives a registration request from the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: equivalent_subject
+Both subjects have the normalized name 'training coordinator'.
+Perspective: Employee
+  Element: Training Coordinator
+  Evidence: Employee sends a registration request to the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Training Coordinator
+  Evidence: Training Coordinator receives a registration request from the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: message_pair
+Both fragments describe message 'acknowledgement' from 'training coordinator' to 'employee' with opposite send and receive perspectives.
+Perspective: Employee
+  Element: Training Coordinator sends acknowledgement to Employee
+  Evidence: Employee then receives an acknowledgement from the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Training Coordinator sends acknowledgement to Employee
+  Evidence: Training Coordinator then sends an acknowledgement to the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: message_pair
+Both fragments describe message 'document request' from 'training coordinator' to 'employee' with opposite send and receive perspectives.
+Perspective: Employee
+  Element: Training Coordinator sends document request to Employee
+  Evidence: Employee receives a document request from the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Training Coordinator sends document request to Employee
+  Evidence: Training Coordinator sends a document request to the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: message_pair
+Both fragments describe message 'requested documents' from 'employee' to 'training coordinator' with opposite send and receive perspectives.
+Perspective: Employee
+  Element: Employee sends requested documents to Training Coordinator
+  Evidence: Employee sends the requested documents to the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Employee sends requested documents to Training Coordinator
+  Evidence: Training Coordinator then receives the requested documents from the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: message_pair
+Both fragments describe message 'offer acceptance' from 'employee' to 'training coordinator' with opposite send and receive perspectives.
+Perspective: Employee
+  Element: Employee sends offer acceptance to Training Coordinator
+  Evidence: Employee sends an offer acceptance to the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Employee sends offer acceptance to Training Coordinator
+  Evidence: Training Coordinator then receives an offer acceptance from the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: message_pair
+Both fragments describe message 'training offer' from 'training coordinator' to 'employee' with opposite send and receive perspectives.
+Perspective: Employee
+  Element: Training Coordinator sends training offer to Employee
+  Evidence: Employee then receives a training offer from the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Training Coordinator sends training offer to Employee
+  Evidence: Training Coordinator sends a training offer to the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: message_pair
+Both fragments describe message 'registration request' from 'employee' to 'training coordinator' with opposite send and receive perspectives.
+Perspective: Employee
+  Element: Employee sends registration request to Training Coordinator
+  Evidence: Employee sends a registration request to the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Employee sends registration request to Training Coordinator
+  Evidence: Training Coordinator receives a registration request from the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: message_pair
+Both fragments describe message 'receipt confirmation' from 'employee' to 'training coordinator' with opposite send and receive perspectives.
+Perspective: Employee
+  Element: Employee sends receipt confirmation to Training Coordinator
+  Evidence: Employee sends a receipt confirmation to the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Employee sends receipt confirmation to Training Coordinator
+  Evidence: Training Coordinator then receives a receipt confirmation from the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Proposal: message_pair
+Both fragments describe message 'registration confirmation' from 'training coordinator' to 'employee' with opposite send and receive perspectives.
+Perspective: Employee
+  Element: Training Coordinator sends registration confirmation to Employee
+  Evidence: Employee then receives a registration confirmation from the Training Coordinator.
+Perspective: Training Coordinator
+  Element: Training Coordinator sends registration confirmation to Employee
+  Evidence: Training Coordinator sends a registration confirmation to the Employee.
+Accept this correspondence? [c=confirm, r=reject, q=quit]: c
+
+Behaviour from: Employee
+Source view: ee05af16-214b-47ea-9ef8-5f12ab67c5b6
+  Send registration request [SendState] initial
+    Evidence: Employee sends a registration request to the Training Coordinator.
+  Receive acknowledgement [ReceiveState] 
+    Evidence: Employee then receives an acknowledgement from the Training Coordinator.
+  Receive document request [ReceiveState] 
+    Evidence: Employee receives a document request from the Training Coordinator.
+  Prepare requested documents [DoState] 
+    Evidence: Employee prepares the requested documents.
+  Send requested documents [SendState] 
+    Evidence: Employee sends the requested documents to the Training Coordinator.
+  Receive training offer [ReceiveState] 
+    Evidence: Employee then receives a training offer from the Training Coordinator.
+  Review training offer [DoState] 
+    Evidence: Employee reviews the training offer.
+  Send offer acceptance [SendState] 
+    Evidence: Employee sends an offer acceptance to the Training Coordinator.
+  Receive registration confirmation [ReceiveState] 
+    Evidence: Employee then receives a registration confirmation from the Training Coordinator.
+  Record registration confirmation [DoState] 
+    Evidence: Employee records the registration confirmation.
+  Send receipt confirmation [SendState] 
+    Evidence: Employee sends a receipt confirmation to the Training Coordinator.
+  Archive registration documents [DoState] end
+    Evidence: Employee archives Employee's registration documents.
+This ends Employee's part of the process.
+Transitions:
+  Send registration request → Receive acknowledgement [SendTransition]
+    Sequence evidence: Employee sends a registration request to the Training Coordinator.  
+Employee then receives an acknowledgement from the Training Coordinator.
+  Receive acknowledgement → Receive document request [ReceiveTransition]
+    Sequence evidence: After receiving the acknowledgement, Employee receives a document request from the Training Coordinator.
+    Received message: acknowledgement
+  Receive document request → Prepare requested documents [ReceiveTransition]
+    Sequence evidence: After receiving the acknowledgement, Employee receives a document request from the Training Coordinator.  
+Employee prepares the requested documents.
+    Received message: document request
+  Prepare requested documents → Send requested documents [DoTransition]
+    Sequence evidence: Once the requested documents are ready, Employee sends the requested documents to the Training Coordinator.
+    Exit condition: requested documents are ready
+    Condition evidence: Once the requested documents are ready, Employee sends the requested documents to the Training Coordinator.
+  Send requested documents → Receive training offer [SendTransition]
+    Sequence evidence: Employee sends the requested documents to the Training Coordinator.  
+Employee then receives a training offer from the Training Coordinator.
+  Receive training offer → Review training offer [ReceiveTransition]
+    Sequence evidence: Employee then receives a training offer from the Training Coordinator.  
+Employee reviews the training offer.
+    Received message: training offer
+  Review training offer → Send offer acceptance [DoTransition]
+    Sequence evidence: Once Employee has decided to accept the training offer, Employee sends an offer acceptance to the Training Coordinator.
+    Exit condition: Employee has decided to accept the training offer
+    Condition evidence: Once Employee has decided to accept the training offer, Employee sends an offer acceptance to the Training Coordinator.
+  Send offer acceptance → Receive registration confirmation [SendTransition]
+    Sequence evidence: Employee sends an offer acceptance to the Training Coordinator.  
+Employee then receives a registration confirmation from the Training Coordinator.
+  Receive registration confirmation → Record registration confirmation [ReceiveTransition]
+    Sequence evidence: Employee then receives a registration confirmation from the Training Coordinator.  
+Employee records the registration confirmation.
+    Received message: registration confirmation
+  Record registration confirmation → Send receipt confirmation [DoTransition]
+    Sequence evidence: After the registration confirmation has been recorded, Employee sends a receipt confirmation to the Training Coordinator.
+    Exit condition: registration confirmation has been recorded
+    Condition evidence: After the registration confirmation has been recorded, Employee sends a receipt confirmation to the Training Coordinator.
+  Send receipt confirmation → Archive registration documents [SendTransition]
+    Sequence evidence: After sending the receipt confirmation, Employee archives Employee's registration documents.
+Canonical owner: Employee
+Use this source behaviour? [c=confirm, r=reject, q=quit]: c
+
+Behaviour from: Training Coordinator
+Source view: e6611c85-9279-422c-918f-ecdc03df98e0
+  Receive registration request [ReceiveState] initial
+    Evidence: Training Coordinator receives a registration request from the Employee.
+  Send acknowledgement [SendState] 
+    Evidence: Training Coordinator then sends an acknowledgement to the Employee.
+  Check whether the registration documents are complete [DoState] 
+    Evidence: After sending the acknowledgement, Training Coordinator checks whether the registration documents are complete.
+  Send document request [SendState] 
+    Evidence: Once Training Coordinator has established that registration documents are missing, Training Coordinator sends a document request to the Employee.
+  Receive requested documents [ReceiveState] 
+    Evidence: Training Coordinator then receives the requested documents from the Employee.
+  Verify that the registration documents are now complete [DoState] 
+    Evidence: Training Coordinator verifies that the registration documents are now complete.
+  Check whether the Employee meets the participation requirements [DoState] 
+    Evidence: Training Coordinator checks whether the Employee meets the participation requirements.
+  Send training offer [SendState] 
+    Evidence: Once Training Coordinator has established that the Employee meets the participation requirements, Training Coordinator sends a training offer to the Employee.
+  Receive offer acceptance [ReceiveState] 
+    Evidence: Training Coordinator then receives an offer acceptance from the Employee.
+  Reserve a training place for the Employee [DoState] 
+    Evidence: Training Coordinator reserves a training place for the Employee.
+  Send registration confirmation [SendState] 
+    Evidence: Once Training Coordinator has reserved the training place, Training Coordinator sends a registration confirmation to the Employee.
+  Receive receipt confirmation [ReceiveState] 
+    Evidence: Training Coordinator then receives a receipt confirmation from the Employee.
+  Archive the registration request [DoState] end
+    Evidence: After receiving the receipt confirmation, Training Coordinator archives the registration request.
+This ends Training Coordinator's part of the process.
+Transitions:
+  Receive registration request → Send acknowledgement [ReceiveTransition]
+    Sequence evidence: Training Coordinator receives a registration request from the Employee.  
+Training Coordinator then sends an acknowledgement to the Employee.
+    Received message: registration request
+  Send acknowledgement → Check whether the registration documents are complete [SendTransition]
+    Sequence evidence: After sending the acknowledgement, Training Coordinator checks whether the registration documents are complete.
+  Check whether the registration documents are complete → Send document request [DoTransition]
+    Sequence evidence: Once Training Coordinator has established that registration documents are missing, Training Coordinator sends a document request to the Employee.
+    Exit condition: registration documents are missing
+    Condition evidence: Once Training Coordinator has established that registration documents are missing, Training Coordinator sends a document request to the Employee.
+  Send document request → Receive requested documents [SendTransition]
+    Sequence evidence: Training Coordinator sends a document request to the Employee.  
+Training Coordinator then receives the requested documents from the Employee.
+  Receive requested documents → Verify that the registration documents are now complete [ReceiveTransition]
+    Sequence evidence: Training Coordinator then receives the requested documents from the Employee.  
+Training Coordinator verifies that the registration documents are now complete.
+    Received message: requested documents
+  Verify that the registration documents are now complete → Check whether the Employee meets the participation requirements [DoTransition]
+    Sequence evidence: Once Training Coordinator has established that the registration documents are complete, Training Coordinator checks whether the Employee meets the participation requirements.
+    Exit condition: registration documents are complete
+    Condition evidence: Once Training Coordinator has established that the registration documents are complete, Training Coordinator checks whether the Employee meets the participation requirements.
+  Check whether the Employee meets the participation requirements → Send training offer [DoTransition]
+    Sequence evidence: Once Training Coordinator has established that the Employee meets the participation requirements, Training Coordinator sends a training offer to the Employee.
+    Exit condition: the Employee meets the participation requirements
+    Condition evidence: Once Training Coordinator has established that the Employee meets the participation requirements, Training Coordinator sends a training offer to the Employee.
+  Send training offer → Receive offer acceptance [SendTransition]
+    Sequence evidence: Training Coordinator sends a training offer to the Employee.  
+Training Coordinator then receives an offer acceptance from the Employee.
+  Receive offer acceptance → Reserve a training place for the Employee [ReceiveTransition]
+    Sequence evidence: Training Coordinator then receives an offer acceptance from the Employee.  
+Training Coordinator reserves a training place for the Employee.
+    Received message: offer acceptance
+  Reserve a training place for the Employee → Send registration confirmation [DoTransition]
+    Sequence evidence: Once Training Coordinator has reserved the training place, Training Coordinator sends a registration confirmation to the Employee.
+    Exit condition: Training Coordinator has reserved the training place
+    Condition evidence: Once Training Coordinator has reserved the training place, Training Coordinator sends a registration confirmation to the Employee.
+  Send registration confirmation → Receive receipt confirmation [SendTransition]
+    Sequence evidence: Training Coordinator sends a registration confirmation to the Employee.  
+Training Coordinator then receives a receipt confirmation from the Employee.
+  Receive receipt confirmation → Archive the registration request [ReceiveTransition]
+    Sequence evidence: After receiving the receipt confirmation, Training Coordinator archives the registration request.
+    Received message: receipt confirmation
+Canonical owner: Training Coordinator
+Use this source behaviour? [c=confirm, r=reject, q=quit]: c
+
+Saved process: urn:pass:canonical:process:complaint-demo-43a222d5-57b5-462a-aa11-c3bf671d73a6
+
+The process passes the prototype completeness checks.
+Ontology and export-tool validation are still pending.

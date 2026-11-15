@@ -1,0 +1,19 @@
+EC-3 - The coordinator describes two checks without specifying their order.
+
+Stakeholder A:
+Role: Employee
+Description:
+I send a registration request to the Training Coordinator.
+I then receive an acknowledgement from the Training Coordinator.
+After receiving the acknowledgement, I wait for and receive a registration confirmation from the Training Coordinator.
+I then record the registration confirmation. This ends my part of the process.
+
+Stakeholder B:
+Role: Training Coordinator
+Description:
+I receive a registration request from the Employee.
+I then send an acknowledgement to the Employee.
+After sending the acknowledgement, I check whether a place is available and check whether the Employee meets the participation requirements.
+I send the registration confirmation to the Employee after both checks are complete. After sending the registration confirmation, I close the registration request.
+This ends my part of the process.
+.

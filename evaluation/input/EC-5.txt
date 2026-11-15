@@ -1,0 +1,25 @@
+EC-5 — An extended registration process includes document submission, offer acceptance, and confirmation.
+
+Stakeholder A:
+Role: Employee
+Description:
+I send a registration request to the Training Coordinator. I then receive an acknowledgement from the Training Coordinator.
+After receiving the acknowledgement, I receive a document request from the Training Coordinator.
+I prepare the requested documents. Once the requested documents are ready, I send the requested documents to the Training Coordinator.
+I then receive a training offer from the Training Coordinator.
+I review the training offer. Once I have decided to accept the training offer, I send an offer acceptance to the Training Coordinator.
+I then receive a registration confirmation from the Training Coordinator.
+I record the registration confirmation. After the registration confirmation has been recorded, I send a receipt confirmation to the Training Coordinator.
+After sending the receipt confirmation, I archive my registration documents. This ends my part of the process.
+
+Stakeholder B:
+Role: Training Coordinator
+Description:
+I receive a registration request from the Employee. I then send an acknowledgement to the Employee.
+After sending the acknowledgement, I check whether the registration documents are complete. In this case, documents are missing.
+Once I have established that documents are missing, I send a document request to the Employee.
+I then receive the requested documents from the Employee. I verify that the registration documents are now complete.
+Once I have established that the registration documents are complete, I check whether the Employee meets the participation requirements.
+In this case, the Employee meets the participation requirements. Once I have established that the Employee meets the participation requirements, I send a training offer to the Employee.
+I then receive an offer acceptance from the Employee. I reserve a training place for the Employee. Once the training place has been reserved, I send a registration confirmation to the Employee.
+I then receive a receipt confirmation from the Employee. After receiving the receipt confirmation, I archive the registration request. This ends my part of the process.
