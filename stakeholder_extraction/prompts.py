@@ -58,9 +58,13 @@ Behavior extraction rules:
 StakeholderView. Use sequential identifiers such as "state-1",
 "state-2", and "state-3". These are local references only and are
 not ontology URIs.
-24. For receive and send states, message_name must match the name of
-the corresponding candidate message. If the message name is missing,
-use null and create a missing-information question.
+24. For send states, message_name identifies the corresponding candidate message.
+For receive states that accept one message type, message_name identifies that candidate message. For a receive state that accepts alternative
+message types, set message_name to null and identify each alternative using received_message_name on its outgoing transition.
+Every transition leaving a receive state must identify the corresponding candidate message in received_message_name.
+For transitions leaving send or do states, received_message_name must be null.
+If the text does not identify the received message, create a missing-information question. A receive state's null message_name does
+not indicate missing information when its alternative received messages are identified on its outgoing transitions.
 25. For do states, message_name must be null. An object that is
 reviewed, processed, or stored is not automatically a message
 reference.
@@ -90,6 +94,40 @@ If the final described state is a send state and no following state is
 known, preserve the send state and create an open question about what happens afterward.
 34. Continue to create candidate activities for internal work. The
 corresponding candidate state represents that activity's position in the behavior sequence.
+35. For every transition whose source state has state_type "do",
+extract exit_condition: a short description of what must hold before
+the subject can leave that source state along this transition.
+36. Distinguish activity completion from a specific business outcome.
+For example:
+- "After completing the review, I send a response" supports "Review completed".
+- "If the request is approved, I send a confirmation" supports "Request approved".
+Do not replace a stated outcome with generic activity completion.
+37. Extract an exit condition only when it is explicitly stated or directly implied by the text. Do not derive a business outcome from
+the target state's name or from general domain knowledge. The existence of a transition alone does not establish a specific exit condition.
+38. exit_condition_evidence must be one short, contiguous passage copied exactly from the source text that supports the exit condition.
+It may equal sequence_evidence when the same passage supports both.
+39. If an exit condition for a transition leaving a do state cannot be determined, set exit_condition and exit_condition_evidence to null.
+Create an open question with:
+- related_element_type "transition";
+- related_field "exit_condition";
+- reason "missing_information".
+Ask what must hold before leaving the source activity for the specified following state.
+If it is the end of a process, no do state transition, and therefore no exit condition is required. In this case there should not be an open question regarding this.
+40. If the text states a condition whose meaning is ambiguous, preserve that condition and its evidence and create an
+open question with related_field "exit_condition" and reason "ambiguous_information".
+41. For transitions whose source state is "send" or "receive", set exit_condition and exit_condition_evidence to null.
+Their communication requirements are represented separately.
+42. Preserve explicitly described alternatives according to what determines the choice.
+When the subject performs an internal check and proceeds according to its result,
+represent the check as a do state with separate outgoing transitions carrying the supported exit conditions.
+43. When the subject waits for one of several alternative incoming messages, represent this as one receive state with a separate outgoing
+transition for each message. Each transition identifies its message using received_message_name and leads to the activity that follows
+reception of that message. Do not branch from the preceding send state into separate receive states
+merely because different responses may arrive. Sending the request does not determine which response will be received.
+Do not add a separate internal decision activity unless the description supports one.
+44. Distinguish alternative reception from sequential reception. Combine messages into one receive state only when the description
+establishes that they are alternatives at the same waiting point. If both messages must be received in a stated sequence, preserve that
+sequence. Do not invent alternatives, conditions, or target states.
 
 Allowed direct inference:
 If the stakeholder says "I receive a complaint from the customer", the customer is the sender
@@ -103,8 +141,7 @@ Example:
 
 Stakeholder: Customer Service
 
-Text: "I receive a complaint from the customer. I then review the complaint and
-send the customer a response."
+Text: "I receive a complaint from the customer. I then review the complaint and send the customer a response."
 
 Correct interpretation:
 - "Customer" and "Customer service" are candidate subjects.
@@ -125,7 +162,15 @@ Behavior interpretation:
 - state-3 is performed by Customer Service.
 - state-3 references the Response message.
 - There is a transition from state-1 to state-2.
+- For the transition from state-1 to state-2, received_message_name is "Complaint".
 - There is a transition from state-2 to state-3.
+- For the transition from state-2 to state-3, received_message_name is null because the source is a do state.
+- For the transition from state-2 to state-3:
+  exit_condition is "Complaint review completed".
+  exit_condition_evidence is "I then review the complaint and send the customer a response."
+- This expresses completion of the review, not a particular review outcome such as approval or rejection.
+- For the transition from state-1 to state-2:
+  exit_condition and exit_condition_evidence are null because the source is a receive state.
 - state-3 is not marked as an end state.
 - No artificial "Finished" state is extracted.
 - Because state-3 is a send state and no following state is stated,
@@ -133,6 +178,21 @@ Behavior interpretation:
   related_element_type must be "transition",
   related_field must be "target_state_id",
   reason must be "missing_information",
-  and the question must ask what happens after Customer Service
-  sends the response.
+  and the question must ask what happens after Customer Service sends the response.
+
+Alternative reception example:
+
+Text: "After sending the request, I receive either a confirmation or a rejection. If I receive a confirmation,
+I record the approval. If I receive a rejection, I record the rejection."
+
+Representation:
+- Send request -> Await response.
+- Await response is one receive state with message_name null.
+- Await response -> Record approval:
+  received_message_name is "confirmation".
+- Await response -> Record rejection:
+  received_message_name is "rejection".
+- Both receive transitions have exit_condition and
+  exit_condition_evidence null.
+- No internal decision state is added.
 """

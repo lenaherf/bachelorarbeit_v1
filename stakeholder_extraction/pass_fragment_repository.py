@@ -114,6 +114,8 @@ def _save_fragment_transaction(
                 "source_state_uri": transition.source_state_uri,
                 "target_state_uri": transition.target_state_uri,
                 "message_exchange_uri": transition.message_exchange_uri,
+                "exit_condition": transition.exit_condition,
+                "exit_condition_evidence": transition.exit_condition_evidence,
             },
         )
 

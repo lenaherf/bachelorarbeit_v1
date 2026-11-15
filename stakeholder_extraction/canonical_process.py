@@ -180,6 +180,18 @@ def validate_process_structure(
                 raise ValueError("Every state and transition must reference its containing behavior.")
 
         states_by_uri = {state.uri: state for state in fragment.states}
+        for state in fragment.states:
+            if state.pass_type == "SendState":
+                outgoing_count = sum(
+                    transition.source_state_uri == state.uri
+                    for transition in fragment.transitions
+                )
+
+                if outgoing_count > 1:
+                    raise ValueError(
+                        f"SendState '{state.label}' must not have "
+                        "multiple outgoing transitions."
+                    )
 
         for state in fragment.states:
             if state.performer_uri != behavior.subject_uri:
@@ -189,8 +201,13 @@ def validate_process_structure(
                 if state.message_specification_uri is not None:
                     raise ValueError("A DoState must not reference a message.")
 
-            elif state.message_specification_uri not in message_uris:
-                raise ValueError("A communication state must reference a selected message.")
+
+            elif state.pass_type == "SendState":
+                if state.message_specification_uri not in message_uris:
+                    raise ValueError("A SendState must reference a selected message.")
+
+            elif state.message_specification_uri is not None and state.message_specification_uri not in message_uris:
+                raise ValueError("A ReceiveState's fixed message must be a selected message.")
 
         for transition in fragment.transitions:
             if (
@@ -214,7 +231,11 @@ def validate_process_structure(
             if exchange is None:
                 raise ValueError("A communication transition must reference a selected exchange.")
 
-            if exchange.message_specification_uri != start.message_specification_uri:
+            if (
+                    start.message_specification_uri is not None
+                    and exchange.message_specification_uri
+                    != start.message_specification_uri
+            ):
                 raise ValueError("The transition exchange must match its starting state's message.")
 
             participant_uri = (

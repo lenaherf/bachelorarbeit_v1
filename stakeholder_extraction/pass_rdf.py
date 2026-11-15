@@ -252,12 +252,33 @@ def _add_transitions(
     }
 
     for transition in fragment.transitions:
+        if transition.pass_type == "DoTransition":
+            condition = transition.exit_condition
+            evidence = transition.exit_condition_evidence
+
+            if condition is None or not condition.strip():
+                raise ValueError(
+                    f"Cannot export DoTransition '{transition.uri}': "
+                    "exit_condition is missing."
+                )
+
+            if evidence is None or not evidence.strip():
+                raise ValueError(
+                    f"Cannot export DoTransition '{transition.uri}': "
+                    "exit_condition_evidence is missing."
+                )
+
+            transition_label = condition
+            condition_label = condition
+        else:
+            transition_label = transition.label
+            condition_label = f"{transition.label} condition"
         transition_node = _add_element(
             graph,
             uri=transition.uri,
             pass_type=transition.pass_type,
             component_id=transition.model_component_id,
-            label=transition.label,
+            label=transition_label,
         )
 
         _add_containment(
@@ -297,7 +318,7 @@ def _add_transitions(
             component_id=(
                 f"{transition.model_component_id}:condition"
             ),
-            label=f"{transition.label} condition",
+            label=condition_label,
         )
 
         _add_containment(

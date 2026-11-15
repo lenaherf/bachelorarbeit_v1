@@ -118,10 +118,40 @@ def _communication_state_types(
         fragment: PassModelFragment,
         exchange: PassMessageExchange,
 ) -> set[str]:
-    return {
-        state.pass_type for state in fragment.states
-        if state.message_specification_uri == exchange.message_specification_uri
+    # Preserve support for states with a fixed message reference.
+    communication_types = {
+        state.pass_type
+        for state in fragment.states
+        if state.message_specification_uri
+        == exchange.message_specification_uri
     }
+
+    states_by_uri = {
+        state.uri: state
+        for state in fragment.states
+    }
+
+    expected_source_types = {
+        "SendTransition": "SendState",
+        "ReceiveTransition": "ReceiveState",
+    }
+
+    # Shared receive states identify their messages through transitions.
+    for transition in fragment.transitions:
+        if transition.message_exchange_uri != exchange.uri:
+            continue
+
+        source = states_by_uri.get(transition.source_state_uri)
+        expected_type = expected_source_types.get(transition.pass_type)
+
+        if (
+            source is not None
+            and expected_type is not None
+            and source.pass_type == expected_type
+        ):
+            communication_types.add(expected_type)
+
+    return communication_types
 
 """Return whether one fragment sends what the other receives."""
 def _has_opposite_communication_perspectives(

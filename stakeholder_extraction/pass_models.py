@@ -53,6 +53,8 @@ class PassTransition(PassElement):
     source_state_uri: str
     target_state_uri: str
     message_exchange_uri: str | None = None
+    exit_condition: str | None = None
+    exit_condition_evidence: str | None = None
 
 class MappingIssue(BaseModel):
     model_config = ConfigDict(extra="forbid")

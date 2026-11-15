@@ -257,18 +257,31 @@ def create_canonical_state(
         raise ValueError("A rejected state cannot be canonicalized.")
 
     # Communication states need a matching canonical message.
-    if source.pass_type in ("ReceiveState", "SendState"):
-        if source.message_specification_uri is None:
-            raise ValueError("A communication state must reference a source message.")
+    if source.pass_type == "DoState":
+        if source.message_specification_uri is not None or message is not None:
+            raise ValueError("A DoState must not reference a message.")
 
+    elif source.message_specification_uri is None:
+        if source.pass_type == "SendState":
+            raise ValueError("A SendState must reference a source message.")
+
+        if message is not None:
+            raise ValueError(
+                "A shared ReceiveState must not acquire "
+                "an arbitrary fixed message."
+            )
+
+    else:
         if message is None:
-            raise ValueError("A communication state requires a canonical message.")
+            raise ValueError(
+                "A state with a message reference requires "
+                "a canonical message."
+            )
 
         if source.message_specification_uri not in message.source_message_uris:
-            raise ValueError("The canonical message must include the source message.")
-
-    elif source.message_specification_uri is not None or message is not None:
-        raise ValueError("A DoState must not reference a message.")
+            raise ValueError(
+                "The canonical message must include the source message."
+            )
 
 
     # Include owning behavior so the state identity is scoped to it.
@@ -355,8 +368,9 @@ def create_canonical_transition(
             )
 
         if (
-            start.message_specification_uri
-            != exchange.message_specification_uri
+                start.message_specification_uri is not None
+                and start.message_specification_uri
+                != exchange.message_specification_uri
         ):
             raise ValueError(
                 "The exchange must match the starting state's message."
@@ -371,6 +385,24 @@ def create_canonical_transition(
         if participant_uri != behavior.subject_uri:
             raise ValueError(
                 "The exchange direction must match the behaviour owner."
+            )
+
+
+    if source.pass_type == "DoTransition":
+        for field_name in ("exit_condition", "exit_condition_evidence"):
+            value = getattr(source, field_name)
+
+            if value is None or not value.strip():
+                raise ValueError(
+                    f"A DoTransition requires {field_name}."
+                )
+    else:
+        if (
+                source.exit_condition is not None
+                or source.exit_condition_evidence is not None
+        ):
+            raise ValueError(
+                "A communication transition should not have a do-state exit condition."
             )
 
     identity = f"{behavior.uri}|{source.uri}"
@@ -388,6 +420,8 @@ def create_canonical_transition(
             exchange.uri if exchange is not None else None
         ),
         source_transition_uri=source.uri,
+        exit_condition=source.exit_condition,
+        exit_condition_evidence=source.exit_condition_evidence,
     )
 
 def create_canonical_subject_behavior(

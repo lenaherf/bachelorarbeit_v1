@@ -251,3 +251,11 @@ shape:DoConditionShape
         sh:path pass:requiresPerformedMessageExchange ;
         sh:maxCount 0
     ] .
+
+shape:SendStateOutgoingShape
+    a sh:NodeShape ;
+    sh:targetClass pass:SendState ;
+    sh:property [
+        sh:path pass:hasOutgoingTransition ;
+        sh:maxCount 1
+    ] .

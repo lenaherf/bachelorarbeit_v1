@@ -1,15 +1,11 @@
 import argparse
-
 from stakeholder_extraction.behavior_review_models import BehaviorReview
 from stakeholder_extraction.behavior_review_repository import save_behavior_review
 from stakeholder_extraction.canonical_behavior_repository import save_confirmed_behavior
 from stakeholder_extraction.canonical_process import create_canonical_process_model
-from stakeholder_extraction.canonical_process_repository import save_canonical_process_model, \
-    load_canonical_process_contents
-from stakeholder_extraction.canonical_repository import canonicalize_confirmed_message_pair_proposal, \
-    canonicalize_confirmed_subject_proposal, canonicalize_confirmed_one_sided_message
-from stakeholder_extraction.examples.complaint import make_complete_customer_complaint_view, \
-    make_complete_service_complaint_view
+from stakeholder_extraction.canonical_process_repository import save_canonical_process_model, load_canonical_process_contents
+from stakeholder_extraction.canonical_repository import canonicalize_confirmed_message_pair_proposal, canonicalize_confirmed_subject_proposal, canonicalize_confirmed_one_sided_message
+from stakeholder_extraction.examples.complaint import make_complete_customer_complaint_view, make_complete_service_complaint_view
 from stakeholder_extraction.models import StakeholderView
 from stakeholder_extraction.neo4j_repository import save_stakeholder_view
 from stakeholder_extraction.pass_fragment_repository import save_pass_model_fragment
@@ -18,8 +14,7 @@ from stakeholder_extraction.pass_models import PassModelFragment
 from stakeholder_extraction.process_validation import validate_process_completeness
 from stakeholder_extraction.reconciliation import compare_pass_fragments
 from stakeholder_extraction.reconciliation_models import ReviewDecision
-from stakeholder_extraction.reconciliation_repository import review_reconciliation_proposal, \
-    save_reconciliation_proposals
+from stakeholder_extraction.reconciliation_repository import review_reconciliation_proposal, save_reconciliation_proposals
 from uuid import uuid4
 from datetime import timezone, datetime
 
@@ -49,13 +44,22 @@ def ask_decision(prompt: str) -> ReviewDecision:
 
 
 def show_behavior(fragment: PassModelFragment) -> None:
-    """Display the source behaviour being considered for selection."""
+    """Display the source behavior being considered for selection."""
 
     print(f"\nBehaviour from: {fragment.stakeholder}")
     print(f"Source view: {fragment.view_id}")
 
     states_by_uri = {
         state.uri: state for state in fragment.states
+    }
+
+    exchanges_by_uri = {
+        exchange.uri: exchange
+        for exchange in fragment.message_exchanges
+    }
+    messages_by_uri = {
+        message.uri: message
+        for message in fragment.message_specifications
     }
 
     for state in fragment.states:
@@ -82,7 +86,37 @@ def show_behavior(fragment: PassModelFragment) -> None:
             f"  {start.label} → {end.label} "
             f"[{transition.pass_type}]"
         )
-        print(f"    Evidence: {transition.evidence}")
+        print(f"    Sequence evidence: {transition.evidence}")
+
+        if transition.pass_type == "ReceiveTransition":
+            exchange_uri = transition.message_exchange_uri
+            exchange = (
+                exchanges_by_uri.get(exchange_uri)
+                if exchange_uri is not None
+                else None
+            )
+            message = (
+                messages_by_uri.get(exchange.message_specification_uri)
+                if exchange is not None
+                else None
+            )
+            print(
+                "    Received message: "
+                f"{message.label if message is not None else 'unresolved'}"
+            )
+
+        if transition.pass_type == "DoTransition":
+            condition = transition.exit_condition
+            evidence = transition.exit_condition_evidence
+
+            print(
+                f"    Exit condition: "
+                f"{condition if condition is not None else 'unresolved'}"
+            )
+            print(
+                f"    Condition evidence: "
+                f"{evidence if evidence is not None else 'unresolved'}"
+            )
 
 def prepare_demo_fragments(
     views: list[StakeholderView],
@@ -251,7 +285,7 @@ def reconcile_demo_fragments(fragments, reviewed_by):
     return subjects, messages, exchanges
 
 def save_demo_behaviors(fragments, subjects, reviewed_by):
-    """Review and save each stakeholder's own source behaviour."""
+    """Review and save each stakeholder's own source behavior."""
 
     behaviors = []
 

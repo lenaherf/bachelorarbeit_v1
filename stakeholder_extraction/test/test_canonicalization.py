@@ -755,7 +755,7 @@ def test_assembles_service_behavior():
 
     with pytest.raises(
         ValueError,
-        match="communication state must reference a selected message",
+        match="A ReceiveState's fixed message must be a selected message.",
     ):
         validate_process_structure(
             process,

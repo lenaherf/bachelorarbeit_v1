@@ -88,7 +88,13 @@ def make_complaint_view() -> StakeholderView:
             CandidateTransition(
                 source_state_id="state-2",
                 target_state_id="state-3",
-                sequence_evidence="review the complaint and send the customer a response"
+                sequence_evidence=(
+                    "review the complaint  and send the customer a response"
+                ),
+                exit_condition="Complaint review completed",
+                exit_condition_evidence=(
+                    "review the complaint  and send the customer a response"
+                ),
             )
         ]
     )

@@ -244,7 +244,7 @@ def map_view_to_pass_fragment(
             else:
                 message_specification = message_matches[0]
 
-        if candidate.state_type in {CandidateStateType.RECEIVE, CandidateStateType.SEND} and candidate.message_name is None:
+        if candidate.state_type == CandidateStateType.SEND and candidate.message_name is None:
             mapping_issues.append(MappingIssue(
                 code="missing_state_message",
                 source_kind="state",
@@ -370,39 +370,135 @@ def map_view_to_pass_fragment(
         source = source_matches[0]
         target = target_matches[0]
 
-        message_exchange = None
+        if source.pass_type == "DoState":
+            for field_name in ("exit_condition", "exit_condition_evidence"):
+                value = getattr(candidate, field_name)
 
-        if source.pass_type in {"ReceiveState", "SendState"} and source.message_specification_uri is not None:
-            exchange_matches = exchanges_by_message_uri.get(source.message_specification_uri, [])
+                if value is None or not value.strip():
+                    mapping_issues.append(MappingIssue(
+                        code=f"missing_{field_name}",
+                        source_kind="transition",
+                        source_index=index,
+                        field=field_name,
+                        detail=(
+                            f"Transition from '{source.label}' "
+                            f"to '{target.label}' requires {field_name}."
+                        ),
+                    ))
+        else:
+            for field_name in ("exit_condition", "exit_condition_evidence"):
+                if getattr(candidate, field_name) is not None:
+                    mapping_issues.append(MappingIssue(
+                        code="unexpected_exit_condition",
+                        source_kind="transition",
+                        source_index=index,
+                        field=field_name,
+                        detail=(
+                            f"Transition from '{source.label}' "
+                            f"is a communication transition; "
+                            f"{field_name} must be null."
+                        ),
+                    ))
+
+        message_exchange = None
+        transition_message_uri = source.message_specification_uri
+
+        if source.pass_type == "ReceiveState":
+            received_name = candidate.received_message_name
+
+            if received_name is not None:
+                message_matches = message_specifications_by_name.get(
+                    normalize_name(received_name),
+                    [],
+                )
+
+                if len(message_matches) != 1:
+                    mapping_issues.append(MappingIssue(
+                        code="unresolved_received_message",
+                        source_kind="transition",
+                        source_index=index,
+                        field="received_message_name",
+                        detail=(
+                            f"Received message '{received_name}' matches "
+                            f"{len(message_matches)} message specifications."
+                        ),
+                    ))
+                    transition_message_uri = None
+                else:
+                    transition_message_uri = message_matches[0].uri
+
+                    if (
+                            source.message_specification_uri is not None
+                            and source.message_specification_uri
+                            != transition_message_uri
+                    ):
+                        mapping_issues.append(MappingIssue(
+                            code="inconsistent_received_message",
+                            source_kind="transition",
+                            source_index=index,
+                            field="received_message_name",
+                            detail=(
+                                "The transition message differs from "
+                                "the receive state's fixed message."
+                            ),
+                        ))
+
+            elif source.message_specification_uri is None:
+                mapping_issues.append(MappingIssue(
+                    code="missing_received_message",
+                    source_kind="transition",
+                    source_index=index,
+                    field="received_message_name",
+                    detail=(
+                        "A receive transition requires a message "
+                        "on the transition or its source state."
+                    ),
+                ))
+
+        elif candidate.received_message_name is not None:
+            mapping_issues.append(MappingIssue(
+                code="unexpected_received_message",
+                source_kind="transition",
+                source_index=index,
+                field="received_message_name",
+                detail=(
+                    "Only transitions leaving receive states "
+                    "may specify received_message_name."
+                ),
+            ))
+
+        if (
+                source.pass_type in {"ReceiveState", "SendState"}
+                and transition_message_uri is not None
+        ):
+            exchange_matches = [
+                exchange
+                for exchange in exchanges_by_message_uri.get(
+                    transition_message_uri, []
+                )
+                if (
+                       exchange.receiver_uri
+                       if source.pass_type == "ReceiveState"
+                       else exchange.sender_uri
+                   ) == source.performer_uri
+            ]
 
             if len(exchange_matches) == 1:
                 message_exchange = exchange_matches[0]
-            elif len(exchange_matches) == 0:
-                mapping_issues.append(MappingIssue(
-                    code=(
-                        "missing_transition_exchange"
-                    ),
-                    source_kind="transition",
-                    source_index=index,
-                    field="message_exchange",
-                    detail=(
-                        "Communication transition "
-                        "has no matching message "
-                        "exchange."
-                    ),
-                ))
             else:
                 mapping_issues.append(MappingIssue(
                     code=(
-                        "ambiguous_transition_exchange"
+                        "missing_transition_exchange"
+                        if not exchange_matches
+                        else "ambiguous_transition_exchange"
                     ),
                     source_kind="transition",
                     source_index=index,
                     field="message_exchange",
                     detail=(
-                        "Communication transition "
-                        "matches multiple message "
-                        "exchanges."
+                        "Communication transition matches "
+                        f"{len(exchange_matches)} exchanges "
+                        "for its message and performer."
                     ),
                 ))
 
@@ -420,6 +516,8 @@ def map_view_to_pass_fragment(
             source_state_uri=source.uri,
             target_state_uri=target.uri,
             message_exchange_uri=message_exchange.uri if message_exchange else None,
+            exit_condition=candidate.exit_condition,
+            exit_condition_evidence=candidate.exit_condition_evidence,
         )
 
         transitions.append(transition)

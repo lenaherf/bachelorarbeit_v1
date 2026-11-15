@@ -89,6 +89,8 @@ class CanonicalTransition(BaseModel):
     message_exchange_uri: str | None = None
     source_transition_uri: str
     status: Literal["confirmed"] = "confirmed"
+    exit_condition: str | None = None
+    exit_condition_evidence: str | None = None
 
 class CanonicalBehaviorFragment(BaseModel):
     """A canonical behavior together with its states and transitions."""

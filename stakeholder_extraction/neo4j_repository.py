@@ -319,6 +319,9 @@ def _save_view_transaction(
                 source_state_id: $source_state_local_id,
                 target_state_id: $target_state_local_id,
                 sequence_evidence: $sequence_evidence,
+                received_message_name: $received_message_name,
+                exit_condition: $exit_condition,
+                exit_condition_evidence: $exit_condition_evidence,
                 status: $status
             })
             CREATE (view)-[:CONTAINS]->(transition)
@@ -330,15 +333,12 @@ def _save_view_transaction(
             position=position,
             source_id=source_id,
             target_id=target_id,
-            source_state_local_id=(
-                transition.source_state_id
-            ),
-            target_state_local_id=(
-                transition.target_state_id
-            ),
-            sequence_evidence=(
-                transition.sequence_evidence
-            ),
+            source_state_local_id=transition.source_state_id,
+            target_state_local_id=transition.target_state_id,
+            sequence_evidence=transition.sequence_evidence,
+            received_message_name=transition.received_message_name,
+            exit_condition=transition.exit_condition,
+            exit_condition_evidence=transition.exit_condition_evidence,
             status=_enum_value(transition.status),
         )
 
@@ -520,12 +520,12 @@ def _get_view_transaction(
         })-[:CONTAINS]->
             (transition:CandidateTransition)
         RETURN
-            transition.source_state_id
-                AS source_state_id,
-            transition.target_state_id
-                AS target_state_id,
-            transition.sequence_evidence
-                AS sequence_evidence,
+            transition.source_state_id AS source_state_id,
+            transition.target_state_id AS target_state_id,
+            transition.sequence_evidence AS sequence_evidence,
+            transition.received_message_name AS received_message_name,
+            transition.exit_condition AS exit_condition,
+            transition.exit_condition_evidence AS exit_condition_evidence,
             transition.status AS status
         ORDER BY transition.position
         """,
@@ -537,6 +537,9 @@ def _get_view_transaction(
             source_state_id=record["source_state_id"],
             target_state_id=record["target_state_id"],
             sequence_evidence=record["sequence_evidence"],
+            received_message_name=record["received_message_name"],
+            exit_condition=record["exit_condition"],
+            exit_condition_evidence=record["exit_condition_evidence"],
             status=record["status"],
         )
         for record in transition_records

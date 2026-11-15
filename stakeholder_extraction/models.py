@@ -4,7 +4,6 @@ from enum import Enum
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 class ConfirmationStatus(str, Enum):
     PROPOSED = "proposed"
     CONFIRMED = "confirmed"
@@ -69,6 +68,9 @@ class CandidateTransition(BaseModel):
     source_state_id: str
     target_state_id: str
     sequence_evidence: str
+    received_message_name: str | None = None
+    exit_condition: str | None = None
+    exit_condition_evidence: str | None = None
     status: ConfirmationStatus = ConfirmationStatus.PROPOSED
 
 class OpenQuestion(BaseModel):
