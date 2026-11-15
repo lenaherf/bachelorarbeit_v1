@@ -167,8 +167,9 @@ shasum -a 256 ontology/source/standard_PASS_ont_dev.owl
 ```
 
 The ontology files are third-party material, excluded from this project's own
-MIT license grant. Consult the upstream license and retain its original
-copyright and permission notices.
+MIT license grant. Their original MIT license notice, copyright (c) 2021 I2PM,
+is preserved in `ontology/LICENSE.upstream`, copied from the
+[upstream license](https://github.com/I2PM/Standard-PASS-Ontology/blob/main/LICENSE).
 
 ### PASS terms
 

@@ -74,7 +74,7 @@ explicitly export a draft with unresolved warnings, add
 
 ```bash
 OPENAI_API_KEY=not-used-for-tests python -m pytest
-python -m pytest -m integration
+OPENAI_API_KEY=not-used-for-tests python -m pytest -m integration
 ```
 
 The first command runs the default tests without live API calls. The dummy key
