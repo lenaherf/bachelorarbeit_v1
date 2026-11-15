@@ -18,11 +18,8 @@ venv/
 # Old virtual environments
 .venv-python39-backup
 
-# pytest
-pytest.ini
-
-# Requirements
-requirements-dev.txt
+# pytest cache
+.pytest_cache/
 
 # Local neo4j spike data
 infra/neo4j-pass-spike/.env

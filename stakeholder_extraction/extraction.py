@@ -1,8 +1,5 @@
-from langchain_core.prompts.structured import StructuredPrompt
 from dotenv import load_dotenv
-from openai import OpenAI
 from langchain_openai import ChatOpenAI
-
 from stakeholder_extraction.models import StakeholderView
 from stakeholder_extraction.prompts import STAKEHOLDER_EXTRACTION_PROMPT
 
